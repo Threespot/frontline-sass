@@ -1,0 +1,25 @@
+/// Hide visually but still be available to screenreaders
+/// @link http://snook.ca/archives/html_and_css/hiding-content-for-accessibility
+/// @author Jonathan Snook
+///
+@mixin fs-visually-hidden {
+  border: 0;
+  clip: rect(0 0 0 0);
+  height: 1px;
+  margin: -1px;
+  overflow: hidden;
+  padding: 0;
+  position: absolute;
+  width: 1px;
+}
+
+/// Undo visually hidden styles
+///
+@mixin fs-undo-visually-hidden {
+  clip: auto;
+  height: auto;
+  margin: 0;
+  overflow: visible;
+  position: static;
+  width: auto;
+}

@@ -1,0 +1,21 @@
+/// Maintain aspect ratio
+/// @param {Number} $ratio - Aspect ratio (width / height)
+/// @example scss - 16:9 aspect ratio
+///   .foo {
+///     @include aspectRatio(16/9);
+///   }
+///
+@mixin fs-aspect-ratio($ratio) {
+  @if $ratio < 1 {
+    @warn '🔶  Aspect ratio of #{$ratio} is for a portrait image. This may be a mistake.';
+  }
+  display: block;
+  overflow: hidden;
+  position: relative;
+
+  &:before {
+    content: '';
+    display: block;
+    padding-top: percentage(1/$ratio);
+  }
+}

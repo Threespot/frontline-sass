@@ -1,0 +1,50 @@
+////
+/// Reset default element styles
+/// @group Resets
+////
+
+/// Reset input styles
+@mixin fs-reset-input {
+  background-color: transparent;
+  border: 0;
+  margin: 0;
+  padding: 0;
+}
+
+/// Reset button styles
+@mixin fs-reset-button {
+  @include fs-reset-input;
+  background-image: none;// for Firefox mobile
+  cursor: pointer;
+  font-weight: normal;
+  letter-spacing: 0;
+  line-height: normal;
+  text-align: left;
+  text-shadow: none;
+  text-transform: none;
+
+  &:hover,
+  &:focus,
+  &:active {
+    background-color: transparent;
+  }
+}
+
+
+/// Reset textarea styles
+@mixin fs-reset-textarea {
+  border: 0;
+  outline: 0;
+  overflow: auto;
+  resize: none;
+  vertical-align: top;
+}
+
+
+/// Reset list styles
+@mixin fs-reset-list {
+  list-style-type: none;
+  margin-bottom: 0;
+  margin-top: 0;
+  padding-left: 0;
+}
