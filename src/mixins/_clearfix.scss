@@ -1,0 +1,11 @@
+/// Clears floats in IE 8+
+/// @link http://nicolasgallagher.com/micro-clearfix-hack/
+/// @link https://css-tricks.com/snippets/css/clear-fix/
+///
+@mixin fs-clearfix {
+  &:after {
+    clear: both;
+    content: '';
+    display: table;
+  }
+}

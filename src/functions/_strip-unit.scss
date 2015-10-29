@@ -1,0 +1,16 @@
+/// Strip units
+/// @group Internals
+/// @param {Number} $arg - Value to strip
+/// @return {Number} - Stripped value
+/// @link http://stackoverflow.com/a/12335841/673457
+///
+@function fs-strip($arg) {
+  // Return unitless value if valid number
+  @if type-of($arg) == 'number' {
+    @return $arg / ($arg * 0 + 1);
+  }
+  // Error if not a valid number
+  @else {
+    @error '🔴  fs-strip(#{inspect($arg)} is not a valid number';
+  }
+}

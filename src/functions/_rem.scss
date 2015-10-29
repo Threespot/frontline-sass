@@ -1,0 +1,31 @@
+/// Convert px to rem
+/// @param {Number | Map} $values - Value values to convert
+/// @param {Number} $context [$fs-base-font-size] - Base font size
+/// @return {*} - Converted value or list of values
+/// @require {variable} $fs-base-font-size - Base font size
+///
+@function fs-rem($values) {
+
+  // Placeholder list for converted values
+  $output: ();
+
+  @each $val in $values {
+
+    // Check if pixel value
+    @if type-of($val) == 'number' and unit($val) == 'px' {
+      // Convert to rems
+      $val: ($val / $fs-base-font-size) * 1rem;
+    }
+
+    // Do nothing to all other values
+    @else if $fs-debug-mode {
+      @warn '🔶  Can’t convert non-pixel value to rems: #{$val}';
+    }
+
+    // Append value to output list
+    $output: append($output, $val);
+  }
+
+  // Return converted value(s)
+  @return $output;
+}
