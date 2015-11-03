@@ -1,4 +1,4 @@
-#Frontline Sass
+# Frontline Sass
 Threespot's Sass framework
 
 [Documentation](http://threespot.github.io/frontline-sass/documentation/)

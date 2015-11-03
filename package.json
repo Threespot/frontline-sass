@@ -12,6 +12,14 @@
   "bugs": {
     "url": "https://github.com/Threespot/frontline-sass/issues"
   },
+  "keywords": [
+    "sass",
+    "scss",
+    "css",
+    "mixin",
+    "responsive",
+    "threespot"
+  ],
   "homepage": "https://github.com/Threespot/frontline-sass",
   "scripts": {
     "test": "gulp test",
