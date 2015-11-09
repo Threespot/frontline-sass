@@ -7,7 +7,7 @@
 /// @link http://www.sitepoint.com/better-solution-managing-z-index-sass/
 ///
 @function fs-zindex($keys...) {
-  @if not global-variable-exists(z-layers) {
+  @if not global-variable-exists(fs-zindex) {
     @error '🔴  $fs-zindex map does not exist';
   }
 

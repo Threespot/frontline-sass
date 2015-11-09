@@ -5,7 +5,7 @@
 /// @require {variable} $fs-breakpoints - Named breakpoints map
 ///
 @function fs-breakpoint($keys...) {
-  @if not global-variable-exists(breakpoints) {
+  @if not global-variable-exists(fs-breakpoints) {
     @error '🔴  $fs-breakpoints map does not exist';
   }
 
@@ -13,7 +13,7 @@
     @error '🔴  $fs-breakpoints map does not contain any items';
   }
 
-  $default-key: 'base';
+  $default-key: 'global';
 
   // If a single value was passed, use the default key
   @if length($keys) == 1 and type-of(map-get($fs-breakpoints, $default-key)) != 'null' {
