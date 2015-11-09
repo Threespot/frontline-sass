@@ -3,7 +3,7 @@
 //      _______  ____  _  __________   _____  ______
 //     / __/ _ \/ __ \/ |/ /_  __/ /  /  _/ |/ / __/
 //    / _// , _/ /_/ /    / / / / /___/ //    / _/
-//   /_/ /_/|_|\____/_/|_/ /_/ /____/___/_/|_/___/   v1.1.0
+//   /_/ /_/|_|\____/_/|_/ /_/ /____/___/_/|_/___/   v1.1.1
 //
 //   This project is licensed under the terms of the MIT license
 
@@ -74,6 +74,19 @@ $fs-zindex: (
   'top'  : 999
 ) !default;
 
+/// SVG icon map for use with `fs-svg` function
+$fs-svg-icons: (
+  close: (
+    height: 28,
+    width: 22,
+    data: '<path d="M20.28 20.66q0 .62-.44 1.06l-2.12 2.12q-.44.44-1.06.44t-1.07-.44l-4.6-4.6-4.6 4.6q-.43.44-1.06.44t-1.06-.44l-2.12-2.12q-.44-.44-.44-1.06t.44-1.07l4.6-4.6-4.6-4.6q-.44-.43-.44-1.06t.44-1.06l2.12-2.12q.44-.44 1.06-.44t1.07.44l4.6 4.6 4.6-4.6q.43-.44 1.06-.44t1.06.44l2.12 2.12q.44.44.44 1.06t-.44 1.07l-4.6 4.6 4.6 4.6q.44.43.44 1.06z"/>'
+  ),
+  search: (
+    height: 28,
+    width: 26,
+    data: '<path d="M18 13q0-2.9-2.06-4.95T11 6 6.05 8.06 4 13t2.05 4.95T11 20t4.95-2.06T18 13zm8 13q0 .8-.6 1.4T24 28q-.84 0-1.4-.6l-5.37-5.34Q14.43 24 11 24q-2.23 0-4.27-.87T3.2 20.8.88 17.26 0 13t.87-4.27T3.2 5.2t3.53-2.33T11 2t4.27.87T18.8 5.2t2.33 3.53T22 13q0 3.44-1.94 6.23l5.36 5.36q.58.57.58 1.4z"/>'
+  )
+) !default;
 
 //------------------------------------------------------------------------//
 // Functions
@@ -880,6 +893,36 @@ $extended-symbol-map: (
   @return fs-map-deep-get($fs-zindex, $keys...);
 }
 // Requires "map-functions"
+/// Helper to get URL-escaped inline SVG code for use with `background-image`
+/// @param {String} $name - Icon name
+/// @return {Color} $color - Fill color
+/// @require {function} fs-url-encode - Fetch nested keys
+/// @require {variable} $fs-svg-icons - SVG icon map
+///
+/// @ignore - SVG code must be escaped for older browsers (e.g. IE9)
+/// @ignore - Some versions of Firefox don't like the “#” symbol, must be also be escaped
+/// @ignore - IE9+ requires height/width attributes or else background-size won't work
+///
+/// @link https://css-tricks.com/probably-dont-base64-svg/
+/// @link http://stackoverflow.com/questions/21840551/background-size-with-svg-squished-in-ie9-10
+///
+@function fs-svg($name, $color) {
+  // Check if icon exists
+  @if not map-has-key($fs-svg-icons, $name) {
+    @error '🔴  icon “#{$name}” does not exists in $svg-icons map';
+    @return false;
+  }
+
+  // Get icon data
+  $icon-map: map-get($fs-svg-icons, $name);
+  $data: map-get($icon-map, 'data');
+  $height: map-get($icon-map, 'height');
+  $width: map-get($icon-map, 'width');
+
+  // Return inline SVG data
+  @return 'data:image/svg+xml,' + fs-url-encode('<svg version="1.1" baseProfile="full" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ' + $width + ' ' + $height + '" width="' + $width + '" height="' + $height + '" preserveAspectRatio="xMidYMid meet" fill="' + $color + '">' + unquote($data) + '</svg>');
+}
+// Requires "str-replace" and "url-encode" functions
 
 //------------------------------------------------------------------------//
 // Mixins

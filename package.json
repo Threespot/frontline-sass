@@ -1,7 +1,7 @@
 {
   "title": "frontline-sass",
   "name": "frontline-sass",
-  "version": "1.1.0",
+  "version": "1.1.1",
   "description": "Threespot's base Sass framework",
   "repository": {
     "type": "git",
@@ -22,8 +22,9 @@
   ],
   "homepage": "https://github.com/Threespot/frontline-sass",
   "scripts": {
+    "gulp": "gulp",
     "test": "gulp test",
-    "lint": "gulp scss-lint"
+    "lint": "gulp sass-lint"
   },
   "license": "MIT",
   "pre-commit": [
