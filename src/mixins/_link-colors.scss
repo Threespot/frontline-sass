@@ -1,0 +1,39 @@
+/// Helper mixin to set link colors
+/// @param {Color} $static - Static link color
+/// @param {Color} $visited [$static] - Visited link color (optional)
+/// @param {Color} $attention - Hover/focus/active link color
+///
+/// @example scss
+///   a {
+///     @include fs-link-colors(
+///       $static: blue,
+///       $visited: purple,
+///       $attention: red
+///     );
+///   }
+///
+@mixin fs-link-colors($static, $visited: false, $attention) {
+  @if $visited {
+    &,
+    &:link {
+      color: $static;
+    }
+
+    &:visited {
+      color: $visited;
+    }
+  }
+  @else {
+    &,
+    &:link,
+    &:visited {
+      color: $static;
+    }
+  }
+
+  &:hover,
+  &:focus,
+  &:active {
+    color: $attention;
+  }
+}
