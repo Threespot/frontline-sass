@@ -3,7 +3,7 @@
 //      _______  ____  _  __________   _____  ______
 //     / __/ _ \/ __ \/ |/ /_  __/ /  /  _/ |/ / __/
 //    / _// , _/ /_/ /    / / / / /___/ //    / _/
-//   /_/ /_/|_|\____/_/|_/ /_/ /____/___/_/|_/___/   v1.0.0
+//   /_/ /_/|_|\____/_/|_/ /_/ /____/___/_/|_/___/   v1.1.0
 //
 //   This project is licensed under the terms of the MIT license
 
@@ -45,22 +45,25 @@ $fs-breakpoints: (
 /// Colors map
 /// @link http://clrs.cc
 $fs-colors: (
-  'navy'    : #001f3f,
-  'blue'    : #0074d9,
-  'aqua'    : #7fdbff,
-  'teal'    : #39cccc,
-  'olive'   : #3d9970,
-  'green'   : #2ecc40,
-  'lime'    : #01ff70,
-  'yellow'  : #ffdc00,
-  'orange'  : #ff851b,
-  'red'     : #ff4136,
-  'maroon'  : #85144b,
-  'fuchsia' : #f012be,
-  'purple'  : #b10dc9,
-  'black'   : #111,
-  'gray'    : #aaa,
-  'silver'  : #ddd
+  'base': (
+    'blue'   : #0074d9,
+    'teal'   : #39cccc,
+    'green'  : #2ecc40,
+    'lime'   : #01ff70,
+    'yellow' : #ffdc00,
+    'orange' : #ff851b,
+    'red'    : #ff4136,
+    'purple' : #b10dc9,
+    'black'  : #111,
+    'gray'   : #aaa
+  ),
+  'text': (
+    'black': #333
+  ),
+  'theme': (
+    'theme1' : #0074d9,
+    'theme2' : #39cccc
+  )
 ) !default;
 
 /// Z-index layer map
@@ -72,43 +75,9 @@ $fs-zindex: (
 ) !default;
 
 
-
 //------------------------------------------------------------------------//
 // Functions
 //------------------------------------------------------------------------//
-/// Helper to get color value from `$fs-colors` map
-/// @param {Arglist} $keys - key/value
-/// @return {Color} - Color value
-/// @require {function} fs-map-deep-get - Fetch nested keys
-/// @require {variable} $fs-colors - Named colors map
-///
-@function fs-color($keys...) {
-  @if not global-variable-exists(colors) {
-    @error '🔴  $fs-colors map does not exist';
-  }
-
-  @if not length($fs-colors) {
-    @error '🔴  Color map does not contain any items';
-  }
-
-  $val: '';
-
-  // If nested color, use fs-map-deep-get()
-  @if length($keys) > 1 {
-    $val: fs-map-deep-get($fs-colors, $keys...);
-  }
-  @else {
-    $val: map-get($fs-colors, nth($keys, 1));
-  }
-
-  // Validate
-  @if type-of($val) != 'color' {
-    @error '🔴  #{$keys} is not a valid color';
-  }
-
-  @return $val;
-}
-
 /// Convert translucent color to flat hex code
 /// @group Internals
 /// @param {Color} $color - Color to provide flat fallback for
@@ -585,7 +554,7 @@ $fs-easings: (
 /// @require {variable} $fs-breakpoints - Named breakpoints map
 ///
 @function fs-breakpoint($keys...) {
-  @if not global-variable-exists(breakpoints) {
+  @if not global-variable-exists(fs-breakpoints) {
     @error '🔴  $fs-breakpoints map does not exist';
   }
 
@@ -593,7 +562,7 @@ $fs-easings: (
     @error '🔴  $fs-breakpoints map does not contain any items';
   }
 
-  $default-key: 'base';
+  $default-key: 'global';
 
   // If a single value was passed, use the default key
   @if length($keys) == 1 and type-of(map-get($fs-breakpoints, $default-key)) != 'null' {
@@ -609,6 +578,38 @@ $fs-easings: (
   @else {
     @error '🔴  “#{$keys}” breakpoint not found';
   }
+}
+// Requires "map-functions"
+/// Helper to get color value from `$fs-colors` map
+/// @param {Arglist} $keys - key/value
+/// @return {Color} - Color value
+/// @require {function} fs-map-deep-get - Fetch nested keys
+/// @require {variable} $fs-colors - Named colors map
+///
+@function fs-color($keys...) {
+  @if not global-variable-exists(fs-colors) {
+    @error '🔴  $fs-colors map does not exist';
+  }
+
+  @if not length($fs-colors) {
+    @error '🔴  Color map does not contain any items';
+  }
+
+  $default-key: 'base';
+
+  // If a single value was passed, use the default key
+  @if length($keys) == 1 and type-of(map-get($fs-colors, $default-key)) != 'null' {
+    $keys: join($default-key, $keys, comma);
+  }
+
+  $val: fs-map-deep-get($fs-colors, $keys...);
+
+  // Validate
+  @if type-of($val) != 'color' {
+    @error '🔴  #{$keys} is not a valid color';
+  }
+
+  @return $val;
 }
 // Requires "map-functions"
 /// Check whether `$value` is a valid length.
@@ -868,7 +869,7 @@ $extended-symbol-map: (
 /// @link http://www.sitepoint.com/better-solution-managing-z-index-sass/
 ///
 @function fs-zindex($keys...) {
-  @if not global-variable-exists(z-layers) {
+  @if not global-variable-exists(fs-zindex) {
     @error '🔴  $fs-zindex map does not exist';
   }
 
