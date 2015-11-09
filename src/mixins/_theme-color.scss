@@ -4,6 +4,7 @@
 /// @param {Percentage} $lighten [false] - Amount to lighten theme color by (optional)
 /// @param {Number} $opacity [1] - Opacity of theme color (optional)
 /// @param {String} $pseudo [false] - Pseudo selector to apply (optional)
+/// @param {String} $prefix ['t-'] - Selector prefix (optional)
 /// @param {Boolean} $self [false] - Theme class
 ///
 /// @example scss
