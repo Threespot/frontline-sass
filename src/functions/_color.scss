@@ -5,7 +5,7 @@
 /// @require {variable} $fs-colors - Named colors map
 ///
 @function fs-color($keys...) {
-  @if not global-variable-exists(colors) {
+  @if not global-variable-exists(fs-colors) {
     @error '🔴  $fs-colors map does not exist';
   }
 
@@ -13,15 +13,14 @@
     @error '🔴  Color map does not contain any items';
   }
 
-  $val: '';
+  $default-key: 'base';
 
-  // If nested color, use fs-map-deep-get()
-  @if length($keys) > 1 {
-    $val: fs-map-deep-get($fs-colors, $keys...);
+  // If a single value was passed, use the default key
+  @if length($keys) == 1 and type-of(map-get($fs-colors, $default-key)) != 'null' {
+    $keys: join($default-key, $keys, comma);
   }
-  @else {
-    $val: map-get($fs-colors, nth($keys, 1));
-  }
+
+  $val: fs-map-deep-get($fs-colors, $keys...);
 
   // Validate
   @if type-of($val) != 'color' {

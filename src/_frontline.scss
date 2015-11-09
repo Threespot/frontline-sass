@@ -35,22 +35,25 @@ $fs-breakpoints: (
 /// Colors map
 /// @link http://clrs.cc
 $fs-colors: (
-  'navy'    : #001f3f,
-  'blue'    : #0074d9,
-  'aqua'    : #7fdbff,
-  'teal'    : #39cccc,
-  'olive'   : #3d9970,
-  'green'   : #2ecc40,
-  'lime'    : #01ff70,
-  'yellow'  : #ffdc00,
-  'orange'  : #ff851b,
-  'red'     : #ff4136,
-  'maroon'  : #85144b,
-  'fuchsia' : #f012be,
-  'purple'  : #b10dc9,
-  'black'   : #111,
-  'gray'    : #aaa,
-  'silver'  : #ddd
+  'base': (
+    'blue'   : #0074d9,
+    'teal'   : #39cccc,
+    'green'  : #2ecc40,
+    'lime'   : #01ff70,
+    'yellow' : #ffdc00,
+    'orange' : #ff851b,
+    'red'    : #ff4136,
+    'purple' : #b10dc9,
+    'black'  : #111,
+    'gray'   : #aaa
+  ),
+  'text': (
+    'black': #333
+  ),
+  'theme': (
+    'theme1' : #0074d9,
+    'theme2' : #39cccc
+  )
 ) !default;
 
 /// Z-index layer map
@@ -62,11 +65,9 @@ $fs-zindex: (
 ) !default;
 
 
-
 //------------------------------------------------------------------------//
 // Functions
 //------------------------------------------------------------------------//
-@import "functions/_color.scss";
 @import "functions/_color-alpha.scss";
 @import "functions/_contains.scss";
 @import "functions/_easings.scss";
@@ -79,6 +80,7 @@ $fs-zindex: (
 
 // Functions with dependencies
 @import "functions/_breakpoint.scss";// Requires "map-functions"
+@import "functions/_color.scss";// Requires "map-functions"
 @import "functions/_is-length.scss";// Requires "contains" function
 @import "functions/_ratio.scss";// Requires "strip-unit" function
 @import "functions/_url-encode.scss";// Requires "str-replace"
