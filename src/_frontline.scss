@@ -107,6 +107,7 @@ $fs-svg-icons: (
 @import "mixins/_debug.scss";
 @import "mixins/_font-smoothing.scss";
 @import "mixins/_hide-text.scss";
+@import "mixins/_link-colors.scss";
 @import "mixins/_mq.scss";// Requires "strip-unit" function
 @import "mixins/_old-ie.scss";
 @import "mixins/_print-utils.scss";
@@ -114,6 +115,7 @@ $fs-svg-icons: (
 @import "mixins/_selector-utils.scss";
 @import "mixins/_text-inputs.scss";
 @import "mixins/_text-rendering.scss";
+@import "mixins/_theme-color.scss";
 @import "mixins/_triangle.scss";
 @import "mixins/_visuallyhidden.scss";
 @import "mixins/_word-break.scss";
