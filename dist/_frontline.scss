@@ -3,7 +3,7 @@
 //      _______  ____  _  __________   _____  ______
 //     / __/ _ \/ __ \/ |/ /_  __/ /  /  _/ |/ / __/
 //    / _// , _/ /_/ /    / / / / /___/ //    / _/
-//   /_/ /_/|_|\____/_/|_/ /_/ /____/___/_/|_/___/   v1.1.3
+//   /_/ /_/|_|\____/_/|_/ /_/ /____/___/_/|_/___/   v1.2.0
 //
 //   This project is licensed under the terms of the MIT license
 
@@ -60,10 +60,6 @@ $fs-colors: (
   'text': (
     'black': #333
   ),
-  'theme': (
-    'theme1' : #0074d9,
-    'theme2' : #39cccc
-  )
 ) !default;
 
 /// Z-index layer map
@@ -1387,119 +1383,6 @@ $extended-symbol-map: (
   .webos & {
     text-rendering: auto;// Disable kerning for webOS http://bit.ly/1brNQpJ
   }
-}
-
-// Theme color mixin
-/// @param {List} $props - Properties to apply theme color to
-/// @param {Percentage} $darken [false] - Amount to darken theme color by (optional)
-/// @param {Percentage} $lighten [false] - Amount to lighten theme color by (optional)
-/// @param {Number} $opacity [1] - Opacity of theme color (optional)
-/// @param {String} $pseudo [false] - Pseudo selector to apply (optional)
-/// @param {String} $prefix ['t-'] - Selector prefix (optional)
-/// @param {Boolean} $self [false] - Theme class
-///
-/// @example scss
-///   .t-color {
-///     @include fs-theme-color( color fill );
-///   }
-///
-///   .t-color-clickable {
-///     @include static {
-///       @include fs-theme-color( color fill );
-///     }
-///
-///     @include attention {
-///       @include fs-theme-color( color fill, $darken: 8% );
-///     }
-///   }
-///
-///   .t-bg {
-///     @include fs-theme-color( background-color );
-///   }
-///
-///   .t-bg-clickable {
-///     @include static {
-///       @include fs-theme-color( background-color );
-///     }
-///
-///     @include attention {
-///       @include fs-theme-color( background-color, $darken: 8% );
-///     }
-///   }
-///
-@mixin fs-theme-color($props, $darken: false, $lighten: false, $opacity: 1, $pseudo: false, $self: false, $prefix: 't-') {
-  @if not global-variable-exists(fs-colors) {
-    @error "🔴  $fs-colors map does not exist";
-  }
-
-  @if not map-has-key($fs-colors, 'theme') {
-    @error "🔴  $fs-colors map does not contain “theme” key";
-  }
-
-  $theme-colors: map-get($fs-colors, 'theme');
-
-  @each $area, $color in $theme-colors {
-
-    @if $darken {
-      @if unit($darken) == '%' {
-        $color: darken($color, $darken);
-      }
-      @else {
-        @warn "🔶  fs-theme-color() darken amount must be a percentage, ignoring";
-      }
-    }
-
-    @if $lighten {
-      @if unit($lighten) == '%' {
-        $color: lighten($color, $lighten);
-      }
-      @else {
-        @warn "🔶  fs-theme-color() lighten amount must be a percentage, ignoring";
-      }
-    }
-
-    @if $opacity {
-      $color: rgba($color, $opacity);
-    }
-
-    // Append theme class to current selector
-    @if $self {
-      &.#{$prefix + $area} {
-        // Add pseudo selector if provided
-        @if $pseudo {
-          &:#{$pseudo} {
-            @each $prop in $props {
-              #{$prop}: $color;
-            }
-          }
-        }
-        @else {
-          @each $prop in $props {
-            #{$prop}: $color;
-          }
-        }
-      }
-    }
-    // Prepend theme class as parent selector
-    @else {
-      .#{$prefix + $area} & {
-        // Add pseudo selector if provided
-        @if $pseudo {
-          &:#{$pseudo} {
-            @each $prop in $props {
-              #{$prop}: $color;
-            }
-          }
-        }
-        @else {
-          @each $prop in $props {
-            #{$prop}: $color;
-          }
-        }
-      }
-    }
-
-  }// end @each
 }
 
 /// Triangle mixin (from Bourbon)

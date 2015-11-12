@@ -50,10 +50,6 @@ $fs-colors: (
   'text': (
     'black': #333
   ),
-  'theme': (
-    'theme1' : #0074d9,
-    'theme2' : #39cccc
-  )
 ) !default;
 
 /// Z-index layer map
@@ -115,7 +111,6 @@ $fs-svg-icons: (
 @import "mixins/_selector-utils.scss";
 @import "mixins/_text-inputs.scss";
 @import "mixins/_text-rendering.scss";
-@import "mixins/_theme-color.scss";
 @import "mixins/_triangle.scss";
 @import "mixins/_visuallyhidden.scss";
 @import "mixins/_word-break.scss";
