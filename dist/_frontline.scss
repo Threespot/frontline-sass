@@ -3,7 +3,7 @@
 //      _______  ____  _  __________   _____  ______
 //     / __/ _ \/ __ \/ |/ /_  __/ /  /  _/ |/ / __/
 //    / _// , _/ /_/ /    / / / / /___/ //    / _/
-//   /_/ /_/|_|\____/_/|_/ /_/ /____/___/_/|_/___/   v1.2.0
+//   /_/ /_/|_|\____/_/|_/ /_/ /____/___/_/|_/___/   v1.2.1
 //
 //   This project is licensed under the terms of the MIT license
 
@@ -1068,13 +1068,13 @@ $extended-symbol-map: (
 /// @param {String | Number | Map} $fs-breakpoints - Numbers, maps, and named breakpoints from `$fs-breakpoint` are supported
 ///
 /// @example scss - Named breakpoint
-///   mq('wide') {…}
+///   fs-mq('wide') {…}
 ///
 /// @example scss - Number
-///   mq(600px) {…}
+///   fs-mq(600px) {…}
 ///
 /// @example scss - Map
-///   mq(( min-width: 200px, max-width: 500px, min-height: 400px )) {…}
+///   fs-mq(( min-width: 200px, max-width: 500px, min-height: 400px )) {…}
 ///
 /// @link http://alwaystwisted.com/post.php?s=2013-04-01-my-media-query-mixin
 /// @link http://jakearchibald.github.io/sass-ie/
@@ -1094,9 +1094,9 @@ $extended-symbol-map: (
 
   // Sass Map Argument
   //
-  // Example: mq(( condition: value[, condition: value, ...] ))
+  // Example: fs-mq(( condition: value[, condition: value, ...] ))
   @if type-of($fs-breakpoints) == 'map' {
-    // @debug '🔵  mq(#{inspect($fs-breakpoints)}) is a map';
+    // @debug '🔵  fs-mq(#{inspect($fs-breakpoints)}) is a map';
     // Convert values to ems
     $fs-breakpoints: fs-em($fs-breakpoints, 16px);
 
@@ -1165,7 +1165,7 @@ $extended-symbol-map: (
 
   // String Argument(s)
   //
-  // mq( width, [min/max] ) or mq('[named breakpoint]')
+  // fs-mq( width, [min/max] ) or fs-mq('[named breakpoint]')
   @else {
     $mq-width: $fs-breakpoints;
     $prefix: 'min';// Default
@@ -1177,7 +1177,7 @@ $extended-symbol-map: (
     }
     // If more than 2 args passed, output a warning
     @else if length($fs-breakpoints) > 2 {
-      @error '🔴  Too many arguments passed, mq(#{$fs-breakpoints})';
+      @error '🔴  Too many arguments passed, fs-mq(#{$fs-breakpoints})';
     }
 
     // Check if named breakpoint was passed
@@ -1729,7 +1729,7 @@ $extended-symbol-map: (
 
   // Generate the media queries
   @while ($media <= $max-media) and ($font-size <= $end-size) {
-    @include mq($media) {
+    @include fs-mq($media) {
       // Calculate font-size
       @if $units == '%' {
         @if unit($start-size) == '%' and unit($end-size) == '%' and unit($font-increment) == '%' {

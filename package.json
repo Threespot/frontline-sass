@@ -1,7 +1,7 @@
 {
   "title": "frontline-sass",
   "name": "frontline-sass",
-  "version": "1.2.0",
+  "version": "1.2.1",
   "description": "Threespot's base Sass framework",
   "repository": {
     "type": "git",
