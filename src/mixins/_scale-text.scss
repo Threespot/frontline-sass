@@ -96,7 +96,7 @@
 
   // Generate the media queries
   @while ($media <= $max-media) and ($font-size <= $end-size) {
-    @include mq($media) {
+    @include fs-mq($media) {
       // Calculate font-size
       @if $units == '%' {
         @if unit($start-size) == '%' and unit($end-size) == '%' and unit($font-increment) == '%' {
