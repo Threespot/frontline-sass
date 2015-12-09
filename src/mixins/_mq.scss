@@ -86,13 +86,10 @@
   // Example: fs-mq(( condition: value[, condition: value, ...] ))
   @if type-of($fs-breakpoints) == 'map' {
     // @debug '🔵  fs-mq(#{inspect($fs-breakpoints)}) is a map';
-    // Convert values to ems
-    $fs-breakpoints: fs-em($fs-breakpoints, 16px);
-
     // Convert breakpoints map to media query string
     $mq-conditions: '';
     @each $type, $value in $fs-breakpoints {
-      $mq-conditions: str-insert($mq-conditions, 'and (#{$type}: #{$value}) ', -1);
+      $mq-conditions: str-insert($mq-conditions, 'and (#{$type}: #{fs-em($value, 16px)}) ', -1);
     }
 
     // Check for cutoff vars, run tests if present
