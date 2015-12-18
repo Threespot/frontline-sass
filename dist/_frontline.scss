@@ -3,7 +3,7 @@
 //      _______  ____  _  __________   _____  ______
 //     / __/ _ \/ __ \/ |/ /_  __/ /  /  _/ |/ / __/
 //    / _// , _/ /_/ /    / / / / /___/ //    / _/
-//   /_/ /_/|_|\____/_/|_/ /_/ /____/___/_/|_/___/   v1.2.2
+//   /_/ /_/|_|\____/_/|_/ /_/ /____/___/_/|_/___/   v1.2.3
 //
 //   This project is licensed under the terms of the MIT license
 
@@ -650,9 +650,12 @@ $fs-easings: (
 }
 // Requires "strip-unit" function
 /// @ignore Symbol reference http://www.w3schools.com/tags/ref_urlencode.asp
+/// @ignore Note: gulp-minify-css (which uses clean-css) isn’t applying config options correctly causing data URLs to not be wrapped in quote, so we have to convert them to percent encoded symbols (first two below).
 
 /// @access private
 $common-symbol-map: (
+  '\0022': '%22',
+  '\0027': '%27',
   ' ': '%20',
   '#': '%23',
   '/': '%2F',

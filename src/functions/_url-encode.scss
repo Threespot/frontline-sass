@@ -1,7 +1,10 @@
 /// @ignore Symbol reference http://www.w3schools.com/tags/ref_urlencode.asp
+/// @ignore Note: gulp-minify-css (which uses clean-css) isn’t applying config options correctly causing data URLs to not be wrapped in quote, so we have to convert them to percent encoded symbols (first two below).
 
 /// @access private
 $common-symbol-map: (
+  '\0022': '%22',
+  '\0027': '%27',
   ' ': '%20',
   '#': '%23',
   '/': '%2F',
