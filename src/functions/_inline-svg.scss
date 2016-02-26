@@ -11,19 +11,32 @@
 /// @link https://css-tricks.com/probably-dont-base64-svg/
 /// @link http://stackoverflow.com/questions/21840551/background-size-with-svg-squished-in-ie9-10
 ///
-@function fs-svg($name, $color) {
+@function fs-svg($name, $color: false, $other: false) {
   // Check if icon exists
-  @if not map-has-key($fs-svg-icons, $name) {
+  @if not map-has-key($svg-icons, $name) {
     @error '🔴  icon “#{$name}” does not exists in $svg-icons map';
     @return false;
   }
 
   // Get icon data
-  $icon-map: map-get($fs-svg-icons, $name);
+  $icon-map: map-get($svg-icons, $name);
   $data: map-get($icon-map, 'data');
   $height: map-get($icon-map, 'height');
   $width: map-get($icon-map, 'width');
+  $other: map-get($icon-map, 'other');
+
+  // Fill
+  $fill: '';
+  @if ($color) {
+    $fill: ' fill="#{$color}"';
+  }
+
+  // Other attributes
+  $custom-attrs: '';
+  @if ($other) {
+    $custom-attrs: ' #{$other}';
+  }
 
   // Return inline SVG data
-  @return 'data:image/svg+xml,' + fs-url-encode('<svg version="1.1" baseProfile="full" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ' + $width + ' ' + $height + '" width="' + $width + '" height="' + $height + '" preserveAspectRatio="xMidYMid meet" fill="' + $color + '">' + unquote($data) + '</svg>');
+  @return 'data:image/svg+xml,' + fs-url-encode('<svg version="1.1" baseProfile="full" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ' + $width + ' ' + $height + '" width="' + $width + '" height="' + $height + '" preserveAspectRatio="xMidYMid meet"' + $fill + $custom-attrs + '>' + unquote($data) + '</svg>');
 }
