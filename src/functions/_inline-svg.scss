@@ -13,13 +13,13 @@
 ///
 @function fs-svg($name, $color: false, $other: false) {
   // Check if icon exists
-  @if not map-has-key($svg-icons, $name) {
-    @error '🔴  icon “#{$name}” does not exists in $svg-icons map';
+  @if not map-has-key($fs-svg-icons, $name) {
+    @error '🔴  icon “#{$name}” does not exists in $fs-svg-icons map';
     @return false;
   }
 
   // Get icon data
-  $icon-map: map-get($svg-icons, $name);
+  $icon-map: map-get($fs-svg-icons, $name);
   $data: map-get($icon-map, 'data');
   $height: map-get($icon-map, 'height');
   $width: map-get($icon-map, 'width');
