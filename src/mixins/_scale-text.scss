@@ -16,8 +16,8 @@
 ///     $start: 32px 1.25,
 ///     $end: 50px 1.1,
 ///     $font-increment: 3px,
-///     $min-media: 600px,
-///     $max-media: breakpoint('wide')
+///     $min-media: 320px,
+///     $max-media: 600px
 ///   }
 ///
 @mixin fs-scale-text(
