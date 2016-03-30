@@ -27,7 +27,7 @@ gulp.task('build', function () {
     .pipe(plugins.header(fs.readFileSync('./banner.txt', 'utf8')))
     .pipe(plugins.header('@charset \'UTF-8\';\n\n'))
     .pipe(plugins.replace(/@version@/, packageInfo.version))
-    .pipe(gulp.dest('./dist/_frontline.scss'));
+    .pipe(gulp.dest('./dist'));
 });
 
 
@@ -50,7 +50,7 @@ gulp.task('test:rubysass', function () {
 });
 
 
-gulp.task('test', ['build'], function () {
+gulp.task('test', function () {
   gulp.start('test:libsass');
   gulp.start('test:rubysass');
 });
@@ -111,7 +111,7 @@ gulp.task('gh-pages', ['build', 'sassdoc'], function () {
 // Default task
 // -----------------------------------------------------------------------------
 
-gulp.task('default', ['build', 'test']);
+gulp.task('default', ['build', 'sass-lint']);
 
 
 // -----------------------------------------------------------------------------
