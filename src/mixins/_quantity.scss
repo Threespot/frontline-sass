@@ -1,0 +1,108 @@
+/// Quantity query mixin
+/// @author Indrek Paas
+/// @link http://sassmeister.com/gist/f48e5e34d329eaf44e37
+/// @link http://alistapart.com/article/quantity-queries-for-css
+/// @require {function} fs-to-number
+/// @param {String | Number} $arg - Quantity query
+///
+/// @example scss
+///   @include fs-quantity(8) {
+///     /* Exactly 8 */
+///   }
+///
+///   @include fs-quantity(8 12) {
+///     /* At least 8 and at most 12 */
+///   }
+///
+///   @include fs-quantity(odd) {
+///     /* Odd quantity */
+///   }
+///
+///   @include fs-quantity(even) {
+///     /* Even quantity*/
+///   }
+///
+///   @include fs-quantity("<8") {
+///     /* Less than 8 */
+///   }
+///
+///   @include fs-quantity("<=8") {
+///     /* Less than or equal to 8 */
+///   }
+///
+///   @include fs-quantity(">8") {
+///     /* More than 8 */
+///   }
+///
+///   @include fs-quantity(">=8") {
+///     /* More than or equal to 8 */
+///   }
+@mixin fs-quantity($arg) {
+  // Exactly N
+  @if type-of($arg) == "number" {
+    &:nth-last-child(#{$arg}):first-child,
+    &:nth-last-child(#{$arg}):first-child ~ & {
+      @content;
+    }
+  }
+
+  // At least N and at most N
+  @else if type-of($arg) == "list" {
+    &:nth-last-child(n+#{nth($arg, 1)}):nth-last-child(-n+#{nth($arg, 2)}):first-child,
+    &:nth-last-child(n+#{nth($arg, 1)}):nth-last-child(-n+#{nth($arg, 2)}):first-child ~ & {
+      @content;
+    }
+  }
+
+  @else if type-of($arg) == "string" {
+    // Odd/even
+    @if $arg == "odd" or $arg == "even" {
+      &:nth-last-child(#{$arg}):first-child,
+      &:nth-last-child(#{$arg}):first-child ~ & {
+        @content;
+      }
+    }
+
+    // Less than...
+    @else if str-slice($arg, 1, 1) == "<" {
+      // Less than or equal to N
+      @if str-slice($arg, 2, 2) == "=" {
+        $arg: str-slice($arg, 3);
+        &:nth-last-child(-n+#{$arg}):first-child,
+        &:nth-last-child(-n+#{$arg}):first-child ~ & {
+          @content;
+        }
+      }
+
+      // Less than N
+      @else {
+        $arg: fs-to-number(str-slice($arg, 2));
+        &:nth-last-child(-n+#{$arg - 1}):first-child,
+        &:nth-last-child(-n+#{$arg - 1}):first-child ~ & {
+          @content;
+        }
+      }
+    }
+
+    // More than...
+    @else if str-slice($arg, 1, 1) == ">" {
+      // More than or equal to N
+      @if str-slice($arg, 2, 2) == "=" {
+        $arg: str-slice($arg, 3);
+        &:nth-last-child(n+#{$arg}),
+        &:nth-last-child(n+#{$arg}) ~ & {
+          @content;
+        }
+      }
+
+      // More than N
+      @else {
+        $arg: fs-to-number(str-slice($arg, 2));
+        &:nth-last-child(n+#{$arg + 1}),
+        &:nth-last-child(n+#{$arg + 1}) ~ & {
+          @content;
+        }
+      }
+    }
+  }
+}
