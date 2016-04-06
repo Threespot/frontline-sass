@@ -8,5 +8,5 @@ display:
 package: ./package.json
 theme: default
 groups:
-    undefined: General
+    undefined: general
 googleAnalytics: UA-XXXXXXXX-X
