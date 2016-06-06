@@ -33,18 +33,3 @@
     @content;
   }
 }
-
-/// Helper mixin to apply disabled pesudo selectors
-/// @require {mixin} fs-old-ie
-@mixin fs-disabled {
-  @if fs-old-ie(8) {
-    &[disabled] {
-      @content;
-    }
-  }
-  @else {
-    &:disabled {
-      @content;
-    }
-  }
-}

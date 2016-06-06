@@ -2,24 +2,13 @@
 // Global vars
 //------------------------------------------------------------------------//
 
-/// Flag for old IE stylesheets
-$fs-old-ie: false !default;
-
 /// Flag for debug mode
 $fs-debug-mode: false !default;
 
-/// Flag for `mq()` mixin to only output styles matching `$fs-fixed-width`
-/// @ignore For browsers that don’t support media queries, create a separate stylesheet and set $fs-fixed-width to the desired width. This will allow any styles in media queries that are less than the fixed width to be inserted directly.
-$fs-fixed-width: false !default;
-
-/// Minimum cutoff for `mq()` mixin when `$fs-fixed-width` is `true`
-$fs-mq-min-cutoff: false !default;
-
-/// Maximum cutoff for `mq()` mixin when `$fs-fixed-width` is `true`
-$fs-mq-max-cutoff: false !default;
-
 /// Base font size
 $fs-base-font-size: 16px !default;
+
+/// @ignore Use maps instead of variables below https://www.viget.com/articles/sass-with-maps
 
 /// Named breakpoints map
 $fs-breakpoints: (
@@ -77,7 +66,6 @@ $fs-svg-icons: (
 //------------------------------------------------------------------------//
 // Functions
 //------------------------------------------------------------------------//
-@import "functions/_color-alpha.scss";
 @import "functions/_contains.scss";
 @import "functions/_easings.scss";
 @import "functions/_em.scss";
@@ -101,27 +89,24 @@ $fs-svg-icons: (
 // Mixins
 //------------------------------------------------------------------------//
 @import "mixins/_absolute-fill.scss";
+@import "mixins/_aspect-ratio.scss";
+@import "mixins/_clearfix.scss";
 @import "mixins/_debug.scss";
 @import "mixins/_font-smoothing.scss";
 @import "mixins/_hide-text.scss";
 @import "mixins/_link-colors.scss";
 @import "mixins/_media-query.scss";
-@import "mixins/_mq.scss";// Requires "strip-unit" function
-@import "mixins/_old-ie.scss";
 @import "mixins/_print-utils.scss";
+@import "mixins/_pseudos.scss";
 @import "mixins/_quantity.scss";
 @import "mixins/_reset-elements.scss";
 @import "mixins/_selector-utils.scss";
 @import "mixins/_text-inputs.scss";
 @import "mixins/_text-rendering.scss";
 @import "mixins/_triangle.scss";
+@import "mixins/_vertical-center.scss";
 @import "mixins/_visuallyhidden.scss";
 @import "mixins/_word-break.scss";
 
 // Minxins with dependencies
-@import "mixins/_aspect-ratio.scss";// Requires "old-ie" mixin
-@import "mixins/_clearfix.scss";// Requires "old-ie" mixin
-@import "mixins/_opacity.scss";// Requires "old-ie" mixin
-@import "mixins/_pseudos.scss";// Requires "old-ie" mixin
-@import "mixins/_scale-text.scss";// Requires "mq" mixin
-@import "mixins/_vertical-center.scss";// Requires "old-ie" mixin
+@import "mixins/_scale-text.scss";// Requires _media-query.scss

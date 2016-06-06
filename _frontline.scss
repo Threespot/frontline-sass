@@ -12,24 +12,13 @@
 // Global vars
 //------------------------------------------------------------------------//
 
-/// Flag for old IE stylesheets
-$fs-old-ie: false !default;
-
 /// Flag for debug mode
 $fs-debug-mode: false !default;
 
-/// Flag for `mq()` mixin to only output styles matching `$fs-fixed-width`
-/// @ignore For browsers that don’t support media queries, create a separate stylesheet and set $fs-fixed-width to the desired width. This will allow any styles in media queries that are less than the fixed width to be inserted directly.
-$fs-fixed-width: false !default;
-
-/// Minimum cutoff for `mq()` mixin when `$fs-fixed-width` is `true`
-$fs-mq-min-cutoff: false !default;
-
-/// Maximum cutoff for `mq()` mixin when `$fs-fixed-width` is `true`
-$fs-mq-max-cutoff: false !default;
-
 /// Base font size
 $fs-base-font-size: 16px !default;
+
+/// @ignore Use maps instead of variables below https://www.viget.com/articles/sass-with-maps
 
 /// Named breakpoints map
 $fs-breakpoints: (
@@ -87,81 +76,6 @@ $fs-svg-icons: (
 //------------------------------------------------------------------------//
 // Functions
 //------------------------------------------------------------------------//
-/// Convert translucent color to flat hex code
-/// @group Internals
-/// @param {Color} $color - Color to provide flat fallback for
-/// @param {Color} $bg-color [#fff] - Background color to mix with $color
-/// @return {Color} - Hex code
-/// @link https://github.com/rhysburnie/skeleton-compass/blob/master/stylesheets/bones/utilities/_color.scss
-///
-@function fs-color-flatten($color, $bg-color: #fff) {
-
-  // Make sure $color is a valid color
-  @if type-of($color) != 'color' {
-    @error '🔴  “#{$color}” is not a valid color';
-  }
-
-  // Get opacity of color, convert to percentage to use as weight
-  $weight: alpha($color) * 100%;
-
-  // Get base color without opacity
-  $rgb: rgb(red($color), green($color), blue($color));
-
-  // Generate new flat color
-  @return mix($rgb, $bg-color, $weight);
-}
-
-
-/// Provide hex fallback for rgba colors for IE 8 and below
-/// @param {Color} $color - Color to provide flat fallback for
-/// @param {Number} $opacity [1] - Opacity
-/// @param {Color} $bg-color [#fff] - Background color to mix with $color
-/// @require {variable} $fs-old-ie - Variable must be set to 'true' in any old IE stylesheets
-/// @return {Color | Color} - rgba or hex color
-/// @example scss - Simple example, assumes #fff as page background-color
-///   background-color: fs-color-alpha(#abc, 0.5);
-///
-///   /* Default: */
-///   background-color: rgba(170, 187, 204, 0.5);
-///
-///   /* Old IE stylesheet: */
-///   background-color: #d4dde5;
-///
-/// @example scss - Specifying the background-color for old IE
-///   background-color: fs-color-alpha(rgba(#abc, 0.5), #eee);
-///
-///   /* Default: */
-///   background-color: rgba(170, 187, 204, 0.5);// same as above
-///
-///   /* Old IE stylesheet: */
-///   background-color: #ccd4dd;
-///
-@function fs-color-alpha($color, $opacity: 1, $bg-color: #fff) {
-
-  // Make sure $color is a valid color
-  @if type-of($color) != 'color' {
-    @error '🔴  “#{$color}” is not a valid color';
-  }
-
-  // Check if color has alpha value (e.g. rgba, hlsa)
-  @if alpha($color) < 1 {
-    // If second argument is a color
-    @if type-of($opacity) == color {
-      $bg-color: $opacity; // Set as the bg-color
-      $opacity: alpha($color); // Set the opacity from $color
-    }
-  }
-
-  // Return flat color for IE
-  @if $fs-old-ie {
-    @return fs-color-flatten(rgba($color, $opacity), $bg-color);
-  }
-  // Otherwise, return RGBA
-  @else {
-    @return rgba($color, $opacity);
-  }
-}
-
 /// Check whether `$list` contains `$value`.
 /// @group Internals
 /// @param  {List} $list  - List of values.
@@ -1006,6 +920,40 @@ $extended-symbol-map: (
   width: 100%;
 }
 
+/// Maintain aspect ratio
+/// @param {Number} $ratio - Aspect ratio (width / height)
+/// @example scss - 16:9 aspect ratio
+///   .foo {
+///     @include aspectRatio(16/9);
+///   }
+///
+@mixin fs-aspect-ratio($ratio) {
+  @if $ratio < 1 {
+    @warn '🔶  Aspect ratio of #{$ratio} is for a portrait image. This may be a mistake.';
+  }
+  display: block;
+  overflow: hidden;
+  position: relative;
+
+  &:before {
+    content: '';
+    display: block;
+    padding-top: percentage(1/$ratio);
+  }
+}
+
+/// Clears floats in IE 8+
+/// @link http://nicolasgallagher.com/micro-clearfix-hack/
+/// @link https://css-tricks.com/snippets/css/clear-fix/
+///
+@mixin fs-clearfix {
+  &:after {
+    clear: both;
+    content: '';
+    display: table;
+  }
+}
+
 /// Debug helper to conditionally run code
 /// @group Internals
 /// @param {Boolean} $override - Manually override `$fs-debug-mode` value
@@ -1156,268 +1104,6 @@ $extended-symbol-map: (
   }
 }
 
-/// Checks if media query falls within a fixed width
-/// @group Internals
-/// @require {function} fs-strip
-/// @param {String} $mq-prefix
-/// @param {Number} $mq-width
-/// @param {Number} $cutoff [$fs-fixed-width]
-/// @param {String} $cutoff-prefix ['max']
-/// @return {Boolean}
-///
-@function fs-mq-width-check($mq-prefix, $mq-width, $cutoff: $fs-fixed-width, $cutoff-prefix: 'max') {
-  // Check to make sure width is a number
-  @if type-of($mq-width) == 'number' {
-    @if unitless($mq-width) {
-      $mq-width: $mq-width * 1px;
-    }
-    // em or rem
-    @else if unit($mq-width) == 'em' or unit($mq-width) == 'rem' {
-      $mq-width: fs-strip($mq-width) * $fs-base-font-size;
-    }
-  }
-  @else {
-    @error '🔴  Media query value, #{$mq-width}, is not a number';
-  }
-
-  // Compare width to cutoff
-  @if $cutoff-prefix == 'max' {
-    @if $mq-prefix == 'min' and $mq-width <= $cutoff {
-      @return true;
-    }
-    @else if $mq-prefix == 'max' and $mq-width >= $cutoff {
-      @return true;
-    }
-    @else {
-      @return false;
-    }
-  }
-  @else if $cutoff-prefix == 'min' {
-    @if $mq-prefix == 'min' and $mq-width >= $cutoff {
-      @return true;
-    }
-    @else if $mq-prefix == 'max' and $mq-width >= $cutoff {
-      @return true;
-    }
-    @else {
-      @return false;
-    }
-  }
-  @else {
-    @error '🔴  fs-mq-width-check() $cutoff-prefix of “#{$cutoff-prefix}” is not valid';
-  }
-}
-
-
-/// Media query mixin
-/// @require {function} fs-breakpoint
-/// @require {function} fs-em
-/// @param {String | Number | Map} $fs-breakpoints - Numbers, maps, and named breakpoints from `$fs-breakpoint` are supported
-///
-/// @example scss - Named breakpoint
-///   fs-mq('wide') {…}
-///
-/// @example scss - Number
-///   fs-mq(600px) {…}
-///
-/// @example scss - Map
-///   fs-mq(( min-width: 200px, max-width: 500px, min-height: 400px )) {…}
-///
-/// @link http://alwaystwisted.com/post.php?s=2013-04-01-my-media-query-mixin
-/// @link http://jakearchibald.github.io/sass-ie/
-/// @link http://stackoverflow.com/a/22262489
-///
-/// @ignore Demo page http://sassmeister.com/gist/c956b7cbe59ac4deddbb
-/// @ignore Note: EMs in media queries are relative to the initial browser font-size (16px by default) http://www.w3.org/TR/css3-mediaqueries/#units
-///
-@mixin fs-mq($fs-breakpoints...) {
-  @warn '🔶 fs-mq() will be deprecated in v2.0, please use fs-media() instead';
-
-  // Check for fixed width or media query cutoff variables
-  $has-cutoff: $fs-fixed-width or $fs-mq-min-cutoff or $fs-mq-max-cutoff;
-
-  // If only one argument passed, set $breakpoint equal to that argument
-  @if length($fs-breakpoints) == 1 {
-    $fs-breakpoints: nth($fs-breakpoints, 1);
-  }
-
-  // Sass Map Argument
-  //
-  // Example: fs-mq(( condition: value[, condition: value, ...] ))
-  @if type-of($fs-breakpoints) == 'map' {
-    // @debug '🔵  fs-mq(#{inspect($fs-breakpoints)}) is a map';
-    // Convert breakpoints map to media query string
-    $mq-conditions: '';
-    @each $type, $value in $fs-breakpoints {
-      $mq-conditions: str-insert($mq-conditions, 'and (#{$type}: #{fs-em($value, 16px)}) ', -1);
-    }
-
-    // Check for cutoff vars, run tests if present
-    @if $has-cutoff {
-      $pass-test: false;
-
-      // Loop through each media-query condition and test
-      @each $type, $mq-width in $fs-breakpoints {
-        $split-index: str-index($type, '-');
-        $prefix: str-slice($type, 1, $split-index - 1);
-        $suffix: str-slice($type, $split-index + 1, -1);
-        // Only test the width, ignore min/max-height
-        @if $suffix == 'width' {
-          // Test fixed width cutoff (max-width)
-          @if $fs-fixed-width and fs-mq-width-check($prefix, $mq-width, $fs-fixed-width, 'max') {
-            $pass-test: true;
-          }
-          // Test both min and max-width cutoffs
-          @if $fs-mq-min-cutoff and $fs-mq-max-cutoff {
-            @if fs-mq-width-check($prefix, $mq-width, $fs-mq-min-cutoff, 'min') and fs-mq-width-check($prefix, $mq-width, $fs-mq-max-cutoff, 'max') {
-              $pass-test: true;
-            }
-          }
-          // Test min-width cutoff
-          @else if $fs-mq-min-cutoff and fs-mq-width-check($prefix, $mq-width, $fs-mq-min-cutoff, 'min') {
-            $pass-test: true;
-          }
-          // Test max-width cutoff
-          @else if $fs-mq-max-cutoff and fs-mq-width-check($prefix, $mq-width, $fs-mq-max-cutoff, 'max') {
-            $pass-test: true;
-          }
-        }
-        @else {
-          $pass-test: true;
-        }
-      }
-
-      // If passed test, output the styles
-      @if $pass-test {
-        // Do not output media queries for fixed width stylehseets
-        @if $fs-fixed-width {
-          @content;
-        }
-        // Output the media query
-        @else {
-          @media screen #{$mq-conditions} {
-            @content;
-          }
-        }
-      }
-    }
-    // No cutoff vars set, so output the media query
-    @else {
-      @media screen #{$mq-conditions} {
-        @content;
-      }
-    }
-  }
-
-  // String Argument(s)
-  //
-  // fs-mq( width, [min/max] ) or fs-mq('[named breakpoint]')
-  @else {
-    $mq-width: $fs-breakpoints;
-    $prefix: 'min';// Default
-
-    // If second argument was passed, use as prefix
-    @if length($fs-breakpoints) >= 2 {
-      $mq-width: nth($fs-breakpoints, 1);
-      $prefix: nth($fs-breakpoints, 2);
-    }
-    // If more than 2 args passed, output a warning
-    @else if length($fs-breakpoints) > 2 {
-      @error '🔴  Too many arguments passed, fs-mq(#{$fs-breakpoints})';
-    }
-
-    // Check if named breakpoint was passed
-    @if type-of($mq-width) == 'string' {
-      $bp: fs-breakpoint($mq-width);
-      @if type-of($bp) == 'number' and $bp > 0 {
-        $mq-width: $bp;
-      }
-      // Ignore unrecognized named breakpoints
-      @else {
-        @error '🔴  Could not find “#{$mq-width}” in $fs-breakpoints map, styles omitted';
-      }
-    }
-
-    // Generate the media query
-
-    // Change unitles values to px
-    @if type-of($mq-width) == 'number' and unitless($mq-width) {
-      $mq-width: $mq-width * 1px;
-    }
-
-    // Check for cutoff vars, run tests if present
-    @if $has-cutoff {
-      $pass-test: false;
-
-      // Test fixed width cutoff (max-width)
-      @if $fs-fixed-width and fs-mq-width-check($prefix, $mq-width, $fs-fixed-width, 'max') {
-        $pass-test: true;
-      }
-      // Test both min and max-width cutoffs
-      @if $fs-mq-min-cutoff and $fs-mq-max-cutoff {
-        @if fs-mq-width-check($prefix, $mq-width, $fs-mq-min-cutoff, 'min') and fs-mq-width-check($prefix, $mq-width, $fs-mq-max-cutoff, 'max') {
-          $pass-test: true;
-        }
-      }
-      // Test min-width cutoff
-      @else if $fs-mq-min-cutoff and fs-mq-width-check($prefix, $mq-width, $fs-mq-min-cutoff, 'min') {
-        $pass-test: true;
-      }
-      // Test max-width cutoff
-      @else if $fs-mq-max-cutoff and fs-mq-width-check($prefix, $mq-width, $fs-mq-max-cutoff, 'max') {
-        $pass-test: true;
-      }
-
-      // If passed test, output the styles
-      @if $pass-test {
-        // Do not output media queries for fixed width stylehseets
-        @if $fs-fixed-width {
-          @content;
-        }
-        // Output the media query
-        @else {
-          // @debug '#{$mq-width}, #{em($mq-width)}';
-          @media all and (#{$prefix}-width: fs-em($mq-width, 16px)) {
-            @content;
-          }
-        }
-      }
-    }
-    // No cutoff vars set, so output the media query
-    @else {
-      // debug '#{$mq-width}, #{em($mq-width)}';
-      @media all and (#{$prefix}-width: fs-em($mq-width, 16px)) {
-        @content;
-      }
-    }
-  }
-}
-// Requires "strip-unit" function
-/// Helpers to conditionally run code for old IE
-/// @require {variable} $fs-old-ie - Old IE flag
-/// @param {Number | String} $version ['all'] - Version of IE to check for
-///
-@mixin fs-old-ie($version: 'all') {
-  // Check for $fs-old-ie variable
-  @if $fs-old-ie {
-    // If no version specified, output code to all IE stylesheets
-    @if $version == 'all' {
-      @content;
-    }
-    // If a version was specified, only output to that version's stylesheet
-    @else if $fs-old-ie <= $version {
-      @content;
-    }
-  }
-}
-
-// Render code when not old IE
-@mixin fs-not-old-ie {
-  @if not $fs-old-ie {
-    @content;
-  }
-}
-
 /// Hide in print view
 @mixin fs-print-hide {
   @media print {
@@ -1431,6 +1117,42 @@ $extended-symbol-map: (
 
   @media print {
     display: block !important;
+  }
+}
+
+////
+/// Helper mixins to add various pseudo selectors
+/// @group Selector Utils
+/// @ignore http://sassmeister.com/gist/35c9c323d22eefdbf293 (by @csswizardry)
+////
+
+/// Helper mixin to apply static pesudo selectors
+@mixin fs-static {
+  &,
+  &:link,
+  &:visited {
+    @content;
+  }
+}
+
+/// Helper mixin to apply `:hover`, `:focus`, and `:active` pesudo selectors
+@mixin fs-attention {
+  &:hover,
+  &:focus,
+  &:active {
+    @content;
+  }
+}
+
+/// Helper mixin to apply all pesudo selectors
+@mixin fs-all-states {
+  &,
+  &:link,
+  &:visited,
+  &:focus,
+  &:hover,
+  &:active {
+    @content;
   }
 }
 
@@ -1735,6 +1457,29 @@ $extended-symbol-map: (
   }
 }
 
+/// Vertically center an element
+/// @param {String} $position [relative] - Positioning
+/// @link http://zerosixthree.se/vertical-align-anything-with-just-3-lines-of-css/
+/// @ignore Note: May need to set `transform-style: preserve-3d;` on parent to prevent blurry text
+///
+@mixin fs-vert-center($position: relative) {
+  position: $position;
+  top: 50%;
+  transform: translateY(-50%);
+
+  .no-csstransforms & {
+    position: static;
+    top: auto;
+  }
+}
+
+/// Reset vertical center styles
+///
+@mixin fs-undo-vert-center {
+  top: auto;
+  transform: translateY(0);
+}
+
 /// Hide visually but still be available to screenreaders
 /// @link http://snook.ca/archives/html_and_css/hiding-content-for-accessibility
 /// @author Jonathan Snook
@@ -1780,114 +1525,8 @@ $extended-symbol-map: (
 
 
 // Minxins with dependencies
-/// Maintain aspect ratio
-/// @param {Number} $ratio - Aspect ratio (width / height)
-/// @example scss - 16:9 aspect ratio
-///   .foo {
-///     @include aspectRatio(16/9);
-///   }
-///
-@mixin fs-aspect-ratio($ratio) {
-  @if $ratio < 1 {
-    @warn '🔶  Aspect ratio of #{$ratio} is for a portrait image. This may be a mistake.';
-  }
-  display: block;
-  overflow: hidden;
-  position: relative;
-
-  &:before {
-    content: '';
-    display: block;
-    padding-top: percentage(1/$ratio);
-  }
-}
-// Requires "old-ie" mixin
-/// Clears floats in IE 8+
-/// @link http://nicolasgallagher.com/micro-clearfix-hack/
-/// @link https://css-tricks.com/snippets/css/clear-fix/
-///
-@mixin fs-clearfix {
-  &:after {
-    clear: both;
-    content: '';
-    display: table;
-  }
-}
-// Requires "old-ie" mixin
-/// DEPRECATED: Opacity mixin with fallbacks for old IE. Use sparingly.
-/// @require {variable} $fs-old-ie - Old IE flag
-/// @param {Number} $value - Opacity value (unitless integer from 0–1)
-///
-@mixin fs-opacity($value) {
-  // Modern browsers and IE9
-  @include fs-not-old-ie {
-    opacity: $value;
-  }
-
-  // IE 8
-  @include fs-old-ie(8) {
-    -ms-filter: 'progid:DXImageTransform.Microsoft.Alpha(Opacity=#{$val})';
-    filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=#{$value*100});
-  }
-
-  // IE 7 and below
-  @include fs-old-ie(7) {
-    filter: alpha(opacity=#{$value*100});
-  }
-}
-// Requires "old-ie" mixin
-////
-/// Helper mixins to add various pseudo selectors
-/// @group Selector Utils
-/// @ignore http://sassmeister.com/gist/35c9c323d22eefdbf293 (by @csswizardry)
-////
-
-/// Helper mixin to apply static pesudo selectors
-@mixin fs-static {
-  &,
-  &:link,
-  &:visited {
-    @content;
-  }
-}
-
-/// Helper mixin to apply `:hover`, `:focus`, and `:active` pesudo selectors
-@mixin fs-attention {
-  &:hover,
-  &:focus,
-  &:active {
-    @content;
-  }
-}
-
-/// Helper mixin to apply all pesudo selectors
-@mixin fs-all-states {
-  &,
-  &:link,
-  &:visited,
-  &:focus,
-  &:hover,
-  &:active {
-    @content;
-  }
-}
-
-/// Helper mixin to apply disabled pesudo selectors
-/// @require {mixin} fs-old-ie
-@mixin fs-disabled {
-  @if fs-old-ie(8) {
-    &[disabled] {
-      @content;
-    }
-  }
-  @else {
-    &:disabled {
-      @content;
-    }
-  }
-}
-// Requires "old-ie" mixin
 /// Automatically scale font-size and line-height
+/// @require {mixin} fs-min-width - Min-width media query mixin
 /// @param {Number | List} $start - Starting `font-size` and `line-height` (optional)
 /// @param {Number | List} $end - Ending `font-size` and `line-height` (optional)
 /// @param {Number} $font-increment [2px] - Font size increment
@@ -1897,7 +1536,6 @@ $extended-symbol-map: (
 /// @param {Number | String} $media-increment [auto] - Viewport width increment
 /// @param {Number} $context [$fs-base-font-size] - Base font size
 /// @param {String} $units ['%'] - Font size units to output
-/// @require {mixin} fs-mq - Media query mixin
 /// @link https://github.com/bookcasey/fittext
 ///
 /// @example scss
@@ -1985,7 +1623,7 @@ $extended-symbol-map: (
 
   // Generate the media queries
   @while ($media <= $max-media) and ($font-size <= $end-size) {
-    @include fs-mq($media) {
+    @include fs-min-width($media) {
       // Calculate font-size
       @if $units == '%' {
         @if unit($start-size) == '%' and unit($end-size) == '%' and unit($font-increment) == '%' {
@@ -2022,27 +1660,4 @@ $extended-symbol-map: (
     }
   }
 }
-// Requires "mq" mixin
-/// Vertically center an element
-/// @param {String} $position [relative] - Positioning
-/// @link http://zerosixthree.se/vertical-align-anything-with-just-3-lines-of-css/
-/// @ignore Note: May need to set `transform-style: preserve-3d;` on parent to prevent blurry text
-///
-@mixin fs-vert-center($position: relative) {
-  position: $position;
-  top: 50%;
-  transform: translateY(-50%);
-
-  .no-csstransforms & {
-    position: static;
-    top: auto;
-  }
-}
-
-/// Reset vertical center styles
-///
-@mixin fs-undo-vert-center {
-  top: auto;
-  transform: translateY(0);
-}
-// Requires "old-ie" mixin
+// Requires _media-query.scss
