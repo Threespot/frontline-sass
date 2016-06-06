@@ -73,6 +73,8 @@
 /// @ignore Note: EMs in media queries are relative to the initial browser font-size (16px by default) http://www.w3.org/TR/css3-mediaqueries/#units
 ///
 @mixin fs-mq($fs-breakpoints...) {
+  @warn '🔶 fs-mq() will be deprecated in v2.0, please use fs-media() instead';
+
   // Check for fixed width or media query cutoff variables
   $has-cutoff: $fs-fixed-width or $fs-mq-min-cutoff or $fs-mq-max-cutoff;
 

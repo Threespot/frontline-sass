@@ -1,0 +1,67 @@
+/// Media query mixin
+/// @param {Number | Map} $conditions - Width or map of conditions
+///
+/// @example scss - Min-width
+///   @include fs-min-width(400px) {…}
+///
+/// @example scss - Max-width
+///   @include fs-max-width(500px) {…}
+///
+/// @example scss - Multiple conditions
+///   @include fs-media((min-width: 600px, max-width: 900px, min-height: 500px, min-aspect-ratio: "1/1")) {…}
+///
+/// @link http://zellwk.com/blog/media-query-units/
+///
+/// @ignore: Demo http://www.sassmeister.com/gist/908ff8ee2e2e0b18f768fcbc87df385c
+/// @ignore Note: EMs in media queries are relative to the initial browser font-size (16px) http://www.w3.org/TR/css3-mediaqueries/#units
+///
+@mixin fs-media($conditions) {
+
+  // Check if $conditions is a valid map
+  @if type-of($conditions) != 'map' {
+    @error '🔴 “#{$conditions}” is not a valid Sass map';
+  }
+  @else {
+    $mq-conditions: '';
+
+    // Convert map to properly formatted media query string
+    @each $type, $value in $conditions {
+
+      // If value is a number, we may need to convert to ems
+      @if type-of($value) == 'number' {
+
+        // Convert px to em
+        @if unit($value) == 'px' {
+          $value: ($value / 16px) * 1em;
+        }
+
+        // Convert rem to em
+        @else if unit($value) == 'rem' {
+          $value: ($value / 1rem) * 1em;
+        }
+      }
+
+      // Use str-insert() with -1 index to append value to the end
+      $mq-conditions: str-insert($mq-conditions, 'and (#{$type}: #{$value}) ', -1);
+    }
+
+    // Output the media query
+    @media screen #{$mq-conditions} {
+      @content;
+    }
+  }
+}
+
+// Min-width alias
+@mixin fs-min-width($width) {
+  @include fs-media((min-width: $width)) {
+    @content;
+  }
+}
+
+// Max-width alias
+@mixin fs-max-width($width) {
+  @include fs-media((max-width: $width)) {
+    @content;
+  }
+}
