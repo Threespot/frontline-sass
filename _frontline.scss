@@ -1083,22 +1083,15 @@ $extended-symbol-map: (
   }
 }
 
-/// Media query mixin
+/// Base media query mixin
 /// @param {Number | Map} $conditions - Width or map of conditions
 ///
-/// @example scss - Min-width
-///   @include fs-min-width(400px) {…}
-///
-/// @example scss - Max-width
-///   @include fs-max-width(500px) {…}
-///
-/// @example scss - Multiple conditions
+/// @example scss
 ///   @include fs-media((min-width: 600px, max-width: 900px, min-height: 500px, min-aspect-ratio: "1/1")) {…}
 ///
-/// @link http://zellwk.com/blog/media-query-units/
-///
-/// @ignore: Demo http://www.sassmeister.com/gist/908ff8ee2e2e0b18f768fcbc87df385c
+/// @ignore Convert units to ems when applicable http://zellwk.com/blog/media-query-units/
 /// @ignore Note: EMs in media queries are relative to the initial browser font-size (16px) http://www.w3.org/TR/css3-mediaqueries/#units
+/// @ignore Demo: http://www.sassmeister.com/gist/908ff8ee2e2e0b18f768fcbc87df385c
 ///
 @mixin fs-media($conditions) {
 
@@ -1137,14 +1130,26 @@ $extended-symbol-map: (
   }
 }
 
-// Min-width alias
+/// Min-width media query helper
+/// @require {Mixin} fs-media
+/// @param {Number} $width - Breakpoint width
+///
+/// @example scss
+///   @include fs-min-width(960px) {…}
+///
 @mixin fs-min-width($width) {
   @include fs-media((min-width: $width)) {
     @content;
   }
 }
 
-// Max-width alias
+/// Max-width media query helper
+/// @require {Mixin} fs-media
+/// @param {Number} $width - Breakpoint width
+///
+/// @example scss
+///   @include fs-max-width(960px) {…}
+///
 @mixin fs-max-width($width) {
   @include fs-media((max-width: $width)) {
     @content;
