@@ -12,7 +12,7 @@
 ///     );
 ///   }
 ///
-@mixin fs-link-colors($static, $visited, $attention) {
+@mixin fs-link-colors($static, $visited: false, $attention) {
   @if $visited {
     &,
     &:link {
