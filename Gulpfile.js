@@ -27,7 +27,7 @@ gulp.task('build', function () {
     .pipe(plugins.header(fs.readFileSync('./banner.txt', 'utf8')))
     .pipe(plugins.header('@charset \'UTF-8\';\n\n'))
     .pipe(plugins.replace(/@version@/, packageInfo.version))
-    .pipe(gulp.dest('dist/*'));
+    .pipe(gulp.dest('dist/'));
 });
 
 

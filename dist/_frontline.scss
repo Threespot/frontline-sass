@@ -3,7 +3,7 @@
 //      _______  ____  _  __________   _____  ______
 //     / __/ _ \/ __ \/ |/ /_  __/ /  /  _/ |/ / __/
 //    / _// , _/ /_/ /    / / / / /___/ //    / _/
-//   /_/ /_/|_|\____/_/|_/ /_/ /____/___/_/|_/___/   v2.0.0
+//   /_/ /_/|_|\____/_/|_/ /_/ /____/___/_/|_/___/   v2.0.1
 //
 //   This project is licensed under the terms of the MIT license
 
@@ -1005,7 +1005,7 @@ $extended-symbol-map: (
 ///     );
 ///   }
 ///
-@mixin fs-link-colors($static, $visited, $attention) {
+@mixin fs-link-colors($static, $visited: false, $attention) {
   @if $visited {
     &,
     &:link {
