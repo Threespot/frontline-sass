@@ -8,8 +8,10 @@
 /// @ignore - Some versions of Firefox don't like the “#” symbol, must be also be escaped
 /// @ignore - IE9+ requires height/width attributes or else background-size won't work
 ///
+/// @link https://codepen.io/tigt/post/optimizing-svgs-in-data-uris
 /// @link https://css-tricks.com/probably-dont-base64-svg/
 /// @link http://stackoverflow.com/questions/21840551/background-size-with-svg-squished-in-ie9-10
+/// @link http://caniuse.com/#feat=datauri
 ///
 @function fs-svg($name, $color: false, $other: false) {
   // Check if icon exists
