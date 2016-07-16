@@ -1544,6 +1544,7 @@ $extended-symbol-map: (
 /// @param {Number | String} $media-increment [auto] - Viewport width increment
 /// @param {Number} $context [$fs-base-font-size] - Base font size
 /// @param {String} $units ['%'] - Font size units to output
+/// @param {Boolean} $fallback [true] - Output fallback styles for when below `$min-media`
 /// @link https://github.com/bookcasey/fittext
 ///
 /// @example scss
