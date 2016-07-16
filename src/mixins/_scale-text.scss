@@ -67,12 +67,12 @@
   $media: $min-media;
 
   // If $max-media and $media-increment weren't set, default to 1200px
-  @if ( $max-media == 'auto' and $media-increment == 'auto' ) {
+  @if ($max-media == 'auto' and $media-increment == 'auto') {
     $max-media: 1200px;
   }
 
   // Auto calculate the increment to evenly distribute the breakpoints
-  @if ( $media-increment == 'auto' ) {
+  @if $media-increment == 'auto' {
     $font-steps: ceil(($end-size - $start-size) / $font-increment);
 
     @if $end-size == $start-size {
@@ -86,7 +86,7 @@
     $media-span: $max-media - $min-media;
 
     // Edge case where there are more font steps than pixels between min and max width
-    @if ( $media-span < $font-steps ) {
+    @if $media-span < $font-steps {
       // Update max width to fit all the font steps
       $max-media: $min-media + $font-steps;
     }

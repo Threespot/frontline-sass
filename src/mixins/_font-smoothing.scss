@@ -5,11 +5,11 @@
 ///
 @mixin fs-font-smoothing($enabled: true) {
   @if $enabled {
-    -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
+    -webkit-font-smoothing: antialiased;
   }
   @else {
-    -webkit-font-smoothing: subpixel-antialiased;
     -moz-osx-font-smoothing: auto;
+    -webkit-font-smoothing: subpixel-antialiased;
   }
 }

@@ -111,7 +111,7 @@ gulp.task('gh-pages', ['build', 'sassdoc'], function () {
 // Default task
 // -----------------------------------------------------------------------------
 
-gulp.task('default', ['build', 'sass-lint']);
+gulp.task('default', ['build', 'scss-lint']);
 
 
 // -----------------------------------------------------------------------------

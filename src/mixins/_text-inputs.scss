@@ -1,5 +1,6 @@
 /// Helper to select all text input types
 /// @group Selector Utils
+// scss-lint:disable QualifyingElement
 @mixin fs-text-inputs {
   input[type='email'],
   input[type='number'],

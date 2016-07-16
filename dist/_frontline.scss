@@ -3,7 +3,7 @@
 //      _______  ____  _  __________   _____  ______
 //     / __/ _ \/ __ \/ |/ /_  __/ /  /  _/ |/ / __/
 //    / _// , _/ /_/ /    / / / / /___/ //    / _/
-//   /_/ /_/|_|\____/_/|_/ /_/ /____/___/_/|_/___/   v2.1.0
+//   /_/ /_/|_|\____/_/|_/ /_/ /____/___/_/|_/___/   v2.2.0
 //
 //   This project is licensed under the terms of the MIT license
 
@@ -940,7 +940,7 @@ $extended-symbol-map: (
   &:before {
     content: '';
     display: block;
-    padding-top: percentage(1/$ratio);
+    padding-top: percentage(1 / $ratio);
   }
 }
 
@@ -974,12 +974,12 @@ $extended-symbol-map: (
 ///
 @mixin fs-font-smoothing($enabled: true) {
   @if $enabled {
-    -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
+    -webkit-font-smoothing: antialiased;
   }
   @else {
-    -webkit-font-smoothing: subpixel-antialiased;
     -moz-osx-font-smoothing: auto;
+    -webkit-font-smoothing: subpixel-antialiased;
   }
 }
 
@@ -1107,6 +1107,7 @@ $extended-symbol-map: (
 }
 
 /// Hide in print view
+// scss-lint:disable ImportantRule
 @mixin fs-print-hide {
   @media print {
     display: none !important;
@@ -1182,24 +1183,24 @@ $extended-symbol-map: (
 ///     /* Even quantity*/
 ///   }
 ///
-///   @include fs-quantity("<8") {
+///   @include fs-quantity('<8') {
 ///     /* Less than 8 */
 ///   }
 ///
-///   @include fs-quantity("<=8") {
+///   @include fs-quantity('<=8') {
 ///     /* Less than or equal to 8 */
 ///   }
 ///
-///   @include fs-quantity(">8") {
+///   @include fs-quantity('>8') {
 ///     /* More than 8 */
 ///   }
 ///
-///   @include fs-quantity(">=8") {
+///   @include fs-quantity('>=8') {
 ///     /* More than or equal to 8 */
 ///   }
 @mixin fs-quantity($arg) {
   // Exactly N
-  @if type-of($arg) == "number" {
+  @if type-of($arg) == 'number' {
     &:nth-last-child(#{$arg}):first-child,
     &:nth-last-child(#{$arg}):first-child ~ & {
       @content;
@@ -1207,16 +1208,16 @@ $extended-symbol-map: (
   }
 
   // At least N and at most N
-  @else if type-of($arg) == "list" {
+  @else if type-of($arg) == 'list' {
     &:nth-last-child(n+#{nth($arg, 1)}):nth-last-child(-n+#{nth($arg, 2)}):first-child,
     &:nth-last-child(n+#{nth($arg, 1)}):nth-last-child(-n+#{nth($arg, 2)}):first-child ~ & {
       @content;
     }
   }
 
-  @else if type-of($arg) == "string" {
+  @else if type-of($arg) == 'string' {
     // Odd/even
-    @if $arg == "odd" or $arg == "even" {
+    @if $arg == 'odd' or $arg == 'even' {
       &:nth-last-child(#{$arg}):first-child,
       &:nth-last-child(#{$arg}):first-child ~ & {
         @content;
@@ -1224,10 +1225,11 @@ $extended-symbol-map: (
     }
 
     // Less than...
-    @else if str-slice($arg, 1, 1) == "<" {
+    @else if str-slice($arg, 1, 1) == '<' {
       // Less than or equal to N
-      @if str-slice($arg, 2, 2) == "=" {
+      @if str-slice($arg, 2, 2) == '=' {
         $arg: str-slice($arg, 3);
+
         &:nth-last-child(-n+#{$arg}):first-child,
         &:nth-last-child(-n+#{$arg}):first-child ~ & {
           @content;
@@ -1237,6 +1239,7 @@ $extended-symbol-map: (
       // Less than N
       @else {
         $arg: fs-to-number(str-slice($arg, 2));
+
         &:nth-last-child(-n+#{$arg - 1}):first-child,
         &:nth-last-child(-n+#{$arg - 1}):first-child ~ & {
           @content;
@@ -1245,10 +1248,11 @@ $extended-symbol-map: (
     }
 
     // More than...
-    @else if str-slice($arg, 1, 1) == ">" {
+    @else if str-slice($arg, 1, 1) == '>' {
       // More than or equal to N
-      @if str-slice($arg, 2, 2) == "=" {
+      @if str-slice($arg, 2, 2) == '=' {
         $arg: str-slice($arg, 3);
+
         &:nth-last-child(n+#{$arg}),
         &:nth-last-child(n+#{$arg}) ~ & {
           @content;
@@ -1258,6 +1262,7 @@ $extended-symbol-map: (
       // More than N
       @else {
         $arg: fs-to-number(str-slice($arg, 2));
+
         &:nth-last-child(n+#{$arg + 1}),
         &:nth-last-child(n+#{$arg + 1}) ~ & {
           @content;
@@ -1341,6 +1346,7 @@ $extended-symbol-map: (
 
 /// Helper to select all text input types
 /// @group Selector Utils
+// scss-lint:disable QualifyingElement
 @mixin fs-text-inputs {
   input[type='email'],
   input[type='number'],
@@ -1384,7 +1390,7 @@ $extended-symbol-map: (
   @if ($direction == up) or ($direction == down) or ($direction == right) or ($direction == left) {
 
     $width: $width / 2;
-    $height: if(length($size) > 1, $height, $height/2);
+    $height: if(length($size) > 1, $height, $height / 2);
 
     @if $direction == up {
       border-bottom: $height solid $foreground-color;
@@ -1416,7 +1422,7 @@ $extended-symbol-map: (
     border-top: $height solid $foreground-color;
 
     @if $direction == up-right {
-      border-left:  $width solid $background-color;
+      border-left: $width solid $background-color;
 
     } @else if $direction == up-left {
       border-right: $width solid $background-color;
@@ -1427,7 +1433,7 @@ $extended-symbol-map: (
     border-bottom: $height solid $foreground-color;
 
     @if $direction == down-right {
-      border-left:  $width solid $background-color;
+      border-left: $width solid $background-color;
 
     } @else if $direction == down-left {
       border-right: $width solid $background-color;
@@ -1435,27 +1441,27 @@ $extended-symbol-map: (
   }
 
   @else if ($direction == inset-up) {
-    border-width: $height $width;
-    border-style: solid;
     border-color: $background-color $background-color $foreground-color;
+    border-style: solid;
+    border-width: $height $width;
   }
 
   @else if ($direction == inset-down) {
-    border-width: $height $width;
-    border-style: solid;
     border-color: $foreground-color $background-color $background-color;
+    border-style: solid;
+    border-width: $height $width;
   }
 
   @else if ($direction == inset-right) {
-    border-width: $width $height;
-    border-style: solid;
     border-color: $background-color $background-color $background-color $foreground-color;
+    border-style: solid;
+    border-width: $width $height;
   }
 
   @else if ($direction == inset-left) {
-    border-width: $width $height;
-    border-style: solid;
     border-color: $background-color $foreground-color $background-color $background-color;
+    border-style: solid;
+    border-width: $width $height;
   }
 }
 
@@ -1596,12 +1602,12 @@ $extended-symbol-map: (
   $media: $min-media;
 
   // If $max-media and $media-increment weren't set, default to 1200px
-  @if ( $max-media == 'auto' and $media-increment == 'auto' ) {
+  @if ($max-media == 'auto' and $media-increment == 'auto') {
     $max-media: 1200px;
   }
 
   // Auto calculate the increment to evenly distribute the breakpoints
-  @if ( $media-increment == 'auto' ) {
+  @if $media-increment == 'auto' {
     $font-steps: ceil(($end-size - $start-size) / $font-increment);
 
     @if $end-size == $start-size {
@@ -1615,7 +1621,7 @@ $extended-symbol-map: (
     $media-span: $max-media - $min-media;
 
     // Edge case where there are more font steps than pixels between min and max width
-    @if ( $media-span < $font-steps ) {
+    @if $media-span < $font-steps {
       // Update max width to fit all the font steps
       $max-media: $min-media + $font-steps;
     }

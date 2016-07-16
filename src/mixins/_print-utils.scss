@@ -1,4 +1,5 @@
 /// Hide in print view
+// scss-lint:disable ImportantRule
 @mixin fs-print-hide {
   @media print {
     display: none !important;

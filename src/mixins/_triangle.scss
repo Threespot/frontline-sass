@@ -18,7 +18,7 @@
   @if ($direction == up) or ($direction == down) or ($direction == right) or ($direction == left) {
 
     $width: $width / 2;
-    $height: if(length($size) > 1, $height, $height/2);
+    $height: if(length($size) > 1, $height, $height / 2);
 
     @if $direction == up {
       border-bottom: $height solid $foreground-color;
@@ -50,7 +50,7 @@
     border-top: $height solid $foreground-color;
 
     @if $direction == up-right {
-      border-left:  $width solid $background-color;
+      border-left: $width solid $background-color;
 
     } @else if $direction == up-left {
       border-right: $width solid $background-color;
@@ -61,7 +61,7 @@
     border-bottom: $height solid $foreground-color;
 
     @if $direction == down-right {
-      border-left:  $width solid $background-color;
+      border-left: $width solid $background-color;
 
     } @else if $direction == down-left {
       border-right: $width solid $background-color;
@@ -69,26 +69,26 @@
   }
 
   @else if ($direction == inset-up) {
-    border-width: $height $width;
-    border-style: solid;
     border-color: $background-color $background-color $foreground-color;
+    border-style: solid;
+    border-width: $height $width;
   }
 
   @else if ($direction == inset-down) {
-    border-width: $height $width;
-    border-style: solid;
     border-color: $foreground-color $background-color $background-color;
+    border-style: solid;
+    border-width: $height $width;
   }
 
   @else if ($direction == inset-right) {
-    border-width: $width $height;
-    border-style: solid;
     border-color: $background-color $background-color $background-color $foreground-color;
+    border-style: solid;
+    border-width: $width $height;
   }
 
   @else if ($direction == inset-left) {
-    border-width: $width $height;
-    border-style: solid;
     border-color: $background-color $foreground-color $background-color $background-color;
+    border-style: solid;
+    border-width: $width $height;
   }
 }
