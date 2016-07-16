@@ -3,7 +3,7 @@
 //      _______  ____  _  __________   _____  ______
 //     / __/ _ \/ __ \/ |/ /_  __/ /  /  _/ |/ / __/
 //    / _// , _/ /_/ /    / / / / /___/ //    / _/
-//   /_/ /_/|_|\____/_/|_/ /_/ /____/___/_/|_/___/   v2.1.2
+//   /_/ /_/|_|\____/_/|_/ /_/ /____/___/_/|_/___/   v2.2.0
 //
 //   This project is licensed under the terms of the MIT license
 
@@ -1564,7 +1564,8 @@ $extended-symbol-map: (
   $max-media: auto,
   $media-increment: auto,
   $context: $fs-base-font-size,
-  $units: '%'
+  $units: '%',
+  $fallback: true
 ) {
 
   // Size placeholders
@@ -1589,14 +1590,18 @@ $extended-symbol-map: (
     $line-height: $start-line-height;
 
     // Output fallback line-height for viewports below $min-media
-    line-height: $line-height;
+    @if $fallback {
+      line-height: $line-height;
+    }
   }
 
   // Font-size placeholder
   $font-size: $start-size;
 
   // Output fallback font-size for viewports below $font-size
-  font-size: fs-rem($font-size);
+  @if $fallback {
+    font-size: fs-rem($font-size);
+  }
 
   // Media query placeholder
   $media: $min-media;

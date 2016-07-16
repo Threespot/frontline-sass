@@ -29,7 +29,8 @@
   $max-media: auto,
   $media-increment: auto,
   $context: $fs-base-font-size,
-  $units: '%'
+  $units: '%',
+  $fallback: true
 ) {
 
   // Size placeholders
@@ -54,14 +55,18 @@
     $line-height: $start-line-height;
 
     // Output fallback line-height for viewports below $min-media
-    line-height: $line-height;
+    @if $fallback {
+      line-height: $line-height;
+    }
   }
 
   // Font-size placeholder
   $font-size: $start-size;
 
   // Output fallback font-size for viewports below $font-size
-  font-size: fs-rem($font-size);
+  @if $fallback {
+    font-size: fs-rem($font-size);
+  }
 
   // Media query placeholder
   $media: $min-media;
