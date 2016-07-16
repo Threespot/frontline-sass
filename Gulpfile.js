@@ -13,7 +13,6 @@ var sassdoc = require('sassdoc');
 var path = require('path');
 var gh = require('gh-pages');
 var yaml = require('js-yaml');
-var sassLint = require('gulp-sass-lint');
 var scsslint = require('gulp-scss-lint');
 
 // -----------------------------------------------------------------------------
@@ -63,13 +62,6 @@ gulp.task('test', function () {
 gulp.task('scss-lint', function() {
   return gulp.src('./src/*/*.scss')
     .pipe(scsslint());
-});
-
-gulp.task('sass-lint', function() {
-  return gulp.src('./src/*/*.scss')
-    .pipe(sassLint())
-    .pipe(sassLint.format())
-    .pipe(sassLint.failOnError());
 });
 
 

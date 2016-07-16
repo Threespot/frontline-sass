@@ -30,15 +30,14 @@
     "gh-pages": "^0.11.0",
     "gulp": "^3.9.1",
     "gulp-concat": "^2.5.2",
-    "gulp-cssimport": "^3.0.2",
-    "gulp-header": "^1.2.2",
-    "gulp-load-plugins": "^1.2.0",
+    "gulp-cssimport": "^3.1.0",
+    "gulp-header": "^1.8.7",
+    "gulp-load-plugins": "^1.2.4",
     "gulp-replace": "^0.5.3",
     "gulp-ruby-sass": "^2.0.6",
-    "gulp-sass": "^2.2.0",
-    "gulp-sass-lint": "^1.1.1",
-    "gulp-scss-lint": "^0.3.9",
-    "js-yaml": "^3.5.5",
+    "gulp-sass": "^2.3.2",
+    "gulp-scss-lint": "^0.4.0",
+    "js-yaml": "^3.6.1",
     "sassdoc": "^2.1.20"
   }
 }
