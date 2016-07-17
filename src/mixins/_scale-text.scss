@@ -2,146 +2,188 @@
 /// @require {mixin} fs-min-width - Min-width media query mixin
 /// @param {Number | List} $start - Starting `font-size` and `line-height` (optional)
 /// @param {Number | List} $end - Ending `font-size` and `line-height` (optional)
-/// @param {Number} $font-increment [2px] - Font size increment
-/// @param {Number} $line-height-increment [0.1] - Line height increment
-/// @param {Number} $min-media [320px] - Starting viewport width
-/// @param {Number | String} $max-media [auto] - Ending viewport width
-/// @param {Number | String} $media-increment [auto] - Viewport width increment
-/// @param {Number} $context [$fs-base-font-size] - Base font size
-/// @param {String} $units ['%'] - Font size units to output
-/// @param {Boolean} $fallback [true] - Output fallback styles for when below `$min-media`
+/// @param {Number} $font-increment [2px] - Font-size increment
+/// @param {Number} $line-height-increment [0.1] - Line-height increment (optional)
+/// @param {Number} $start-width [320px] - Starting viewport width
+/// @param {Number} $end-width [1000px] - Ending viewport width
+/// @param {Number} $context [$fs-base-font-size] - Base `font-size` (optional)
+/// @param {String} $units ['%'] - `font-size` units (optional, defaults to `'%'`)
+/// @require {function} _convert-units
 /// @link https://github.com/bookcasey/fittext
 ///
 /// @example scss
+///   // Basic example
+///   @include fs-scale-text(
+///     $start: 32px,
+///     $end: 50px,
+///     $font-increment: 3px,
+///     $start-width: 400px,
+///     $end-width: 800px
+///   );
+///
+///   // With line-height and custom units
 ///   @include fs-scale-text(
 ///     $start: 32px 1.25,
 ///     $end: 50px 1.1,
 ///     $font-increment: 3px,
-///     $min-media: 320px,
-///     $max-media: 600px
-///   }
-///
+///     $line-height-increment: 0.05,
+///     $start-width: 400px,
+///     $end-width: 800px,
+///     $units: 'em'
+///   );
+
 @mixin fs-scale-text(
   $start,
   $end,
   $font-increment: 2px,
   $line-height-increment: 0.1,
-  $min-media: 320px,
-  $max-media: auto,
-  $media-increment: auto,
+  $start-width: 320px,
+  $end-width: 1000px,
   $context: $fs-base-font-size,
-  $units: '%',
-  $fallback: true
+  $units: '%'
 ) {
 
-  // Size placeholders
-  $start-size: $start;
-  $end-size: $end;
-
-  // Line-height placeholder vars
+  // Add vars at top to avoid scope issues
+  $start-font-size: $start;
+  $end-font-size: $end;
+  $has-line-height: false;
   $start-line-height: inherit;
   $end-line-height: inherit;
-  $line-height: inherit;
-  $has-line-height: length($start) > 1;
+  $line-height-diff: 0;
+  $line-height-sign: 1;
 
-  // Check if line-height was passed
+  // Check for line-height
+  @if length($start) == 2 and length($end) == 2 {
+    $has-line-height: true;
+  }
+
+  // Update vars if line-height was specified
   @if $has-line-height {
-    // Update values
-    $start-size: nth($start, 1);
-    $end-size: nth($end, 1);
+    // Save font-sizes
+    $start-font-size: nth($start, 1);
+    $end-font-size: nth($end, 1);
 
+    // Save line-height values
     $start-line-height: nth($start, 2);
     $end-line-height: nth($end, 2);
+    $line-height-diff: $end-line-height - $start-line-height;
+    $line-height-sign: $line-height-diff / abs($line-height-diff);// returns 1 or -1
+  }
 
-    $line-height: $start-line-height;
+  // Validation
+  //---------------------------------
+  @if $end-font-size <= $start-font-size {
+    @error '🔴  max font size must be greater than min font size for #{&}';
+  }
 
-    // Output fallback line-height for viewports below $min-media
-    @if $fallback {
-      line-height: $line-height;
+  @if (unit($start-font-size) != 'px' or unit($end-font-size) != 'px') {
+    @error '🔴  starting and ending font sizes must be in pixels for #{&}';
+  }
+
+  @if unit($font-increment) != 'px' {
+    @error '🔴  font increment must be in pixels for #{&}';
+  }
+
+  @if unit($context) != 'px' {
+    @error '🔴  font context size must be in pixels for #{&}';
+  }
+
+  @if type-of($start-width) == 'number' and type-of($end-width) == 'number' {
+    @if $end-width <= $start-width {
+      @error '🔴  ending width must be greater than starting width for #{&}';
+    }
+  }
+  @else {
+    @if type-of($start-width) != 'number' {
+      @error '🔴  starting width must be a pixel value for #{&}';
+    }
+
+    @if type-of($end-width) != 'number' {
+      @error '🔴  ending width must be a pixel value for #{&}';
     }
   }
 
-  // Font-size placeholder
-  $font-size: $start-size;
-
-  // Output fallback font-size for viewports below $font-size
-  @if $fallback {
-    font-size: fs-rem($font-size);
+  @if ($units != '%' and $units != 'em' and $units != 'rem' and $units != 'px') {
+    @error '🔴  fs-scale-text() output units must be %, px, em, or rem  for #{&}';
   }
 
-  // Media query placeholder
-  $media: $min-media;
+  // Calculate how many times the font-size will need to be adjusted, rounded up to nearest whole number
+  $font-size-steps: ceil(($end-font-size - $start-font-size) / $font-increment);
 
-  // If $max-media and $media-increment weren't set, default to 1200px
-  @if ($max-media == 'auto' and $media-increment == 'auto') {
-    $max-media: 1200px;
+  // Warn if >10 breakpoints will be generated
+  @if $fs-debug-mode and ($font-size-steps > 10) {
+    @warn '⚠️  #{$font-size-steps} breakpoints generated by fs-scale-text() for #{&}';
   }
 
-  // Auto calculate the increment to evenly distribute the breakpoints
-  @if $media-increment == 'auto' {
-    $font-steps: ceil(($end-size - $start-size) / $font-increment);
+  // Calculate the media query interval
+  $font-size-mq-step: ($end-width - $start-width) / $font-size-steps;
 
-    @if $end-size == $start-size {
-      @warn '🔶  min and max font-size are equal in fs-scale-text()';
-      $font-steps: 1;
-    }
-    @else if $end-size < $start-size {
-      @error '🔴  max font size must be greater than min font size in fs-scale-text()';
-    }
+  // Determine how many font steps equals one line-height step (e.g. increase line-height every nth font steps)
+  $line-height-steps: abs($font-size-steps / ($line-height-diff / $line-height-increment));
 
-    $media-span: $max-media - $min-media;
-
-    // Edge case where there are more font steps than pixels between min and max width
-    @if $media-span < $font-steps {
-      // Update max width to fit all the font steps
-      $max-media: $min-media + $font-steps;
-    }
-
-    // Calculate media query increment
-    $media-increment: floor(($max-media - $min-media) / $font-steps);
-
-    // Calculate line-height increment
-    @if $has-line-height {
-      $line-height-increment: ($end-line-height - $start-line-height) / $font-steps;
-    }
+  // If there are more line-height steps than font steps, adjust line-height increment so they are equal
+  @if $line-height-steps < 1 {
+    $line-height-increment: $line-height-increment / $line-height-steps;
+    $line-height-steps: 1;
   }
+
+  // Define vars here for scope reasons
+  $line-height-index: 1;
+  $line-height: $start-line-height;
+
+  // @debug '🔷 ' + $font-size-steps + ' font steps, ' + ($font-size-steps / $line-height-steps) + ' line-height step(s)';
 
   // Generate the media queries
-  @while ($media <= $max-media) and ($font-size <= $end-size) {
-    @include fs-min-width($media) {
-      // Calculate font-size
-      @if $units == '%' {
-        @if unit($start-size) == '%' and unit($end-size) == '%' and unit($font-increment) == '%' {
-          font-size: $font-size;
+  @for $i from 1 through $font-size-steps {
+    // Calculate current breakpoint width
+    $breakpoint: round($start-width + ($i * $font-size-mq-step));
+
+    // Calculate current font-size
+    $font-size: $start-font-size + ($i * $font-increment);
+
+    // Don’t exceed $end-width (could happen due to rounding)
+    @if $breakpoint > $end-width {
+      // @debug '🔴 $breakpoint: ' + $breakpoint + ' exceeds $end-width: ' + $end-width;
+      $breakpoint: $end-width;
+    }
+
+    // Since we rounded up $font-size-steps, the last font step may need to be reduced to prevent exceeding the target font size
+    @if $font-size > $end-font-size {
+      // @debug '🔴 Reduce last $font-increment from ' + $font-increment + ' to ' + ($font-increment - ($font-size - $end-font-size));
+      $font-size: $end-font-size;
+    }
+
+    // Output font size styles
+    @include fs-min-width($breakpoint) {
+      // _convert-units() will output the correct unit based on $units
+      font-size: _convert-units($units, $font-size, $context);
+
+      @if ($has-line-height and $line-height-diff != 0) {
+
+        // Check if current font step is equal to a line-height step (e.g. increase line-height every nth font steps)
+        // NOTE: For some reason, putting $i first (e.g. “>=”) results in false positives when the values are equal ¯\_(ツ)_/¯
+        @if ($line-height-steps * $line-height-index) <= $i {
+
+          // Calculate the line height ($line-height-sign used to increase/decrease the starting value)
+          $line-height: $start-line-height + ($line-height-sign * $line-height-index * $line-height-increment);
+          line-height: $line-height;
+
+          // Increment line-height counter
+          $line-height-index: $line-height-index + 1;
+
+          // Output whenever the line-height is updated
+          // @debug '🔶 Step ' + $i + ': font-size ' + $font-size + ', line-height ' +  $line-height + ', index=' + $line-height-index;
+        }
+        // If the last iteration, just output the $end-line-height instead of calculating it since it might exceed the final value due to rounding above
+        @else if ($i == $font-size-steps) {
+          // @debug '⚪️ line-height set to ending value of ' + $end-line-height + ' instead of calculated value of ' + ($start-line-height + ($line-height-sign * $line-height-index * $line-height-increment));
+          line-height: $end-line-height;
         }
         @else {
-          font-size: percentage($font-size / $context);
+          // Output when the font-size is updated but not the line-height
+          // @debug '🔷 Step ' + $i + ': font-size ' + $font-size + ', line-height ' +  $line-height + ', index=' + $line-height-index;
         }
       }
-      @else if $units == 'px' {
-        font-size: $font-size;
-      }
-      @else if $units == 'em' {
-        font-size: fs-em($font-size, $context);
-      }
-      @else if $units == 'rem' {
-        font-size: fs-rem($font-size);
-      }
-      @else {
-        @error '🔴  “#{$units}” is not a valid output unit for fs-scale-text()';
-      }
-
-      // Output line height if applicable
-      @if $has-line-height {
-        line-height: $line-height;
-      }
-    }
-
-    // Increment values
-    $font-size: $font-size + $font-increment;
-    $media: $media + $media-increment;
-    @if $has-line-height {
-      $line-height: $line-height + $line-height-increment;
     }
   }
-}
+};

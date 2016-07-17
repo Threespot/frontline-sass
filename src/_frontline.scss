@@ -67,6 +67,7 @@ $fs-svg-icons: (
 // Functions
 //------------------------------------------------------------------------//
 @import "functions/_contains.scss";
+@import "functions/_convert-units.scss";
 @import "functions/_easings.scss";
 @import "functions/_em.scss";
 @import "functions/_map-functions.scss";
@@ -110,4 +111,4 @@ $fs-svg-icons: (
 @import "mixins/_word-break.scss";
 
 // Minxins with dependencies
-@import "mixins/_scale-text.scss";// Requires _media-query.scss
+@import "mixins/_scale-text.scss";// Requires _media-query.scss and _convert-units.scss
