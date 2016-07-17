@@ -1,0 +1,94 @@
+/// Burger menu icon mixin
+/// @author Joren Van Hee
+/// @param {Number} $width [30px] - Icon width
+/// @param {Number} $height [5px] - Bar height
+/// @param {Number} $gutter [3px] - Gap between bars
+/// @param {Color} $color [currentColor] - Icon color
+/// @param {Number} $border-radius [0] - Border radius
+/// @param {Number} $transition-duration [300ms] - Transition duration
+/// @link https://github.com/jorenvanhee/sass-burger
+///
+/// @example scss
+///   .icon {
+///     @include fs-burger(
+///       $color: #fff,
+///       $gutter: 3px,
+///       $height: 3px,
+///       $transition-duration: 200ms,
+///       $width: 20px
+///     );
+///
+///     &.is-active {
+///       @include fs-burger-to-cross;
+///     }
+///   }
+///
+@mixin fs-burger(
+  $width: 30px,
+  $height: 5px,
+  $gutter: 3px,
+  $color: currentColor,
+  $border-radius: 0,
+  $transition-duration: 300ms
+) {
+  $burger-height: $height !global;
+  $burger-gutter: $gutter !global;
+  margin-bottom: $height + $gutter;
+  margin-top: $height + $gutter;
+  position: relative;
+  user-select: none;
+
+  // Burger parts
+  // (---) top    -> &::before
+  // [---] middle -> &
+  // (---) bottom -> &::after
+  &,
+  &::before,
+  &::after {
+    background-color: $color;
+    @if $border-radius != 0 {
+      border-radius: $border-radius;
+    }
+    height: $height;
+    transition-duration: $transition-duration;
+    transition-property: background-color, transform;
+    width: $width;
+  }
+
+  &::before,
+  &::after {
+    content: '';
+    left: 0;
+    position: absolute;
+  }
+
+  &::before {
+    top: -($height + $gutter);
+  }
+
+  &::after {
+    top: $height + $gutter;
+  }
+}
+
+// Burger animations
+@mixin fs-burger-to-cross($color: auto) {
+  & {
+    background-color: transparent;
+  }
+
+  @if ($color != auto) {
+    &::before,
+    &::after {
+        background-color: $color;
+    }
+  }
+
+  &:before {
+    transform: translateY($burger-gutter + $burger-height) rotate(45deg);
+  }
+
+  &:after {
+    transform: translateY(-($burger-gutter + $burger-height)) rotate(-45deg);
+  }
+}
