@@ -1,6 +1,6 @@
 /// Hide in print view
-// scss-lint:disable ImportantRule
 @mixin fs-print-hide {
+  // scss-lint:disable ImportantRule
   @media print {
     display: none !important;
   }
@@ -8,6 +8,7 @@
 
 /// Only show in print view
 @mixin fs-print-only {
+  // scss-lint:disable ImportantRule
   display: none !important;
 
   @media print {
