@@ -3,7 +3,7 @@
 //      _______  ____  _  __________   _____  ______
 //     / __/ _ \/ __ \/ |/ /_  __/ /  /  _/ |/ / __/
 //    / _// , _/ /_/ /    / / / / /___/ //    / _/
-//   /_/ /_/|_|\____/_/|_/ /_/ /____/___/_/|_/___/   v3.0.0
+//   /_/ /_/|_|\____/_/|_/ /_/ /____/___/_/|_/___/   v3.0.1
 //
 //   This project is licensed under the terms of the MIT license
 
@@ -1722,7 +1722,7 @@ $extended-symbol-map: (
   $has-line-height: false;
   $start-line-height: inherit;
   $end-line-height: inherit;
-  $line-height-diff: 0;
+  $line-height-diff: $line-height-increment;
   $line-height-sign: 1;
 
   // Check for line-height

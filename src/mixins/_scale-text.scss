@@ -49,7 +49,7 @@
   $has-line-height: false;
   $start-line-height: inherit;
   $end-line-height: inherit;
-  $line-height-diff: 0;
+  $line-height-diff: $line-height-increment;
   $line-height-sign: 1;
 
   // Check for line-height
