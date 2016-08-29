@@ -3,7 +3,7 @@
 //      _______  ____  _  __________   _____  ______
 //     / __/ _ \/ __ \/ |/ /_  __/ /  /  _/ |/ / __/
 //    / _// , _/ /_/ /    / / / / /___/ //    / _/
-//   /_/ /_/|_|\____/_/|_/ /_/ /____/___/_/|_/___/   v3.0.1
+//   /_/ /_/|_|\____/_/|_/ /_/ /____/___/_/|_/___/   v3.1.0
 //
 //   This project is licensed under the terms of the MIT license
 
@@ -387,7 +387,7 @@ $fs-easings: (
     }
 
     // Do nothing to all other values
-    @else if $fs-debug-mode {
+    @else if $fs-debug-mode and $val != 0 {
       @warn '🔶  Can’t convert non-pixel value to rems: #{$val}';
     }
 
@@ -1467,6 +1467,7 @@ $extended-symbol-map: (
 ////
 
 /// Add selector to root (requires Libsass 3.3+ or Ruby Sass 3.4+)
+/// @param {String} $selector - Selector to add to root
 ///
 @mixin fs-root-add($selector) {
   @at-root #{$selector + &} {
@@ -1475,6 +1476,7 @@ $extended-symbol-map: (
 }
 
 /// Prepend selector
+/// @param {String} $selector - Selector to insert before root
 ///
 @mixin fs-root-before($selector) {
   @at-root $selector #{&} {
