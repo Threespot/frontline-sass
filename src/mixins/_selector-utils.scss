@@ -4,6 +4,7 @@
 ////
 
 /// Add selector to root (requires Libsass 3.3+ or Ruby Sass 3.4+)
+/// @param {String} $selector - Selector to add to root
 ///
 @mixin fs-root-add($selector) {
   @at-root #{$selector + &} {
@@ -12,6 +13,7 @@
 }
 
 /// Prepend selector
+/// @param {String} $selector - Selector to insert before root
 ///
 @mixin fs-root-before($selector) {
   @at-root $selector #{&} {
