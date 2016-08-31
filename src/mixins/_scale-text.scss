@@ -107,6 +107,14 @@
     @error '🔴  fs-scale-text() output units must be %, px, em, or rem  for #{&}';
   }
 
+  // Output starting font-size for when fs-scale-text() used multiple times on the same element
+  @include fs-min-width($start-width) {
+    font-size: _convert-units($units, $start-font-size, $context);
+    @if $has-line-height {
+      line-height: $start-line-height;
+    }
+  }
+
   // Calculate how many times the font-size will need to be adjusted, rounded up to nearest whole number
   $font-size-steps: ceil(($end-font-size - $start-font-size) / $font-increment);
 
