@@ -3,7 +3,7 @@
 //      _______  ____  _  __________   _____  ______
 //     / __/ _ \/ __ \/ |/ /_  __/ /  /  _/ |/ / __/
 //    / _// , _/ /_/ /    / / / / /___/ //    / _/
-//   /_/ /_/|_|\____/_/|_/ /_/ /____/___/_/|_/___/   v3.2.1
+//   /_/ /_/|_|\____/_/|_/ /_/ /____/___/_/|_/___/   v3.2.2
 //
 //   This project is licensed under the terms of the MIT license
 
@@ -1462,15 +1462,15 @@ $extended-symbol-map: (
 }
 
 ////
-/// @group Selector Utils
-/// @link http://www.sitepoint.com/sass-3-4-is-out/
+/// @group Selector Utils (requires Sass 3.4+)
+/// @link http://sass-lang.com/documentation/Sass/Script/Functions.html#selector_functions
 ////
 
-/// Add selector to root (requires Libsass 3.3+ or Ruby Sass 3.4+)
+/// Add selector to root
 /// @param {String} $selector - Selector to add to root
 ///
 @mixin fs-root-add($selector) {
-  @at-root #{$selector + &} {
+  @at-root #{selector-append($selector, &)} {
     @content;
   }
 }
@@ -1479,7 +1479,7 @@ $extended-symbol-map: (
 /// @param {String} $selector - Selector to insert before root
 ///
 @mixin fs-root-before($selector) {
-  @at-root $selector #{&} {
+  @at-root #{selector-nest($selector, &)} {
     @content;
   }
 }
