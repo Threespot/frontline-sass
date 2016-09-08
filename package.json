@@ -3,6 +3,10 @@
   "name": "frontline-sass",
   "version": "3.2.1",
   "description": "Threespot's base Sass framework",
+  "engines": {
+    "node": "6.5.0",
+    "npm": "3.10.3"
+  },
   "repository": {
     "type": "git",
     "url": "https://github.com/Threespot/frontline-sass.git"
@@ -27,17 +31,16 @@
   },
   "license": "MIT",
   "devDependencies": {
-    "gh-pages": "^0.11.0",
-    "gulp": "^3.9.1",
-    "gulp-concat": "^2.5.2",
-    "gulp-cssimport": "^3.1.0",
-    "gulp-header": "^1.8.7",
-    "gulp-load-plugins": "^1.2.4",
-    "gulp-replace": "^0.5.3",
-    "gulp-ruby-sass": "^2.0.6",
-    "gulp-sass": "^2.3.2",
-    "gulp-scss-lint": "^0.4.0",
-    "js-yaml": "^3.6.1",
-    "sassdoc": "^2.1.20"
+    "gh-pages": "0.11.0",
+    "gulp": "3.9.1",
+    "gulp-concat": "2.6.0",
+    "gulp-cssimport": "3.1.0",
+    "gulp-header": "1.8.8",
+    "gulp-load-plugins": "1.2.4",
+    "gulp-replace": "0.5.4",
+    "gulp-sass": "2.3.2",
+    "gulp-scss-lint": "0.4.0",
+    "js-yaml": "3.6.1",
+    "sassdoc": "2.1.20"
   }
 }
