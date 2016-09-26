@@ -51,6 +51,7 @@
   $end-line-height: inherit;
   $line-height-diff: $line-height-increment;
   $line-height-sign: 1;
+  $line-height-steps: 0;
 
   // Check for line-height
   @if length($start) == 2 and length($end) == 2 {
@@ -67,7 +68,15 @@
     $start-line-height: nth($start, 2);
     $end-line-height: nth($end, 2);
     $line-height-diff: $end-line-height - $start-line-height;
-    $line-height-sign: $line-height-diff / abs($line-height-diff);// returns 1 or -1
+
+    // If no change in line-height, ignore it
+    @if $line-height-diff == 0 {
+      $has-line-height: false;
+    }
+    @else {
+      // Determine if line-height increaes or decreses
+      $line-height-sign: $line-height-diff / abs($line-height-diff);// returns 1 or -1
+    }
   }
 
   // Validation
@@ -127,7 +136,9 @@
   $font-size-mq-step: ($end-width - $start-width) / $font-size-steps;
 
   // Determine how many font steps equals one line-height step (e.g. increase line-height every nth font steps)
-  $line-height-steps: abs($font-size-steps / ($line-height-diff / $line-height-increment));
+  @if $has-line-height {
+    $line-height-steps: abs($font-size-steps / ($line-height-diff / $line-height-increment));
+  }
 
   // If there are more line-height steps than font steps, adjust line-height increment so they are equal
   @if $line-height-steps < 1 {
