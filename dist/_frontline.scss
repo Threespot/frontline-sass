@@ -3,7 +3,7 @@
 //      _______  ____  _  __________   _____  ______
 //     / __/ _ \/ __ \/ |/ /_  __/ /  /  _/ |/ / __/
 //    / _// , _/ /_/ /    / / / / /___/ //    / _/
-//   /_/ /_/|_|\____/_/|_/ /_/ /____/___/_/|_/___/   v3.2.2
+//   /_/ /_/|_|\____/_/|_/ /_/ /____/___/_/|_/___/   v3.2.3
 //
 //   This project is licensed under the terms of the MIT license
 
@@ -1726,6 +1726,7 @@ $extended-symbol-map: (
   $end-line-height: inherit;
   $line-height-diff: $line-height-increment;
   $line-height-sign: 1;
+  $line-height-steps: 0;
 
   // Check for line-height
   @if length($start) == 2 and length($end) == 2 {
@@ -1742,7 +1743,13 @@ $extended-symbol-map: (
     $start-line-height: nth($start, 2);
     $end-line-height: nth($end, 2);
     $line-height-diff: $end-line-height - $start-line-height;
-    $line-height-sign: $line-height-diff / abs($line-height-diff);// returns 1 or -1
+    // If line-height is equal, we don’t have to do anything
+    @if $line-height-diff == 0 {
+      $has-line-height: false;
+    }
+    @else {
+      $line-height-sign: $line-height-diff / abs($line-height-diff);// returns 1 or -1
+    }
   }
 
   // Validation
@@ -1802,7 +1809,9 @@ $extended-symbol-map: (
   $font-size-mq-step: ($end-width - $start-width) / $font-size-steps;
 
   // Determine how many font steps equals one line-height step (e.g. increase line-height every nth font steps)
-  $line-height-steps: abs($font-size-steps / ($line-height-diff / $line-height-increment));
+  @if $has-line-height {
+    $line-height-steps: abs($font-size-steps / ($line-height-diff / $line-height-increment));
+  }
 
   // If there are more line-height steps than font steps, adjust line-height increment so they are equal
   @if $line-height-steps < 1 {
