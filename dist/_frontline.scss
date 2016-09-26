@@ -1743,11 +1743,13 @@ $extended-symbol-map: (
     $start-line-height: nth($start, 2);
     $end-line-height: nth($end, 2);
     $line-height-diff: $end-line-height - $start-line-height;
-    // If line-height is equal, we don’t have to do anything
+
+    // If no change in line-height, ignore it
     @if $line-height-diff == 0 {
       $has-line-height: false;
     }
     @else {
+      // Determine if line-height increaes or decreses
       $line-height-sign: $line-height-diff / abs($line-height-diff);// returns 1 or -1
     }
   }
