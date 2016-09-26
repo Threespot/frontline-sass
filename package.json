@@ -4,7 +4,7 @@
   "version": "3.2.2",
   "description": "Threespot's base Sass framework",
   "engines": {
-    "node": "6.5.0",
+    "node": "6.6.0",
     "npm": "3.10.3"
   },
   "repository": {
