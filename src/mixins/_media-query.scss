@@ -39,7 +39,7 @@
     }
 
     // Output the media query
-    @media screen #{$mq-conditions} {
+    @media all #{$mq-conditions} {
       @content;
     }
   }
