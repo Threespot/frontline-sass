@@ -1,9 +1,9 @@
 ////
-/// @group Selector Utils (requires Sass 3.4+)
+/// @group Selector Utils
 /// @link http://sass-lang.com/documentation/Sass/Script/Functions.html#selector_functions
 ////
 
-/// Add selector to root
+/// Add selector to root (requires Sass 3.4+)
 /// @param {String} $selector - Selector to add to root
 ///
 @mixin fs-root-add($selector) {
@@ -12,7 +12,7 @@
   }
 }
 
-/// Prepend selector
+/// Prepend selector (requires Sass 3.4+)
 /// @param {String} $selector - Selector to insert before root
 ///
 @mixin fs-root-before($selector) {
