@@ -53,11 +53,10 @@
 }
 
 /// Pick first color in map with passing color contrast ratio
-/// @group General
 /// @param {Color} $base - Background color
 /// @param {Map} $colors - List of text colors ordered by preference
-/// @param {Map} $ratio [4.5] - Target contrast ratio
-/// @param {Map} $tolerance [0] - Allowed deviation from target contrast ratio
+/// @param {Number} $ratio [4.5] - Target contrast ratio
+/// @param {Number} $tolerance [0] - Allowed deviation from target contrast ratio
 /// @return {Color}
 @function fs-auto-contrast($base, $colors, $ratio: 4.5, $tolerance: 0) {
   $first-match: false;
