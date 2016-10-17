@@ -71,6 +71,7 @@ $fs-svg-icons: (
 @import "functions/_easings.scss";
 @import "functions/_em.scss";
 @import "functions/_map-functions.scss";
+@import "functions/_pow.scss";
 @import "functions/_rem.scss";
 @import "functions/_slice.scss";
 @import "functions/_str-replace.scss";
@@ -80,6 +81,7 @@ $fs-svg-icons: (
 // Functions with dependencies
 @import "functions/_breakpoint.scss";// Requires "map-functions"
 @import "functions/_color.scss";// Requires "map-functions"
+@import "functions/_color-contrast.scss";// Requires "pow" function
 @import "functions/_is-length.scss";// Requires "contains" function
 @import "functions/_ratio.scss";// Requires "strip-unit" function
 @import "functions/_url-encode.scss";// Requires "str-replace"

@@ -1,0 +1,89 @@
+////
+/// @ignore Based on work by voxpelli but using improved `pow()` function (see _pow.scss)
+/// @link https://gist.github.com/voxpelli/6304812
+/// @author voxpelli, Ted Whitehead
+////
+
+/// Color luminance function
+/// @access private
+/// @param {Color} $color - Color
+/// @return {Number} - Float between 0–1
+/// @link http://www.w3.org/TR/2008/REC-WCAG20-20081211/#relativeluminancedef
+@function fs-luminance($color) {
+  $colors: (
+    'red': red($color),
+    'green': green($color),
+    'blue': blue($color)
+  );
+
+  @each $name, $value in $colors {
+    $adjusted: 0;
+    $value: $value / 255;
+
+    @if $value < 0.03928 {
+      $value: $value / 12.92;
+    }
+    @else {
+      $value: ($value + 0.055) / 1.055;
+      $value: fs-pow($value, 2.4);
+    }
+
+    $colors: map-merge($colors, ($name: $value));
+  }
+
+  @return (map-get($colors, 'red') * 0.2126) + (map-get($colors, 'green') * 0.7152) + (map-get($colors, 'blue') * 0.0722);
+}
+
+/// Color contrast function
+/// @access private
+/// @param {Color} $color1
+/// @param {Color} $color2
+/// @return {Number}
+/// @link http://www.w3.org/TR/2008/REC-WCAG20-20081211/#contrast-ratiodef
+@function fs-color-contrast($color1, $color2) {
+  $lum1: fs-luminance($color1) + 0.05;
+  $lum2: fs-luminance($color2) + 0.05;
+  $ratio: $lum1 / $lum2;
+
+  @if $lum2 > $lum1 {
+    $ratio: 1 / $ratio;
+  }
+
+  @return $ratio;
+}
+
+/// Pick first color in map with passing color contrast ratio
+/// @group General
+/// @param {Color} $base - Background color
+/// @param {Map} $colors - List of text colors ordered by preference
+/// @param {Map} $ratio [4.5] - Target contrast ratio
+/// @param {Map} $tolerance [0] - Allowed deviation from target contrast ratio
+/// @return {Color}
+@function fs-auto-contrast($base, $colors, $ratio: 4.5, $tolerance: 0) {
+  $first-match: false;
+
+  @for $i from 1 through length($colors) {
+    $color: nth($colors, $i);
+    $contrast: fs-color-contrast($base, $color);
+
+    @if ($contrast >= ($ratio - $tolerance)) {
+
+      @if not $first-match {
+        $first-match: $color;
+
+        // Warn if low contrast
+        @if ($contrast < 4.4) {
+          @warn "#{$first-match} on #{$base} fails WCAG AA contrast test (#{$contrast})";
+        }
+      }
+    }
+  }
+
+  @if $first-match {
+    @return $first-match;
+  }
+  @else {
+    $last-color: nth($colors, length($colors));
+    @error "🔴  #{$last-color} on #{$base} fails WCAG AA contrast test (#{fs-color-contrast($base, $last-color)})";
+  }
+}
