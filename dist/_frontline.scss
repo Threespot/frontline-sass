@@ -803,7 +803,7 @@ $fs-easings: (
 ///
 /// @example scss
 ///   .demo {
-///     color: fs-pick-color(darkgreen, (#fff, #555, #000);
+///     color: fs-auto-contrast(darkgreen, (#fff, #555, #000));
 ///   }
 ///
 @function fs-auto-contrast($base, $colors, $ratio: 4.5, $tolerance: 0) {
