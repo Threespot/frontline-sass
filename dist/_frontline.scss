@@ -11,91 +11,32 @@
 //------------------------------------------------------------------------//
 // Global vars
 //------------------------------------------------------------------------//
-
-/// Flag for debug mode
 $fs-debug-mode: false !default;
-
-/// Base font size
 $fs-base-font-size: 16px !default;
-
-/// @ignore Use maps instead of variables below https://www.viget.com/articles/sass-with-maps
-
-/// Named breakpoints map
-$fs-breakpoints: (
-  'global': (
-    'narrow' : 320px,
-    'small'  : 480px,
-    'medium' : 640px,
-    'wide'   : 960px,
-    'full'   : 1200px
-  )
-) !default;
-
-/// Colors map
-/// @link http://clrs.cc
-$fs-colors: (
-  'base': (
-    'blue'   : #0074d9,
-    'teal'   : #39cccc,
-    'green'  : #2ecc40,
-    'lime'   : #01ff70,
-    'yellow' : #ffdc00,
-    'orange' : #ff851b,
-    'red'    : #ff4136,
-    'purple' : #b10dc9,
-    'black'  : #111,
-    'gray'   : #aaa
-  ),
-  'text': (
-    'black': #333
-  ),
-) !default;
-
-/// Z-index layer map
-$fs-zindex: (
-  'main' : 100,
-  'menu' : 200,
-  'nav'  : 300,
-  'top'  : 999
-) !default;
-
-/// SVG icon map for use with `fs-svg` function
-$fs-svg-icons: (
-  close: (
-    height: 28,
-    width: 22,
-    data: '<path d="M20.28 20.66q0 .62-.44 1.06l-2.12 2.12q-.44.44-1.06.44t-1.07-.44l-4.6-4.6-4.6 4.6q-.43.44-1.06.44t-1.06-.44l-2.12-2.12q-.44-.44-.44-1.06t.44-1.07l4.6-4.6-4.6-4.6q-.44-.43-.44-1.06t.44-1.06l2.12-2.12q.44-.44 1.06-.44t1.07.44l4.6 4.6 4.6-4.6q.43-.44 1.06-.44t1.06.44l2.12 2.12q.44.44.44 1.06t-.44 1.07l-4.6 4.6 4.6 4.6q.44.43.44 1.06z"/>'
-  ),
-  search: (
-    height: 28,
-    width: 26,
-    data: '<path d="M18 13q0-2.9-2.06-4.95T11 6 6.05 8.06 4 13t2.05 4.95T11 20t4.95-2.06T18 13zm8 13q0 .8-.6 1.4T24 28q-.84 0-1.4-.6l-5.37-5.34Q14.43 24 11 24q-2.23 0-4.27-.87T3.2 20.8.88 17.26 0 13t.87-4.27T3.2 5.2t3.53-2.33T11 2t4.27.87T18.8 5.2t2.33 3.53T22 13q0 3.44-1.94 6.23l5.36 5.36q.58.57.58 1.4z"/>'
-  )
-) !default;
 
 //------------------------------------------------------------------------//
 // Functions
 //------------------------------------------------------------------------//
 /// Check whether `$list` contains `$value`.
-/// @group Internals
-/// @param  {List} $list  - List of values.
-/// @param  {*}    $value - Value to check in the list.
+/// @group Utilities
+/// @param {List} $list - List of values.
+/// @param {*} $value - Value to check in the list.
 /// @return {Bool}
 /// @link http://www.sitepoint.com/bulletproof-function-validate-length-values-sass/
-///
 @function fs-contains($list, $value) {
   @return not not index($list, $value);
 }
 
 /// Convert unit to px, em, rem, or %
-/// @group Internals
+/// @access private
 /// @param {Number} $units- Units to convert to
 /// @param {Number} $value - Starting px value
 /// @return {Number} $context - Context font-size in px
-///
-@function _convert-units($units, $value, $context) {
+/// @require {function} fs-em
+/// @require {function} fs-rem
+@function fs-convert-units($units, $value, $context) {
   @if unit($value) != 'px' or unit($context) != 'px' {
-    @error '🔴  _convert-units() only accepts pixel values';
+    @error '🔴  fs-convert-units() only accepts pixel values';
   }
 
   // Percentage
@@ -125,14 +66,17 @@ $fs-svg-icons: (
 
   // Unsupported output unit
   @else {
-    @error '🔴  “#{$units}” is not a valid output unit for _convert-units()';
+    @error '🔴  “#{$units}” is not a valid output unit for fs-convert-units()';
   }
 };
 
+////
+/// @group Main
+////
+
 /// Custom easings map
 /// @link https://github.com/jhardy/compass-ceaser-easing
-/// @link http://easings.net/
-///
+/// @link http://easings.net
 $fs-easings: (
   'linear'         : '0.250, 0.250, 0.750, 0.750',
   'ease'           : '0.250, 0.100, 0.250, 1.000',
@@ -165,22 +109,20 @@ $fs-easings: (
   'easeInOutBack'  : '0.680, -0.550, 0.265, 1.55'
 );
 
-
 /// Custom easing function
 /// @param {String} $name - Name of easing
 /// @return {String} - Easing code
 /// @require {variable} $fs-easings - Custom easing map
-///
 @function fs-easing($name) {
   @return cubic-bezier(unquote(map-get($fs-easings, $name)));
 }
 
 /// Convert px to em
+/// @group Main
 /// @param {Number | Map} $values - Value or values to convert
 /// @param {Number} $context [$fs-base-font-size] - Base font size
 /// @return {*} - Converted value or list of values
 /// @require {variable} $fs-base-font-size - Base font size
-///
 @function fs-em($values, $context: $fs-base-font-size) {
 
   // Ensure context size is in pixels
@@ -212,7 +154,7 @@ $fs-easings: (
 }
 
 ////
-/// @group Internals
+/// @group Utilities
 /// @author Hugo Giraudel
 /// @link http://www.sitepoint.com/extra-map-functions-sass/
 ////
@@ -368,14 +310,21 @@ $fs-easings: (
 }
 
 ////
-/// @group Internals
+/// @group Math
 /// @author xi, strarsis, drtimofey, davidkpiano
 /// @link https://gist.github.com/xi/5bbe8480c48e2fc10ab5
 /// @link https://github.com/strarsis/sass-math-pow
 /// @link https://github.com/thoughtbot/bitters/issues/167
 /// @link https://github.com/thoughtbot/bourbon/issues/717
 /// @link https://gist.github.com/davidkpiano/ad6e6771df050ff3727f
+/// @link https://unindented.org/articles/trigonometry-in-sass/
 ////
+
+/// @access private
+$fs-pi: 3.141592653589793;
+/// Pi
+$π: $fs-pi;
+
 
 /// @access private
 @function fs-exp-taylor($x, $steps) {
@@ -443,6 +392,9 @@ $fs-easings: (
 }
 
 /// @access private
+/// @require {function} fs-ln-taylor
+/// @require {function} fs-log-approx
+/// @require {function} fs-pow-int
 @function fs-ln($x, $steps: 32) {
   $ln10: 2.302585092994046;
   $approx: fs-log-approx($x);
@@ -458,6 +410,9 @@ $fs-easings: (
 /// @param {Number} $exponent - Exponent
 /// @param {Number} $steps [32] - Steps (level of precision)
 /// @return {Number}
+/// @require {function} fs-exp-taylor
+/// @require {function} fs-ln
+/// @require {function} fs-pow-int
 @function fs-pow($x, $exponent, $steps: 32) {
   $exp1: round($exponent);
   $exp2: $exponent - $exp1;
@@ -474,12 +429,95 @@ $fs-easings: (
   }
 }
 
+
+/// Square root function
+/// @param {Number} $x - Number
+/// @param {Number} $exponent - Exponent
+/// @param {Number} $steps [40] - Steps (level of precision)
+/// @return {Number}
+/// @require {function} fs-pow
+@function fs-sqrt($x, $exponent: 2, $steps: 40) {
+  @return fs-pow($x, 1 / $exponent, $steps);
+}
+
+
+/// Factorial function
+/// @param {Number} $number
+/// @return {Number}
+@function factorial($number) {
+  // Return 1 for 0! or if $number is < 0
+  $value: 1;
+
+  @if $number > 0 {
+    @for $i from 1 through $number {
+      $value: $value * $i;
+    }
+  }
+
+  @return $value;
+}
+
+
+/// @access private
+@function fs-sin-taylor($x, $steps) {
+  $item: $x;
+  $result: $x;
+
+  @for $i from 1 to $steps {
+    $item: -$item * $x * $x / (2 * $i) / (2 * $i + 1);
+    $result: $result + $item;
+  }
+
+  @return $result;
+}
+
+/// Sine function
+/// @param {Number} $x - Number
+/// @param {Number} $steps [32] - Steps (level of precision)
+/// @return {Number}
+/// @require {variable} $fs-pi
+/// @require {function} fs-sin
+/// @require {function} fs-sin-taylor
+@function fs-sin($x, $steps: 32) {
+  $y: $x % (2 * $π);
+
+  @if $y > $π {
+    @return -1 * fs-sin($y - $π);
+  }
+  @else if $y < 0 {
+    @return -1 * fs-sin(-$y);
+  }
+  @else {
+    @return fs-sin-taylor($y % (2 * $π), $steps);
+  }
+}
+
+/// Cosine function
+/// @param {Number} $x - Number
+/// @param {Number} $steps [32] - Steps (level of precision)
+/// @return {Number}
+/// @require {variable} $fs-pi
+/// @require {function} fs-sin
+@function fs-cos($x, $steps: 32) {
+  @return fs-sin($x - $π / 2, $steps);
+}
+
+/// Tangent function
+/// @param {Number} $x - Number
+/// @param {Number} $steps [32] - Steps (level of precision)
+/// @return {Number}
+/// @require {function} fs-cos
+/// @require {function} fs-sin
+@function fs-tan($x, $steps: 32) {
+  @return fs-sin($x, $steps) / $cos($x, $steps);
+}
+
 /// Convert px to rem
+/// @group Main
 /// @param {Number | Map} $values - Value values to convert
 /// @param {Number} $context [$fs-base-font-size] - Base font size
 /// @return {*} - Converted value or list of values
 /// @require {variable} $fs-base-font-size - Base font size
-///
 @function fs-rem($values) {
 
   // Placeholder list for converted values
@@ -507,7 +545,7 @@ $fs-easings: (
 }
 
 /// Slices `$list` between `$start` and `$end`.
-/// @group Internals
+/// @group Utilities
 /// @author Hugo Giraudel
 /// @link http://sassylists.com/documentation.html#fs-slice
 ///
@@ -575,15 +613,12 @@ $fs-easings: (
 }
 
 /// Replace `$search` with `$replace` in `$string`
-/// @group Internals
+/// @group Utilities
 /// @author Hugo Giraudel
-///
 /// @param {String} $string - Initial string
 /// @param {String} $search - Substring to replace
 /// @param {String} $replace ('') - New value
-///
 /// @return {String} - Updated string
-///
 /// @link http://sassmeister.com/gist/1b4f2da5527830088e4d
 /// @link http://hugogiraudel.com/2014/01/13/sass-string-replacement-function/
 ///
@@ -601,7 +636,7 @@ $fs-easings: (
 }
 
 /// Add `$unit` to `$value`
-/// @group Internals
+/// @group Utilities
 /// @author Hugo Giraudel
 /// @link http://hugogiraudel.com/2014/01/15/sass-string-to-number/
 /// @param {Number} $value - Value to add unit to
@@ -619,7 +654,7 @@ $fs-easings: (
 
 
 /// Casts a string into a number
-/// @group Internals
+/// @group Utilities
 /// @param {String | Number} $value - Value to be parsed
 /// @return {Number}
 /// @author Hugo Giraudel
@@ -657,11 +692,10 @@ $fs-easings: (
 }
 
 /// Strip units
-/// @group Internals
+/// @group Utilities
 /// @param {Number} $arg - Value to strip
 /// @return {Number} - Stripped value
 /// @link http://stackoverflow.com/a/12335841/673457
-///
 @function fs-strip($arg) {
   // Return unitless value if valid number
   @if type-of($arg) == 'number' {
@@ -675,12 +709,24 @@ $fs-easings: (
 
 
 // Functions with dependencies
+/// Named breakpoints map
+/// @group Main
+$fs-breakpoints: (
+  'global': (
+    'narrow' : 320px,
+    'small'  : 480px,
+    'medium' : 640px,
+    'wide'   : 960px,
+    'full'   : 1200px
+  )
+) !default;
+
 /// Helper to get named breakpoint value from `$fs-breakpoints` map. Defaults to using 'base' as key if a single argument is passed.
+/// @group Main
 /// @param {Arglist} $keys - key/value
 /// @return {Number} - Breakpoint width
 /// @require {function} fs-map-deep-get - Fetch nested keys
 /// @require {variable} $fs-breakpoints - Named breakpoints map
-///
 @function fs-breakpoint($keys...) {
   @if not global-variable-exists(fs-breakpoints) {
     @error '🔴  $fs-breakpoints map does not exist';
@@ -707,13 +753,30 @@ $fs-easings: (
     @error '🔴  “#{$keys}” breakpoint not found';
   }
 }
-// Requires "map-functions"
+// Requires “map-functions”
+/// Colors map
+/// @group Main
+/// @link http://clrs.cc
+$fs-colors: (
+  'base': (
+    'red': #ff4136,
+    'orange': #ff851b,
+    'yellow': #ffdc00,
+    'green': #2ecc40,
+    'blue': #0074d9,
+    'purple': #b10dc9,
+    'white': #fff,
+    'gray': #ccc,
+    'black': #000,
+  )
+) !default;
+
 /// Helper to get color value from `$fs-colors` map
+/// @group Main
 /// @param {Arglist} $keys - key/value
 /// @return {Color} - Color value
 /// @require {function} fs-map-deep-get - Fetch nested keys
 /// @require {variable} $fs-colors - Named colors map
-///
 @function fs-color($keys...) {
   @if not global-variable-exists(fs-colors) {
     @error '🔴  $fs-colors map does not exist';
@@ -739,7 +802,7 @@ $fs-easings: (
 
   @return $val;
 }
-// Requires "map-functions"
+// Requires “map-functions”
 ////
 /// @ignore Based on work by voxpelli but using improved `pow()` function (see _pow.scss)
 /// @link https://gist.github.com/voxpelli/6304812
@@ -751,6 +814,7 @@ $fs-easings: (
 /// @param {Color} $color - Color
 /// @return {Number} - Float between 0–1
 /// @link http://www.w3.org/TR/2008/REC-WCAG20-20081211/#relativeluminancedef
+/// @require {function} fs-pow
 @function fs-luminance($color) {
   $colors: (
     'red': red($color),
@@ -782,6 +846,7 @@ $fs-easings: (
 /// @param {Color} $color2
 /// @return {Number}
 /// @link http://www.w3.org/TR/2008/REC-WCAG20-20081211/#contrast-ratiodef
+/// @require {function} fs-luminance
 @function fs-color-contrast($color1, $color2) {
   $lum1: fs-luminance($color1) + 0.05;
   $lum2: fs-luminance($color2) + 0.05;
@@ -795,17 +860,18 @@ $fs-easings: (
 }
 
 /// Pick first color in map with passing color contrast ratio
+/// @group Main
 /// @param {Color} $base - Background color
 /// @param {Map} $colors - List of text colors ordered by preference
 /// @param {Number} $ratio [4.5] - Target contrast ratio
 /// @param {Number} $tolerance [0] - Allowed deviation from target contrast ratio
 /// @return {Color}
+/// @require {function} fs-color-contrast
 ///
 /// @example scss
 ///   .demo {
 ///     color: fs-auto-contrast(darkgreen, (#fff, #555, #000));
 ///   }
-///
 @function fs-auto-contrast($base, $colors, $ratio: 4.5, $tolerance: 0) {
   $first-match: false;
 
@@ -834,42 +900,13 @@ $fs-easings: (
     @error "🔴  #{$last-color} on #{$base} fails WCAG AA contrast test (#{fs-color-contrast($base, $last-color)})";
   }
 }
-// Requires "pow" function
-/// Check whether `$value` is a valid length.
-/// @group Internals
-/// @param {*} $value - Value to validate.
-/// @return {Bool}
-/// @link http://www.sitepoint.com/bulletproof-function-validate-length-values-sass/
-///
-@function fs-is-length($value) {
-  @return fs-contains(0 'auto' 'initial' 'inherit', $value) or type-of($value) == 'number' and not unitless($value) or str-slice($value + '', 1, 4) == 'calc';
-}
-// Requires "contains" function
-/// Return unitless ratio of two values
-/// @group Internals
-/// @param {Number} $a - Dividend
-/// @param {Number} $a - Divisor
-/// @return {Number} - Unitless ratio
-/// @require {function} fs-strip
-///
-@function fs-ratio($a, $b) {
-  // Check if units match, or if divisor is unitless
-  @if unit($a) == unit($b) or unitless($b) {
-    @return fs-strip($a / $b);
-  }
-  // Warn if units don't match
-  @else {
-    @error '🔴  Units do not match: fs-ratio(#{$a}, #{$b})';
-  }
-}
-// Requires "strip-unit" function
-////
+// Requires pow() from “math”
+/// Characters to escape from SVGs
+/// @access private
 /// @ignore Symbol reference http://www.w3schools.com/tags/ref_urlencode.asp
 /// @ignore Note: gulp-minify-css (which uses clean-css) isn’t applying config options correctly causing data URLs to not be wrapped in quote, so we have to convert double quotes (") to percent encoded symbols.
-////
-
-/// @access private
-$common-symbol-map: (
+///
+$fs-escape-chars: (
   ' ': '%20',
   '\'': '%22',
   '"': '%27',
@@ -883,235 +920,63 @@ $common-symbol-map: (
   '>': '%3E',
   '\\': '%5C',
   '^': '%5E',
-  '`': '%60',
   '{': '%7B',
   '|': '%7C',
   '}': '%7D',
-  '‚': '%E2%80%9A',
-  '„': '%E2%80%9E',
-  '…': '%E2%80%A6',
-  'ˆ': '%CB%86',
-  '‹': '%E2%80%B9',
-  '‘': '%E2%80%98',
-  '’': '%E2%80%99',
-  '“': '%E2%80%9C',
-  '”': '%E2%80%9D',
-  '•': '%E2%80%A2',
-  '–': '%E2%80%93',
-  '—': '%E2%80%94',
-  '˜': '%CB%9C',
-  '™': '%E2%84',
-  '›': '%E2%80',
-  '¡': '%C2%A1',
-  '¢': '%C2%A2',
-  '£': '%C2%A3',
-  '¥': '%C2%A5',
-  '¦': '%C2%A6',
-  '©': '%C2%A9',
-  '«': '%C2%AB',
-  '®': '%C2%AE',
-  '´': '%C2%B4',
-  '»': '%C2%BB',
 );
 
+/// SVG icon map for use with `fs-svg` function
+/// @group Main
+$fs-svg-icons: (
+  close: (
+    height: 28,
+    width: 22,
+    data: '<path d="M20.28 20.66q0 .62-.44 1.06l-2.12 2.12q-.44.44-1.06.44t-1.07-.44l-4.6-4.6-4.6 4.6q-.43.44-1.06.44t-1.06-.44l-2.12-2.12q-.44-.44-.44-1.06t.44-1.07l4.6-4.6-4.6-4.6q-.44-.43-.44-1.06t.44-1.06l2.12-2.12q.44-.44 1.06-.44t1.07.44l4.6 4.6 4.6-4.6q.43-.44 1.06-.44t1.06.44l2.12 2.12q.44.44.44 1.06t-.44 1.07l-4.6 4.6 4.6 4.6q.44.43.44 1.06z"/>'
+  ),
+  search: (
+    height: 28,
+    width: 26,
+    data: '<path d="M18 13q0-2.9-2.06-4.95T11 6 6.05 8.06 4 13t2.05 4.95T11 20t4.95-2.06T18 13zm8 13q0 .8-.6 1.4T24 28q-.84 0-1.4-.6l-5.37-5.34Q14.43 24 11 24q-2.23 0-4.27-.87T3.2 20.8.88 17.26 0 13t.87-4.27T3.2 5.2t3.53-2.33T11 2t4.27.87T18.8 5.2t2.33 3.53T22 13q0 3.44-1.94 6.23l5.36 5.36q.58.57.58 1.4z"/>'
+  )
+) !default;
+
+
+/// URL-encode SVG code
 /// @access private
-$extended-symbol-map: (
-  ' ': '%20',
-  '\'': '%22',
-  '"': '%27',
-  '#': '%23',
-  '/': '%2F',
-  ':': '%3A',
-  '(': '%28',
-  ')': '%29',
-  '%': '%25',
-  '<': '%3C',
-  '>': '%3E',
-  '\\': '%5C',
-  '^': '%5E',
-  '`': '%60',
-  '{': '%7B',
-  '|': '%7C',
-  '}': '%7D',
-  '‚': '%E2%80%9A',
-  'ƒ': '%C6%92',
-  '„': '%E2%80%9E',
-  '…': '%E2%80%A6',
-  '†': '%E2%80%A0',
-  '‡': '%E2%80%A1',
-  'ˆ': '%CB%86',
-  '‰': '%E2%80%B0',
-  'Š': '%C5%A0',
-  '‹': '%E2%80%B9',
-  'Œ': '%C5%92',
-  'Ž': '%C5%BD',
-  '‘': '%E2%80%98',
-  '’': '%E2%80%99',
-  '“': '%E2%80%9C',
-  '”': '%E2%80%9D',
-  '•': '%E2%80%A2',
-  '–': '%E2%80%93',
-  '—': '%E2%80%94',
-  '˜': '%CB%9C',
-  '™': '%E2%84',
-  'š': '%C5%A1',
-  '›': '%E2%80',
-  'œ': '%C5%93',
-  '': '%9D',
-  'ž': '%C5%BE',
-  'Ÿ': '%C5%B8',
-  '¡': '%C2%A1',
-  '¢': '%C2%A2',
-  '£': '%C2%A3',
-  '¤': '%C2%A4',
-  '¥': '%C2%A5',
-  '¦': '%C2%A6',
-  '§': '%C2%A7',
-  '¨': '%C2%A8',
-  '©': '%C2%A9',
-  'ª': '%C2%AA',
-  '«': '%C2%AB',
-  '¬': '%C2%AC',
-  '®': '%C2%AE',
-  '¯': '%C2%AF',
-  '°': '%C2%B0',
-  '±': '%C2%B1',
-  '²': '%C2%B2',
-  '³': '%C2%B3',
-  '´': '%C2%B4',
-  'µ': '%C2%B5',
-  '¶': '%C2%B6',
-  '·': '%C2%B7',
-  '¸': '%C2%B8',
-  '¹': '%C2%B9',
-  'º': '%C2%BA',
-  '»': '%C2%BB',
-  '¼': '%C2%BC',
-  '½': '%C2%BD',
-  '¾': '%C2%BE',
-  '¿': '%C2%BF',
-  'À': '%C3%80',
-  'Á': '%C3%81',
-  'Â': '%C3%82',
-  'Ã': '%C3%83',
-  'Ä': '%C3%84',
-  'Å': '%C3%85',
-  'Æ': '%C3%86',
-  'Ç': '%C3%87',
-  'È': '%C3%88',
-  'É': '%C3%89',
-  'Ê': '%C3%8A',
-  'Ë': '%C3%8B',
-  'Ì': '%C3%8C',
-  'Í': '%C3%8D',
-  'Î': '%C3%8E',
-  'Ï': '%C3%8F',
-  'Ð': '%C3%90',
-  'Ñ': '%C3%91',
-  'Ò': '%C3%92',
-  'Ó': '%C3%93',
-  'Ô': '%C3%94',
-  'Õ': '%C3%95',
-  'Ö': '%C3%96',
-  '×': '%C3%97',
-  'Ø': '%C3%98',
-  'Ù': '%C3%99',
-  'Ú': '%C3%9A',
-  'Û': '%C3%9B',
-  'Ü': '%C3%9C',
-  'Ý': '%C3%9D',
-  'Þ': '%C3%9E',
-  'ß': '%C3%9F',
-  'à': '%C3%A0',
-  'á': '%C3%A1',
-  'â': '%C3%A2',
-  'ã': '%C3%A3',
-  'ä': '%C3%A4',
-  'å': '%C3%A5',
-  'æ': '%C3%A6',
-  'ç': '%C3%A7',
-  'è': '%C3%A8',
-  'é': '%C3%A9',
-  'ê': '%C3%AA',
-  'ë': '%C3%AB',
-  'ì': '%C3%AC',
-  'í': '%C3%AD',
-  'î': '%C3%AE',
-  'ï': '%C3%AF',
-  'ð': '%C3%B0',
-  'ñ': '%C3%B1',
-  'ò': '%C3%B2',
-  'ó': '%C3%B3',
-  'ô': '%C3%B4',
-  'õ': '%C3%B5',
-  'ö': '%C3%B6',
-  '÷': '%C3%B7',
-  'ø': '%C3%B8',
-  'ù': '%C3%B9',
-  'ú': '%C3%BA',
-  'û': '%C3%BB',
-  'ü': '%C3%BC',
-  'ý': '%C3%BD',
-  'þ': '%C3%BE',
-  'ÿ': '%C3%BF'
-);
-
-
-/// URL-encode a string, useful for inlining SVGs in CSS
-/// @group Internals
 /// @param {String} $string - String to encode
-/// @return {String} - Encoded string
+/// @return {String} - URL-encoded string
+/// @require {variable} $fs-escape-chars
 /// @require {function} fs-str-replace
 ///
 @function fs-url-encode($string) {
-  $new-string: '';
+  $escaped-string: '';
 
   // Loop through each character in string
   @for $i from 1 through str-length($string) {
     $char: str-slice($string, $i, $i);
 
     // Check if character is in symbol map
-    $char-lookup: map-get($common-symbol-map, $char);
+    $char-lookup: map-get($fs-escape-chars, $char);
 
-    // If it is, append encoded character to new string
+    // If it is, use escaped version
     @if $char-lookup != null {
-      $new-string: $new-string + $char-lookup;
+      $char: $char-lookup;
     }
 
-    // Otherwise, append character to new string
-    @else {
-      $new-string: $new-string + $char;
-    }
+    // Append character to escaped string
+    $escaped-string: $escaped-string + $char;
   }
 
-  // Return converted string
-  @return $new-string;
+  // Return escaped string
+  @return $escaped-string;
 }
-// Requires "str-replace"
-/// Get z-index layer from `$fs-zindex` map variable
-/// @param {Arglist} $keys - key/value
-/// @return {Number} - z-index value
-/// @require {function} fs-map-deep-get - Fetch nested keys
-/// @require {variable} $fs-zindex - Global z-index map
-/// @link https://twitter.com/HugoGiraudel/status/480022470431608832
-/// @link http://www.sitepoint.com/better-solution-managing-z-index-sass/
-///
-@function fs-zindex($keys...) {
-  @if not global-variable-exists(fs-zindex) {
-    @error '🔴  $fs-zindex map does not exist';
-  }
 
-  @if not length($fs-zindex) {
-    @error '🔴  $fs-zindex map does not contain any items';
-  }
 
-  @return fs-map-deep-get($fs-zindex, $keys...);
-}
-// Requires "map-functions"
 /// Helper to get URL-escaped inline SVG code for use with `background-image`
+/// @group Main
 /// @param {String} $name - Icon name
 /// @return {Color} $color - Fill color
-/// @require {function} fs-url-encode - Fetch nested keys
+/// @require {function} fs-url-encode
 /// @require {variable} $fs-svg-icons - SVG icon map
 ///
 /// @ignore - SVG code must be escaped for older browsers (e.g. IE9)
@@ -1152,7 +1017,63 @@ $extended-symbol-map: (
   // Return inline SVG data
   @return 'data:image/svg+xml,' + fs-url-encode('<svg version="1.1" baseProfile="full" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ' + $width + ' ' + $height + '" width="' + $width + '" height="' + $height + '" preserveAspectRatio="xMidYMid meet"' + $fill + $custom-attrs + '>' + unquote($data) + '</svg>');
 }
-// Requires "str-replace" and "url-encode" functions
+// Requires “str-replace”
+/// Check whether `$value` is a valid length.
+/// @group Utilities
+/// @param {*} $value - Value to validate.
+/// @return {Bool}
+/// @link http://www.sitepoint.com/bulletproof-function-validate-length-values-sass/
+/// @require {function} fs-contains
+@function fs-is-length($value) {
+  @return fs-contains(0 'auto' 'initial' 'inherit', $value) or type-of($value) == 'number' and not unitless($value) or str-slice($value + '', 1, 4) == 'calc';
+}
+// Requires “contains”
+/// Return unitless ratio of two values
+/// @group Math
+/// @param {Number} $a - Dividend
+/// @param {Number} $a - Divisor
+/// @return {Number} - Unitless ratio
+/// @require {function} fs-strip
+@function fs-ratio($a, $b) {
+  // Check if units match, or if divisor is unitless
+  @if unit($a) == unit($b) or unitless($b) {
+    @return fs-strip($a / $b);
+  }
+  // Warn if units don't match
+  @else {
+    @error '🔴  Units do not match: fs-ratio(#{$a}, #{$b})';
+  }
+}
+// Requires “strip-unit”
+/// Z-index layer map
+/// @group Main
+$fs-zindex: (
+  'main': 100,
+  'tooltip': 200,
+  'nav': 300,
+  'modal': 9999,
+) !default;
+
+/// Get z-index layer from `$fs-zindex` map variable
+/// @group Main
+/// @param {Arglist} $keys - key/value
+/// @return {Number} - z-index value
+/// @require {function} fs-map-deep-get - Fetch nested keys
+/// @require {variable} $fs-zindex - Global z-index map
+/// @link https://twitter.com/HugoGiraudel/status/480022470431608832
+/// @link http://www.sitepoint.com/better-solution-managing-z-index-sass/
+@function fs-zindex($keys...) {
+  @if not global-variable-exists(fs-zindex) {
+    @error '🔴  $fs-zindex map does not exist';
+  }
+
+  @if not length($fs-zindex) {
+    @error '🔴  $fs-zindex map does not contain any items';
+  }
+
+  @return fs-map-deep-get($fs-zindex, $keys...);
+}
+// Requires “map-functions”
 
 //------------------------------------------------------------------------//
 // Mixins
@@ -1164,6 +1085,61 @@ $extended-symbol-map: (
   position: absolute;
   top: 0;
   width: 100%;
+}
+
+////
+/// @author Hugo Giraudel
+/// @link http://codepen.io/SitePoint/pen/dppJzX/
+////
+
+/// Computes the height of the tilted pseudo-element based on the given angle
+/// @access private
+/// @param {Angle} $angle - the tilt angle
+/// @return {Number}
+//  b ◣c
+//    a
+@function fs-triangle-height($angle) {
+  $a: 100;// width is 100%
+  $opposite-angle: (90deg - $angle);
+
+  // hypotenuse
+  $c: $a / fs-sin($opposite-angle);
+
+  // calculate height using Pythagorean theorem
+  $b: fs-sqrt(fs-pow($c, 2) - fs-pow($a, 2));
+
+  // convert to percentage
+  @return (abs($b) * 1%);
+}
+
+/// Apply an angled edge using a pseudo-element with a diagonal background
+/// @param {Angle} $angle - Angle
+/// @param {Color} $color - Background color
+/// @param {String} $position ['top'] - Either `top` or `bottom`
+/// @param {String} $pseudo ['before'] - Either `before` or `after`
+@mixin fs-angle($angle, $color, $position: 'top', $pseudo: 'before') {
+  $height-ratio: fs-triangle-height($angle);
+  background-color: $color;
+  position: relative;
+
+  &:#{$pseudo} {
+    content: '';
+    left: 0;
+    padding-top: $height-ratio;
+    position: absolute;
+    width: 100%;
+
+    // 1. Use rgba() instead of “transparent” for Safari
+    // http://stackoverflow.com/a/30674347/673457
+    @if ($position == 'top') {
+      background-image: linear-gradient($angle, $color 50%, rgba($color, 0) 50%);
+      bottom: 100%;
+    }
+    @else {
+      background-image: linear-gradient($angle, rgba($color, 0) 50%, $color 50%);
+      top: 100%;
+    }
+  }
 }
 
 /// Maintain aspect ratio
@@ -1296,7 +1272,7 @@ $extended-symbol-map: (
 }
 
 /// Debug helper to conditionally run code
-/// @group Internals
+/// @group Utilities
 /// @param {Boolean} $override - Manually override `$fs-debug-mode` value
 /// @require {variable} $fs-debug-mode - Global debug mode flag
 ///
@@ -1420,7 +1396,7 @@ $extended-symbol-map: (
 }
 
 /// Min-width media query helper
-/// @require {Mixin} fs-media
+/// @require {mixin} fs-media
 /// @param {Number} $width - Breakpoint width
 ///
 /// @example scss
@@ -1433,7 +1409,7 @@ $extended-symbol-map: (
 }
 
 /// Max-width media query helper
-/// @require {Mixin} fs-media
+/// @require {mixin} fs-media
 /// @param {Number} $width - Breakpoint width
 ///
 /// @example scss
@@ -1465,7 +1441,7 @@ $extended-symbol-map: (
 
 ////
 /// Helper mixins to add various pseudo selectors
-/// @group Selector Utils
+/// @group Selectors
 /// @ignore http://sassmeister.com/gist/35c9c323d22eefdbf293 (by @csswizardry)
 ////
 
@@ -1500,6 +1476,7 @@ $extended-symbol-map: (
 }
 
 /// Quantity query mixin
+/// @group Main
 /// @author Indrek Paas
 /// @link http://sassmeister.com/gist/f48e5e34d329eaf44e37
 /// @link http://alistapart.com/article/quantity-queries-for-css
@@ -1538,6 +1515,7 @@ $extended-symbol-map: (
 ///   @include fs-quantity('>=8') {
 ///     /* More than or equal to 8 */
 ///   }
+///
 @mixin fs-quantity($arg) {
   // Exactly N
   @if type-of($arg) == 'number' {
@@ -1664,7 +1642,7 @@ $extended-symbol-map: (
 }
 
 ////
-/// @group Selector Utils
+/// @group Selectors
 /// @link http://sass-lang.com/documentation/Sass/Script/Functions.html#selector_functions
 ////
 
@@ -1687,7 +1665,7 @@ $extended-symbol-map: (
 }
 
 /// Helper to select all text input types
-/// @group Selector Utils
+/// @group Selectors
 @mixin fs-text-inputs {
   // scss-lint:disable QualifyingElement
   input[type='email'],
@@ -1885,7 +1863,7 @@ $extended-symbol-map: (
 /// @param {Number} $end-width [1000px] - Ending viewport width
 /// @param {Number} $context [$fs-base-font-size] - Base `font-size` (optional)
 /// @param {String} $units ['%'] - `font-size` units (optional, defaults to `'%'`)
-/// @require {function} _convert-units
+/// @require {function} fs-convert-units
 /// @link https://github.com/bookcasey/fittext
 ///
 /// @example scss
@@ -1995,7 +1973,7 @@ $extended-symbol-map: (
 
   // Output starting font-size for when fs-scale-text() used multiple times on the same element
   @include fs-min-width($start-width) {
-    font-size: _convert-units($units, $start-font-size, $context);
+    font-size: fs-convert-units($units, $start-font-size, $context);
     @if $has-line-height {
       line-height: $start-line-height;
     }
@@ -2051,8 +2029,8 @@ $extended-symbol-map: (
 
     // Output font size styles
     @include fs-min-width($breakpoint) {
-      // _convert-units() will output the correct unit based on $units
-      font-size: _convert-units($units, $font-size, $context);
+      // fs-convert-units() will output the correct unit based on $units
+      font-size: fs-convert-units($units, $font-size, $context);
 
       @if ($has-line-height and $line-height-diff != 0) {
 
@@ -2083,4 +2061,4 @@ $extended-symbol-map: (
     }
   }
 };
-// Requires _media-query.scss and _convert-units.scss
+// Requires “media-query” and “convert-units”

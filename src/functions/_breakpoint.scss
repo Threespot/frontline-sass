@@ -1,9 +1,21 @@
+/// Named breakpoints map
+/// @group Main
+$fs-breakpoints: (
+  'global': (
+    'narrow' : 320px,
+    'small'  : 480px,
+    'medium' : 640px,
+    'wide'   : 960px,
+    'full'   : 1200px
+  )
+) !default;
+
 /// Helper to get named breakpoint value from `$fs-breakpoints` map. Defaults to using 'base' as key if a single argument is passed.
+/// @group Main
 /// @param {Arglist} $keys - key/value
 /// @return {Number} - Breakpoint width
 /// @require {function} fs-map-deep-get - Fetch nested keys
 /// @require {variable} $fs-breakpoints - Named breakpoints map
-///
 @function fs-breakpoint($keys...) {
   @if not global-variable-exists(fs-breakpoints) {
     @error '🔴  $fs-breakpoints map does not exist';

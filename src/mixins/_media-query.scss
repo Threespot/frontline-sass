@@ -46,7 +46,7 @@
 }
 
 /// Min-width media query helper
-/// @require {Mixin} fs-media
+/// @require {mixin} fs-media
 /// @param {Number} $width - Breakpoint width
 ///
 /// @example scss
@@ -59,7 +59,7 @@
 }
 
 /// Max-width media query helper
-/// @require {Mixin} fs-media
+/// @require {mixin} fs-media
 /// @param {Number} $width - Breakpoint width
 ///
 /// @example scss

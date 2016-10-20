@@ -1,12 +1,13 @@
 /// Convert unit to px, em, rem, or %
-/// @group Internals
+/// @access private
 /// @param {Number} $units- Units to convert to
 /// @param {Number} $value - Starting px value
 /// @return {Number} $context - Context font-size in px
-///
-@function _convert-units($units, $value, $context) {
+/// @require {function} fs-em
+/// @require {function} fs-rem
+@function fs-convert-units($units, $value, $context) {
   @if unit($value) != 'px' or unit($context) != 'px' {
-    @error '🔴  _convert-units() only accepts pixel values';
+    @error '🔴  fs-convert-units() only accepts pixel values';
   }
 
   // Percentage
@@ -36,6 +37,6 @@
 
   // Unsupported output unit
   @else {
-    @error '🔴  “#{$units}” is not a valid output unit for _convert-units()';
+    @error '🔴  “#{$units}” is not a valid output unit for fs-convert-units()';
   }
 };

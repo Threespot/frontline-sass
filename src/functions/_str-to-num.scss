@@ -1,5 +1,5 @@
 /// Add `$unit` to `$value`
-/// @group Internals
+/// @group Utilities
 /// @author Hugo Giraudel
 /// @link http://hugogiraudel.com/2014/01/15/sass-string-to-number/
 /// @param {Number} $value - Value to add unit to
@@ -17,7 +17,7 @@
 
 
 /// Casts a string into a number
-/// @group Internals
+/// @group Utilities
 /// @param {String | Number} $value - Value to be parsed
 /// @return {Number}
 /// @author Hugo Giraudel

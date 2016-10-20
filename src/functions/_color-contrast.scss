@@ -9,6 +9,7 @@
 /// @param {Color} $color - Color
 /// @return {Number} - Float between 0–1
 /// @link http://www.w3.org/TR/2008/REC-WCAG20-20081211/#relativeluminancedef
+/// @require {function} fs-pow
 @function fs-luminance($color) {
   $colors: (
     'red': red($color),
@@ -40,6 +41,7 @@
 /// @param {Color} $color2
 /// @return {Number}
 /// @link http://www.w3.org/TR/2008/REC-WCAG20-20081211/#contrast-ratiodef
+/// @require {function} fs-luminance
 @function fs-color-contrast($color1, $color2) {
   $lum1: fs-luminance($color1) + 0.05;
   $lum2: fs-luminance($color2) + 0.05;
@@ -53,17 +55,18 @@
 }
 
 /// Pick first color in map with passing color contrast ratio
+/// @group Main
 /// @param {Color} $base - Background color
 /// @param {Map} $colors - List of text colors ordered by preference
 /// @param {Number} $ratio [4.5] - Target contrast ratio
 /// @param {Number} $tolerance [0] - Allowed deviation from target contrast ratio
 /// @return {Color}
+/// @require {function} fs-color-contrast
 ///
 /// @example scss
 ///   .demo {
 ///     color: fs-auto-contrast(darkgreen, (#fff, #555, #000));
 ///   }
-///
 @function fs-auto-contrast($base, $colors, $ratio: 4.5, $tolerance: 0) {
   $first-match: false;
 

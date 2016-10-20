@@ -1,11 +1,20 @@
+/// Z-index layer map
+/// @group Main
+$fs-zindex: (
+  'main': 100,
+  'tooltip': 200,
+  'nav': 300,
+  'modal': 9999,
+) !default;
+
 /// Get z-index layer from `$fs-zindex` map variable
+/// @group Main
 /// @param {Arglist} $keys - key/value
 /// @return {Number} - z-index value
 /// @require {function} fs-map-deep-get - Fetch nested keys
 /// @require {variable} $fs-zindex - Global z-index map
 /// @link https://twitter.com/HugoGiraudel/status/480022470431608832
 /// @link http://www.sitepoint.com/better-solution-managing-z-index-sass/
-///
 @function fs-zindex($keys...) {
   @if not global-variable-exists(fs-zindex) {
     @error '🔴  $fs-zindex map does not exist';

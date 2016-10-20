@@ -1,10 +1,9 @@
 /// Return unitless ratio of two values
-/// @group Internals
+/// @group Math
 /// @param {Number} $a - Dividend
 /// @param {Number} $a - Divisor
 /// @return {Number} - Unitless ratio
 /// @require {function} fs-strip
-///
 @function fs-ratio($a, $b) {
   // Check if units match, or if divisor is unitless
   @if unit($a) == unit($b) or unitless($b) {

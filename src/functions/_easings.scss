@@ -1,7 +1,10 @@
+////
+/// @group Main
+////
+
 /// Custom easings map
 /// @link https://github.com/jhardy/compass-ceaser-easing
-/// @link http://easings.net/
-///
+/// @link http://easings.net
 $fs-easings: (
   'linear'         : '0.250, 0.250, 0.750, 0.750',
   'ease'           : '0.250, 0.100, 0.250, 1.000',
@@ -34,12 +37,10 @@ $fs-easings: (
   'easeInOutBack'  : '0.680, -0.550, 0.265, 1.55'
 );
 
-
 /// Custom easing function
 /// @param {String} $name - Name of easing
 /// @return {String} - Easing code
 /// @require {variable} $fs-easings - Custom easing map
-///
 @function fs-easing($name) {
   @return cubic-bezier(unquote(map-get($fs-easings, $name)));
 }

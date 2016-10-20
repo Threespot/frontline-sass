@@ -1,4 +1,5 @@
 /// Quantity query mixin
+/// @group Main
 /// @author Indrek Paas
 /// @link http://sassmeister.com/gist/f48e5e34d329eaf44e37
 /// @link http://alistapart.com/article/quantity-queries-for-css
@@ -37,6 +38,7 @@
 ///   @include fs-quantity('>=8') {
 ///     /* More than or equal to 8 */
 ///   }
+///
 @mixin fs-quantity($arg) {
   // Exactly N
   @if type-of($arg) == 'number' {

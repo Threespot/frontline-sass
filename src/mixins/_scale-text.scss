@@ -8,7 +8,7 @@
 /// @param {Number} $end-width [1000px] - Ending viewport width
 /// @param {Number} $context [$fs-base-font-size] - Base `font-size` (optional)
 /// @param {String} $units ['%'] - `font-size` units (optional, defaults to `'%'`)
-/// @require {function} _convert-units
+/// @require {function} fs-convert-units
 /// @link https://github.com/bookcasey/fittext
 ///
 /// @example scss
@@ -118,7 +118,7 @@
 
   // Output starting font-size for when fs-scale-text() used multiple times on the same element
   @include fs-min-width($start-width) {
-    font-size: _convert-units($units, $start-font-size, $context);
+    font-size: fs-convert-units($units, $start-font-size, $context);
     @if $has-line-height {
       line-height: $start-line-height;
     }
@@ -174,8 +174,8 @@
 
     // Output font size styles
     @include fs-min-width($breakpoint) {
-      // _convert-units() will output the correct unit based on $units
-      font-size: _convert-units($units, $font-size, $context);
+      // fs-convert-units() will output the correct unit based on $units
+      font-size: fs-convert-units($units, $font-size, $context);
 
       @if ($has-line-height and $line-height-diff != 0) {
 
