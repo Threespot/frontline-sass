@@ -1,7 +1,7 @@
 /// Return unitless ratio of two values
 /// @group Math
 /// @param {Number} $a - Dividend
-/// @param {Number} $a - Divisor
+/// @param {Number} $b - Divisor
 /// @return {Number} - Unitless ratio
 /// @require {function} fs-strip
 @function fs-ratio($a, $b) {

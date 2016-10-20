@@ -5,16 +5,50 @@
 
 /// Add selector to root (requires Sass 3.4+)
 /// @param {String} $selector - Selector to add to root
+///
+/// @example scss
+///   .foo {
+///     @include fs-root-add(a) {
+///       content: 'a.foo';
+///     }
+///
+///     @include fs-root-add('.bar') {
+///       content: '.foo.bar';
+///     }
+///   }
+///
 @mixin fs-root-add($selector) {
-  @at-root #{selector-append($selector, &)} {
-    @content;
+  @if function-exists(selector-append) {
+    @at-root #{selector-append($selector, &)} {
+      @content;
+    }
+  }
+  @else {
+    @error '🔴  selector-append() is not supported. Please upgrade to Sass 3.4+';
   }
 }
 
 /// Prepend selector (requires Sass 3.4+)
 /// @param {String} $selector - Selector to insert before root
+///
+/// @example scss
+///   .foo {
+///     @include fs-root-before(a) {
+///       content: 'a .foo';
+///     }
+///
+///     @include fs-root-before('.bar') {
+///       content: '.bar .foo';
+///     }
+///   }
+///
 @mixin fs-root-before($selector) {
-  @at-root #{selector-nest($selector, &)} {
-    @content;
+  @if function-exists(selector-nest) {
+    @at-root #{selector-nest($selector, &)} {
+      @content;
+    }
+  }
+  @else {
+    @error '🔴  selector-nest() is not supported. Please upgrade to Sass 3.4+';
   }
 }

@@ -1,19 +1,19 @@
 ////
 /// @group Math
-/// @author xi, strarsis, drtimofey, davidkpiano
-/// @link https://gist.github.com/xi/5bbe8480c48e2fc10ab5
-/// @link https://github.com/strarsis/sass-math-pow
-/// @link https://github.com/thoughtbot/bitters/issues/167
-/// @link https://github.com/thoughtbot/bourbon/issues/717
-/// @link https://gist.github.com/davidkpiano/ad6e6771df050ff3727f
-/// @link https://unindented.org/articles/trigonometry-in-sass/
+/// @author xi
+/// @link https://github.com/xi/sass-planifolia/blob/master/sass/math.scss
+/// @ignore Based on work by strarsis, drtimofey, davidkpiano
+/// @ignore https://github.com/strarsis/sass-math-pow
+/// @ignore https://github.com/thoughtbot/bitters/issues/167
+/// @ignore https://github.com/thoughtbot/bourbon/issues/717
+/// @ignore https://gist.github.com/davidkpiano/ad6e6771df050ff3727f
 ////
 
-/// @access private
-$fs-pi: 3.141592653589793;
 /// Pi
-$π: $fs-pi;
+$fs-pi: 3.141592653589793;
 
+/// @access private
+$π: $fs-pi;
 
 /// @access private
 @function fs-exp-taylor($x, $steps) {
@@ -133,6 +133,8 @@ $π: $fs-pi;
 /// Factorial function
 /// @param {Number} $number
 /// @return {Number}
+/// @author Daniel Perez Alvarez
+/// @link https://unindented.org/articles/trigonometry-in-sass/
 @function factorial($number) {
   // Return 1 for 0! or if $number is < 0
   $value: 1;

@@ -11,7 +11,9 @@
 //------------------------------------------------------------------------//
 // Global vars
 //------------------------------------------------------------------------//
-$fs-debug-mode: false !default;
+
+/// Base font size
+/// @group Main
 $fs-base-font-size: 16px !default;
 
 //------------------------------------------------------------------------//
@@ -142,7 +144,7 @@ $fs-easings: (
 
     // Do nothing to all other values
     @else if $fs-debug-mode {
-      @warn '🔶  Can’t convert non-pixel value to ems: #{$val}';
+      @warn '⚠️  Can’t convert non-pixel value to ems: #{$val}';
     }
 
     // Append value to output list
@@ -255,7 +257,7 @@ $fs-easings: (
   $map: ();
 
   @if $l-keys != $l-values {
-    @warn 'There are #{$l-keys} key(s) for #{$l-values} value(s) in the map for `map-zip`. ' + 'Resulting map will only have #{$min} pairs.';
+    @warn '⚠️ There are #{$l-keys} key(s) for #{$l-values} value(s) in the map for `map-zip`. ' + 'Resulting map will only have #{$min} pairs.';
   }
 
   @if $min == 0 {
@@ -311,20 +313,20 @@ $fs-easings: (
 
 ////
 /// @group Math
-/// @author xi, strarsis, drtimofey, davidkpiano
-/// @link https://gist.github.com/xi/5bbe8480c48e2fc10ab5
-/// @link https://github.com/strarsis/sass-math-pow
-/// @link https://github.com/thoughtbot/bitters/issues/167
-/// @link https://github.com/thoughtbot/bourbon/issues/717
-/// @link https://gist.github.com/davidkpiano/ad6e6771df050ff3727f
-/// @link https://unindented.org/articles/trigonometry-in-sass/
+/// @author xi
+/// @link https://github.com/xi/sass-planifolia/blob/master/sass/math.scss
+/// @ignore Based on work by strarsis, drtimofey, davidkpiano
+/// @ignore https://github.com/strarsis/sass-math-pow
+/// @ignore https://github.com/thoughtbot/bitters/issues/167
+/// @ignore https://github.com/thoughtbot/bourbon/issues/717
+/// @ignore https://gist.github.com/davidkpiano/ad6e6771df050ff3727f
 ////
 
-/// @access private
-$fs-pi: 3.141592653589793;
 /// Pi
-$π: $fs-pi;
+$fs-pi: 3.141592653589793;
 
+/// @access private
+$π: $fs-pi;
 
 /// @access private
 @function fs-exp-taylor($x, $steps) {
@@ -444,6 +446,8 @@ $π: $fs-pi;
 /// Factorial function
 /// @param {Number} $number
 /// @return {Number}
+/// @author Daniel Perez Alvarez
+/// @link https://unindented.org/articles/trigonometry-in-sass/
 @function factorial($number) {
   // Return 1 for 0! or if $number is < 0
   $value: 1;
@@ -533,7 +537,7 @@ $π: $fs-pi;
 
     // Do nothing to all other values
     @else if $fs-debug-mode and $val != 0 {
-      @warn '🔶  Can’t convert non-pixel value to rems: #{$val}';
+      @warn '⚠️  Can’t convert non-pixel value to rems: #{$val}';
     }
 
     // Append value to output list
@@ -804,9 +808,10 @@ $fs-colors: (
 }
 // Requires “map-functions”
 ////
-/// @ignore Based on work by voxpelli but using improved `pow()` function (see _pow.scss)
+/// @group Main
+/// @author Based on work by voxpelli and xi
 /// @link https://gist.github.com/voxpelli/6304812
-/// @author voxpelli, Ted Whitehead
+/// @link https://github.com/xi/sass-planifolia/blob/master/sass/contrast.scss
 ////
 
 /// Color luminance function
@@ -860,7 +865,6 @@ $fs-colors: (
 }
 
 /// Pick first color in map with passing color contrast ratio
-/// @group Main
 /// @param {Color} $base - Background color
 /// @param {Map} $colors - List of text colors ordered by preference
 /// @param {Number} $ratio [4.5] - Target contrast ratio
@@ -872,6 +876,7 @@ $fs-colors: (
 ///   .demo {
 ///     color: fs-auto-contrast(darkgreen, (#fff, #555, #000));
 ///   }
+///
 @function fs-auto-contrast($base, $colors, $ratio: 4.5, $tolerance: 0) {
   $first-match: false;
 
@@ -899,6 +904,23 @@ $fs-colors: (
     $last-color: nth($colors, length($colors));
     @error "🔴  #{$last-color} on #{$base} fails WCAG AA contrast test (#{fs-color-contrast($base, $last-color)})";
   }
+}
+
+/// Warn if the contrast is below a threshold
+/// @group Main
+/// @param {color} $color1 background color
+/// @param {color} $color2 foreground color
+/// @param {number} $threshold [4.5]
+/// @link https://github.com/xi/sass-planifolia/blob/master/sass/contrast.scss
+/// @require {function} fs-color-contrast
+@function fs-contrast-test($color1, $color2, $threshold: 4.5) {
+  $contrast: fs-color-contrast($color1, $color2);
+
+  @if $contrast < $threshold {
+    @warn '⚠️ Low contrast warning: #{$color1}, #{$color2}, #{$contrast}';
+  }
+
+  @return null;
 }
 // Requires pow() from “math”
 /// Characters to escape from SVGs
@@ -1031,7 +1053,7 @@ $fs-svg-icons: (
 /// Return unitless ratio of two values
 /// @group Math
 /// @param {Number} $a - Dividend
-/// @param {Number} $a - Divisor
+/// @param {Number} $b - Divisor
 /// @return {Number} - Unitless ratio
 /// @require {function} fs-strip
 @function fs-ratio($a, $b) {
@@ -1079,6 +1101,7 @@ $fs-zindex: (
 // Mixins
 //------------------------------------------------------------------------//
 /// Absolutely position an element and fill available space
+/// @group Main
 @mixin fs-absolute-fill {
   height: 100%;
   left: 0;
@@ -1094,8 +1117,6 @@ $fs-zindex: (
 
 /// Computes the height of the tilted pseudo-element based on the given angle
 /// @access private
-/// @param {Angle} $angle - the tilt angle
-/// @return {Number}
 //  b ◣c
 //    a
 @function fs-triangle-height($angle) {
@@ -1113,6 +1134,7 @@ $fs-zindex: (
 }
 
 /// Apply an angled edge using a pseudo-element with a diagonal background
+/// @group Main
 /// @param {Angle} $angle - Angle
 /// @param {Color} $color - Background color
 /// @param {String} $position ['top'] - Either `top` or `bottom`
@@ -1143,16 +1165,15 @@ $fs-zindex: (
 }
 
 /// Maintain aspect ratio
+/// @group Main
 /// @param {Number} $ratio - Aspect ratio (width / height)
+///
 /// @example scss - 16:9 aspect ratio
 ///   .foo {
 ///     @include aspectRatio(16/9);
 ///   }
 ///
 @mixin fs-aspect-ratio($ratio) {
-  @if $ratio < 1 {
-    @warn '🔶  Aspect ratio of #{$ratio} is for a portrait image. This may be a mistake.';
-  }
   display: block;
   overflow: hidden;
   position: relative;
@@ -1165,13 +1186,14 @@ $fs-zindex: (
 }
 
 /// Burger menu icon mixin
-/// @author Joren Van Hee
+/// @group Main
 /// @param {Number} $width [30px] - Icon width
 /// @param {Number} $height [5px] - Bar height
 /// @param {Number} $gutter [3px] - Gap between bars
 /// @param {Color} $color [currentColor] - Icon color
 /// @param {Number} $border-radius [0] - Border radius
 /// @param {Number} $transition-duration [300ms] - Transition duration
+/// @author Joren Van Hee
 /// @link https://github.com/jorenvanhee/sass-burger
 ///
 /// @example scss
@@ -1183,11 +1205,6 @@ $fs-zindex: (
 ///       $transition-duration: 200ms,
 ///       $width: 20px
 ///     );
-///
-///     &.is-active {
-///       @include fs-burger-to-cross;
-///     }
-///   }
 ///
 @mixin fs-burger(
   $width: 30px,
@@ -1237,15 +1254,32 @@ $fs-zindex: (
   }
 }
 
-// Burger animations
+// Animate burger icon to a cross
+/// @group Main
+///
+/// @example scss
+///   .icon {
+///     @include fs-burger(
+///       $color: #fff,
+///       $gutter: 3px,
+///       $height: 3px,
+///       $transition-duration: 200ms,
+///       $width: 20px
+///     );
+///
+///     &.is-active {
+///       @include fs-burger-to-cross;
+///     }
+///   }
+///
 @mixin fs-burger-to-cross($color: auto) {
   & {
     background-color: transparent;
   }
 
   @if ($color != auto) {
-    &::before,
-    &::after {
+    &:before,
+    &:after {
         background-color: $color;
     }
   }
@@ -1260,9 +1294,9 @@ $fs-zindex: (
 }
 
 /// Clears floats in IE 8+
+/// @group Main
 /// @link http://nicolasgallagher.com/micro-clearfix-hack/
 /// @link https://css-tricks.com/snippets/css/clear-fix/
-///
 @mixin fs-clearfix {
   &:after {
     clear: both;
@@ -1271,11 +1305,16 @@ $fs-zindex: (
   }
 }
 
-/// Debug helper to conditionally run code
+////
 /// @group Utilities
+////
+
+/// Debug mode toggle
+$fs-debug-mode: false !default;
+
+/// Debug helper to conditionally run code
 /// @param {Boolean} $override - Manually override `$fs-debug-mode` value
 /// @require {variable} $fs-debug-mode - Global debug mode flag
-///
 @mixin fs-debug($override: false) {
   @if ($fs-debug-mode or $override) {
     @content;
@@ -1283,10 +1322,10 @@ $fs-zindex: (
 }
 
 /// Apply font smoothing in Safari, Chrome, and Firefox. Use sparringly!
+/// @group Main
 /// @param {Boolean} $enabled - Enable or disable smoothing
 /// @link http://maximilianhoffmann.com/posts/better-font-rendering-on-osx
 /// @link http://usabilitypost.com/2012/11/05/stop-fixing-font-smoothing/
-///
 @mixin fs-font-smoothing($enabled: true) {
   @if $enabled {
     -moz-osx-font-smoothing: grayscale;
@@ -1299,8 +1338,8 @@ $fs-zindex: (
 }
 
 /// Hide text in element, requires setting height and width
+/// @group Main
 /// @link http://compass-style.org/reference/compass/typography/text/replacement/#mixin-hide-text
-///
 @mixin fs-hide-text {
   font-size: 0;
   overflow: hidden;
@@ -1309,6 +1348,7 @@ $fs-zindex: (
 }
 
 /// Helper mixin to set link colors
+/// @group Main
 /// @param {Color} $static - Static link color
 /// @param {Color} $visited [$static] - Visited link color (optional)
 /// @param {Color} $attention - Hover/focus/active link color
@@ -1317,8 +1357,8 @@ $fs-zindex: (
 ///   a {
 ///     @include fs-link-colors(
 ///       $static: blue,
-///       $visited: purple,
-///       $attention: red
+///       $attention: red,
+///       $visited: purple
 ///     );
 ///   }
 ///
@@ -1348,16 +1388,21 @@ $fs-zindex: (
   }
 }
 
+////
+/// @group Main
+////
+
 /// Base media query mixin
 /// @param {Number | Map} $conditions - Width or map of conditions
 ///
 /// @example scss
+///   @include fs-media((min-width: 600px)) {…}
+///
 ///   @include fs-media((min-width: 600px, max-width: 900px, min-height: 500px, min-aspect-ratio: "1/1")) {…}
 ///
 /// @ignore Convert units to ems when applicable http://zellwk.com/blog/media-query-units/
 /// @ignore Note: EMs in media queries are relative to the initial browser font-size (16px) http://www.w3.org/TR/css3-mediaqueries/#units
 /// @ignore Demo: http://www.sassmeister.com/gist/908ff8ee2e2e0b18f768fcbc87df385c
-///
 @mixin fs-media($conditions) {
 
   // Check if $conditions is a valid map
@@ -1420,6 +1465,10 @@ $fs-zindex: (
     @content;
   }
 }
+
+////
+/// @group Main
+////
 
 /// Hide in print view
 @mixin fs-print-hide {
@@ -1592,7 +1641,7 @@ $fs-zindex: (
 
 ////
 /// Reset default element styles
-/// @group Resets
+/// @group Main
 ////
 
 /// Reset input styles
@@ -1649,18 +1698,50 @@ $fs-zindex: (
 /// Add selector to root (requires Sass 3.4+)
 /// @param {String} $selector - Selector to add to root
 ///
+/// @example scss
+///   .foo {
+///     @include fs-root-add(a) {
+///       content: 'a.foo';
+///     }
+///
+///     @include fs-root-add('.bar') {
+///       content: '.foo.bar';
+///     }
+///   }
+///
 @mixin fs-root-add($selector) {
-  @at-root #{selector-append($selector, &)} {
-    @content;
+  @if function-exists(selector-append) {
+    @at-root #{selector-append($selector, &)} {
+      @content;
+    }
+  }
+  @else {
+    @error '🔴  selector-append() is not supported. Please upgrade to Sass 3.4+';
   }
 }
 
 /// Prepend selector (requires Sass 3.4+)
 /// @param {String} $selector - Selector to insert before root
 ///
+/// @example scss
+///   .foo {
+///     @include fs-root-before(a) {
+///       content: 'a .foo';
+///     }
+///
+///     @include fs-root-before('.bar') {
+///       content: '.bar .foo';
+///     }
+///   }
+///
 @mixin fs-root-before($selector) {
-  @at-root #{selector-nest($selector, &)} {
-    @content;
+  @if function-exists(selector-nest) {
+    @at-root #{selector-nest($selector, &)} {
+      @content;
+    }
+  }
+  @else {
+    @error '🔴  selector-nest() is not supported. Please upgrade to Sass 3.4+';
   }
 }
 
@@ -1680,8 +1761,8 @@ $fs-zindex: (
 }
 
 /// Helper for setting `text-rendering: optimizeLegibility;`
+/// @group Main
 /// @ignore Note: optimizeLegibility is buggy on Safari 5.1 for Windows
-///
 @mixin fs-text-optimize {
   text-rendering: optimizeLegibility;// Improve kerning and enable ligatures
 
@@ -1691,12 +1772,12 @@ $fs-zindex: (
 }
 
 /// Triangle mixin (from Bourbon)
-/// @author https://github.com/thoughtbot
+/// @group Main
 /// @param {Number} $size - Height of triangle
 /// @param {Color} $color - Hex color value
 /// @param {String} $direction - Up, down, left, or right
+/// @author https://github.com/thoughtbot
 /// @link https://github.com/thoughtbot/bourbon/blob/master/app/assets/stylesheets/addons/_triangle.scss
-///
 @mixin fs-triangle($size, $color, $direction) {
   height: 0;
   width: 0;
@@ -1786,10 +1867,10 @@ $fs-zindex: (
 }
 
 /// Vertically center an element
+/// @group Main
 /// @param {String} $position [relative] - Positioning
 /// @link http://zerosixthree.se/vertical-align-anything-with-just-3-lines-of-css/
 /// @ignore Note: May need to set `transform-style: preserve-3d;` on parent to prevent blurry text
-///
 @mixin fs-vert-center($position: relative) {
   position: $position;
   top: 50%;
@@ -1802,16 +1883,16 @@ $fs-zindex: (
 }
 
 /// Reset vertical center styles
-///
+/// @group Main
 @mixin fs-undo-vert-center {
   top: auto;
   transform: translateY(0);
 }
 
 /// Hide visually but still be available to screenreaders
+/// @group Main
 /// @link http://snook.ca/archives/html_and_css/hiding-content-for-accessibility
 /// @author Jonathan Snook
-///
 @mixin fs-visually-hidden {
   border: 0;
   clip: rect(0 0 0 0);
@@ -1824,7 +1905,7 @@ $fs-zindex: (
 }
 
 /// Undo visually hidden styles
-///
+/// @group Main
 @mixin fs-undo-visually-hidden {
   clip: auto;
   height: auto;
@@ -1835,16 +1916,15 @@ $fs-zindex: (
 }
 
 /// Break long words, hyphenate if possible (requires `lang` attribute)
+/// @group Main
 /// @link http://kenneth.io/blog/2012/03/04/word-wrapping-hypernation-using-css/
 /// @link https://justmarkup.com/log/2015/07/dealing-with-long-words-in-css/
 /// @link http://caniuse.com/#feat=css-hyphens
 /// @link http://caniuse.com/#feat=wordwrap
-///
 /// @ignore Demo http://jsbin.com/fubor
 /// @ignore - Hyphenation not currently suported in Chrome, Opera, Android, or IE9-
 /// @ignore - Hyphenation depends on dictionary, so requires lang attribute be set
 /// @ignore - Setting "word-break: break-all" will disable hyphens in Firefox and IE10+
-///
 @mixin fs-break-word {
   hyphens: auto;// requires lang attribute be set on target element or ancestor
   overflow-wrap: break-word;
@@ -1854,6 +1934,7 @@ $fs-zindex: (
 
 // Minxins with dependencies
 /// Automatically scale font-size and line-height
+/// @group Main
 /// @require {mixin} fs-min-width - Min-width media query mixin
 /// @param {Number | List} $start - Starting `font-size` and `line-height` (optional)
 /// @param {Number | List} $end - Ending `font-size` and `line-height` (optional)
@@ -1886,7 +1967,7 @@ $fs-zindex: (
 ///     $end-width: 800px,
 ///     $units: 'em'
 ///   );
-
+///
 @mixin fs-scale-text(
   $start,
   $end,

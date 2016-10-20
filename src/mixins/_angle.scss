@@ -5,8 +5,6 @@
 
 /// Computes the height of the tilted pseudo-element based on the given angle
 /// @access private
-/// @param {Angle} $angle - the tilt angle
-/// @return {Number}
 //  b ◣c
 //    a
 @function fs-triangle-height($angle) {
