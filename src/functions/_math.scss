@@ -1,12 +1,19 @@
 ////
-/// @group Internals
+/// @group Math
 /// @author xi, strarsis, drtimofey, davidkpiano
 /// @link https://gist.github.com/xi/5bbe8480c48e2fc10ab5
 /// @link https://github.com/strarsis/sass-math-pow
 /// @link https://github.com/thoughtbot/bitters/issues/167
 /// @link https://github.com/thoughtbot/bourbon/issues/717
 /// @link https://gist.github.com/davidkpiano/ad6e6771df050ff3727f
+/// @link https://unindented.org/articles/trigonometry-in-sass/
 ////
+
+/// @access private
+$fs-pi: 3.141592653589793;
+/// Pi
+$π: $fs-pi;
+
 
 /// @access private
 @function fs-exp-taylor($x, $steps) {
@@ -74,6 +81,9 @@
 }
 
 /// @access private
+/// @require {function} fs-ln-taylor
+/// @require {function} fs-log-approx
+/// @require {function} fs-pow-int
 @function fs-ln($x, $steps: 32) {
   $ln10: 2.302585092994046;
   $approx: fs-log-approx($x);
@@ -89,6 +99,9 @@
 /// @param {Number} $exponent - Exponent
 /// @param {Number} $steps [32] - Steps (level of precision)
 /// @return {Number}
+/// @require {function} fs-exp-taylor
+/// @require {function} fs-ln
+/// @require {function} fs-pow-int
 @function fs-pow($x, $exponent, $steps: 32) {
   $exp1: round($exponent);
   $exp2: $exponent - $exp1;
@@ -103,4 +116,87 @@
 
     @return $pow1 * $pow2;
   }
+}
+
+
+/// Square root function
+/// @param {Number} $x - Number
+/// @param {Number} $exponent - Exponent
+/// @param {Number} $steps [40] - Steps (level of precision)
+/// @return {Number}
+/// @require {function} fs-pow
+@function fs-sqrt($x, $exponent: 2, $steps: 40) {
+  @return fs-pow($x, 1 / $exponent, $steps);
+}
+
+
+/// Factorial function
+/// @param {Number} $number
+/// @return {Number}
+@function factorial($number) {
+  // Return 1 for 0! or if $number is < 0
+  $value: 1;
+
+  @if $number > 0 {
+    @for $i from 1 through $number {
+      $value: $value * $i;
+    }
+  }
+
+  @return $value;
+}
+
+
+/// @access private
+@function fs-sin-taylor($x, $steps) {
+  $item: $x;
+  $result: $x;
+
+  @for $i from 1 to $steps {
+    $item: -$item * $x * $x / (2 * $i) / (2 * $i + 1);
+    $result: $result + $item;
+  }
+
+  @return $result;
+}
+
+/// Sine function
+/// @param {Number} $x - Number
+/// @param {Number} $steps [32] - Steps (level of precision)
+/// @return {Number}
+/// @require {variable} $fs-pi
+/// @require {function} fs-sin
+/// @require {function} fs-sin-taylor
+@function fs-sin($x, $steps: 32) {
+  $y: $x % (2 * $π);
+
+  @if $y > $π {
+    @return -1 * fs-sin($y - $π);
+  }
+  @else if $y < 0 {
+    @return -1 * fs-sin(-$y);
+  }
+  @else {
+    @return fs-sin-taylor($y % (2 * $π), $steps);
+  }
+}
+
+/// Cosine function
+/// @param {Number} $x - Number
+/// @param {Number} $steps [32] - Steps (level of precision)
+/// @return {Number}
+/// @require {variable} $fs-pi
+/// @require {function} fs-sin
+@function fs-cos($x, $steps: 32) {
+  @return fs-sin($x - $π / 2, $steps);
+}
+
+/// Tangent function
+/// @param {Number} $x - Number
+/// @param {Number} $steps [32] - Steps (level of precision)
+/// @return {Number}
+/// @require {function} fs-cos
+/// @require {function} fs-sin
+@function fs-tan($x, $steps: 32) {
+  @return fs-sin($x, $steps) / $cos($x, $steps);
 }

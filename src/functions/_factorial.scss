@@ -1,0 +1,17 @@
+/// Factorial function.
+/// @access private
+/// @param {Number} $number
+/// @return {Number}
+/// @link https://unindented.org/articles/trigonometry-in-sass/ Trigonometry in Sass
+@function factorial($number) {
+  // Return 1 for 0! or if $number is < 0
+  $value: 1;
+
+  @if $number > 0 {
+    @for $i from 1 through $number {
+      $value: $value * $i;
+    }
+  }
+
+  @return $value;
+}
