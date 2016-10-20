@@ -1,7 +1,7 @@
 /// Hide visually but still be available to screenreaders
+/// @group Main
 /// @link http://snook.ca/archives/html_and_css/hiding-content-for-accessibility
 /// @author Jonathan Snook
-///
 @mixin fs-visually-hidden {
   border: 0;
   clip: rect(0 0 0 0);
@@ -14,7 +14,7 @@
 }
 
 /// Undo visually hidden styles
-///
+/// @group Main
 @mixin fs-undo-visually-hidden {
   clip: auto;
   height: auto;

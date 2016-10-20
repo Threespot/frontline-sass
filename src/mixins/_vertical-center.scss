@@ -1,8 +1,8 @@
 /// Vertically center an element
+/// @group Main
 /// @param {String} $position [relative] - Positioning
 /// @link http://zerosixthree.se/vertical-align-anything-with-just-3-lines-of-css/
 /// @ignore Note: May need to set `transform-style: preserve-3d;` on parent to prevent blurry text
-///
 @mixin fs-vert-center($position: relative) {
   position: $position;
   top: 50%;
@@ -15,7 +15,7 @@
 }
 
 /// Reset vertical center styles
-///
+/// @group Main
 @mixin fs-undo-vert-center {
   top: auto;
   transform: translateY(0);

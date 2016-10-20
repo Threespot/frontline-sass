@@ -1,13 +1,18 @@
+////
+/// @group Main
+////
+
 /// Base media query mixin
 /// @param {Number | Map} $conditions - Width or map of conditions
 ///
 /// @example scss
+///   @include fs-media((min-width: 600px)) {…}
+///
 ///   @include fs-media((min-width: 600px, max-width: 900px, min-height: 500px, min-aspect-ratio: "1/1")) {…}
 ///
 /// @ignore Convert units to ems when applicable http://zellwk.com/blog/media-query-units/
 /// @ignore Note: EMs in media queries are relative to the initial browser font-size (16px) http://www.w3.org/TR/css3-mediaqueries/#units
 /// @ignore Demo: http://www.sassmeister.com/gist/908ff8ee2e2e0b18f768fcbc87df385c
-///
 @mixin fs-media($conditions) {
 
   // Check if $conditions is a valid map

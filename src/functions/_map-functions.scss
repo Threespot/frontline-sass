@@ -100,7 +100,7 @@
   $map: ();
 
   @if $l-keys != $l-values {
-    @warn 'There are #{$l-keys} key(s) for #{$l-values} value(s) in the map for `map-zip`. ' + 'Resulting map will only have #{$min} pairs.';
+    @warn '⚠️ There are #{$l-keys} key(s) for #{$l-values} value(s) in the map for `map-zip`. ' + 'Resulting map will only have #{$min} pairs.';
   }
 
   @if $min == 0 {

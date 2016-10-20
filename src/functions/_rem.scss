@@ -19,7 +19,7 @@
 
     // Do nothing to all other values
     @else if $fs-debug-mode and $val != 0 {
-      @warn '🔶  Can’t convert non-pixel value to rems: #{$val}';
+      @warn '⚠️  Can’t convert non-pixel value to rems: #{$val}';
     }
 
     // Append value to output list

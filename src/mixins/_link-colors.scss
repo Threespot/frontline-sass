@@ -1,4 +1,5 @@
 /// Helper mixin to set link colors
+/// @group Main
 /// @param {Color} $static - Static link color
 /// @param {Color} $visited [$static] - Visited link color (optional)
 /// @param {Color} $attention - Hover/focus/active link color
@@ -7,8 +8,8 @@
 ///   a {
 ///     @include fs-link-colors(
 ///       $static: blue,
-///       $visited: purple,
-///       $attention: red
+///       $attention: red,
+///       $visited: purple
 ///     );
 ///   }
 ///

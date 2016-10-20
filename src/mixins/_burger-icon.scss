@@ -1,11 +1,12 @@
 /// Burger menu icon mixin
-/// @author Joren Van Hee
+/// @group Main
 /// @param {Number} $width [30px] - Icon width
 /// @param {Number} $height [5px] - Bar height
 /// @param {Number} $gutter [3px] - Gap between bars
 /// @param {Color} $color [currentColor] - Icon color
 /// @param {Number} $border-radius [0] - Border radius
 /// @param {Number} $transition-duration [300ms] - Transition duration
+/// @author Joren Van Hee
 /// @link https://github.com/jorenvanhee/sass-burger
 ///
 /// @example scss
@@ -17,11 +18,6 @@
 ///       $transition-duration: 200ms,
 ///       $width: 20px
 ///     );
-///
-///     &.is-active {
-///       @include fs-burger-to-cross;
-///     }
-///   }
 ///
 @mixin fs-burger(
   $width: 30px,
@@ -71,15 +67,32 @@
   }
 }
 
-// Burger animations
+// Animate burger icon to a cross
+/// @group Main
+///
+/// @example scss
+///   .icon {
+///     @include fs-burger(
+///       $color: #fff,
+///       $gutter: 3px,
+///       $height: 3px,
+///       $transition-duration: 200ms,
+///       $width: 20px
+///     );
+///
+///     &.is-active {
+///       @include fs-burger-to-cross;
+///     }
+///   }
+///
 @mixin fs-burger-to-cross($color: auto) {
   & {
     background-color: transparent;
   }
 
   @if ($color != auto) {
-    &::before,
-    &::after {
+    &:before,
+    &:after {
         background-color: $color;
     }
   }

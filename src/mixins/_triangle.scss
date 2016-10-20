@@ -1,10 +1,10 @@
 /// Triangle mixin (from Bourbon)
-/// @author https://github.com/thoughtbot
+/// @group Main
 /// @param {Number} $size - Height of triangle
 /// @param {Color} $color - Hex color value
 /// @param {String} $direction - Up, down, left, or right
+/// @author https://github.com/thoughtbot
 /// @link https://github.com/thoughtbot/bourbon/blob/master/app/assets/stylesheets/addons/_triangle.scss
-///
 @mixin fs-triangle($size, $color, $direction) {
   height: 0;
   width: 0;

@@ -1,6 +1,6 @@
 /// Hide text in element, requires setting height and width
+/// @group Main
 /// @link http://compass-style.org/reference/compass/typography/text/replacement/#mixin-hide-text
-///
 @mixin fs-hide-text {
   font-size: 0;
   overflow: hidden;

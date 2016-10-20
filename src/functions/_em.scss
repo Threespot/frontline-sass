@@ -23,7 +23,7 @@
 
     // Do nothing to all other values
     @else if $fs-debug-mode {
-      @warn '🔶  Can’t convert non-pixel value to ems: #{$val}';
+      @warn '⚠️  Can’t convert non-pixel value to ems: #{$val}';
     }
 
     // Append value to output list

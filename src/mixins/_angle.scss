@@ -24,6 +24,7 @@
 }
 
 /// Apply an angled edge using a pseudo-element with a diagonal background
+/// @group Main
 /// @param {Angle} $angle - Angle
 /// @param {Color} $color - Background color
 /// @param {String} $position ['top'] - Either `top` or `bottom`
