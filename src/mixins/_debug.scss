@@ -3,6 +3,7 @@
 ////
 
 /// Debug mode toggle
+/// @type Boolean
 $fs-debug-mode: false !default;
 
 /// Debug helper to conditionally run code

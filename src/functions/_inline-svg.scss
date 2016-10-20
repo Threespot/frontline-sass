@@ -1,8 +1,8 @@
 /// Characters to escape from SVGs
 /// @access private
+/// @type Map
 /// @ignore Symbol reference http://www.w3schools.com/tags/ref_urlencode.asp
 /// @ignore Note: gulp-minify-css (which uses clean-css) isn’t applying config options correctly causing data URLs to not be wrapped in quote, so we have to convert double quotes (") to percent encoded symbols.
-///
 $fs-escape-chars: (
   ' ': '%20',
   '\'': '%22',
@@ -24,6 +24,7 @@ $fs-escape-chars: (
 
 /// SVG icon map for use with `fs-svg` function
 /// @group Main
+/// @type Map
 $fs-svg-icons: (
   close: (
     height: 28,

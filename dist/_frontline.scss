@@ -14,6 +14,7 @@
 
 /// Base font size
 /// @group Main
+/// @type Number
 $fs-base-font-size: 16px !default;
 
 //------------------------------------------------------------------------//
@@ -257,7 +258,7 @@ $fs-easings: (
   $map: ();
 
   @if $l-keys != $l-values {
-    @warn '⚠️ There are #{$l-keys} key(s) for #{$l-values} value(s) in the map for `map-zip`. ' + 'Resulting map will only have #{$min} pairs.';
+    @warn '⚠️  There are #{$l-keys} key(s) for #{$l-values} value(s) in the map for `map-zip`. ' + 'Resulting map will only have #{$min} pairs.';
   }
 
   @if $min == 0 {
@@ -715,6 +716,7 @@ $π: $fs-pi;
 // Functions with dependencies
 /// Named breakpoints map
 /// @group Main
+/// @type Map
 $fs-breakpoints: (
   'global': (
     'narrow' : 320px,
@@ -760,6 +762,7 @@ $fs-breakpoints: (
 // Requires “map-functions”
 /// Colors map
 /// @group Main
+/// @type Map
 /// @link http://clrs.cc
 $fs-colors: (
   'base': (
@@ -905,29 +908,12 @@ $fs-colors: (
     @error "🔴  #{$last-color} on #{$base} fails WCAG AA contrast test (#{fs-color-contrast($base, $last-color)})";
   }
 }
-
-/// Warn if the contrast is below a threshold
-/// @group Main
-/// @param {color} $color1 background color
-/// @param {color} $color2 foreground color
-/// @param {number} $threshold [4.5]
-/// @link https://github.com/xi/sass-planifolia/blob/master/sass/contrast.scss
-/// @require {function} fs-color-contrast
-@function fs-contrast-test($color1, $color2, $threshold: 4.5) {
-  $contrast: fs-color-contrast($color1, $color2);
-
-  @if $contrast < $threshold {
-    @warn '⚠️ Low contrast warning: #{$color1}, #{$color2}, #{$contrast}';
-  }
-
-  @return null;
-}
 // Requires pow() from “math”
 /// Characters to escape from SVGs
 /// @access private
+/// @type Map
 /// @ignore Symbol reference http://www.w3schools.com/tags/ref_urlencode.asp
 /// @ignore Note: gulp-minify-css (which uses clean-css) isn’t applying config options correctly causing data URLs to not be wrapped in quote, so we have to convert double quotes (") to percent encoded symbols.
-///
 $fs-escape-chars: (
   ' ': '%20',
   '\'': '%22',
@@ -949,6 +935,7 @@ $fs-escape-chars: (
 
 /// SVG icon map for use with `fs-svg` function
 /// @group Main
+/// @type Map
 $fs-svg-icons: (
   close: (
     height: 28,
@@ -1069,6 +1056,7 @@ $fs-svg-icons: (
 // Requires “strip-unit”
 /// Z-index layer map
 /// @group Main
+/// @type Map
 $fs-zindex: (
   'main': 100,
   'tooltip': 200,
@@ -1305,11 +1293,28 @@ $fs-zindex: (
   }
 }
 
+/// Warn if the contrast is below a threshold
+/// @group Main
+/// @param {color} $color1 background color
+/// @param {color} $color2 foreground color
+/// @param {number} $threshold [4.5] - Minimum contrast threshold
+/// @link https://github.com/xi/sass-planifolia/blob/master/sass/contrast.scss
+/// @link https://www.w3.org/TR/UNDERSTANDING-WCAG20/visual-audio-contrast-contrast.html
+/// @require {function} fs-color-contrast
+@mixin fs-contrast-test($color1, $color2, $threshold: 4.5) {
+  $contrast: fs-color-contrast($color1, $color2);
+
+  @if $contrast < $threshold {
+    @warn '⚠️  Low contrast: #{$color1}, #{$color2}, #{$contrast}';
+  }
+}
+
 ////
 /// @group Utilities
 ////
 
 /// Debug mode toggle
+/// @type Boolean
 $fs-debug-mode: false !default;
 
 /// Debug helper to conditionally run code

@@ -1,0 +1,15 @@
+/// Warn if the contrast is below a threshold
+/// @group Main
+/// @param {color} $color1 background color
+/// @param {color} $color2 foreground color
+/// @param {number} $threshold [4.5] - Minimum contrast threshold
+/// @link https://github.com/xi/sass-planifolia/blob/master/sass/contrast.scss
+/// @link https://www.w3.org/TR/UNDERSTANDING-WCAG20/visual-audio-contrast-contrast.html
+/// @require {function} fs-color-contrast
+@mixin fs-contrast-test($color1, $color2, $threshold: 4.5) {
+  $contrast: fs-color-contrast($color1, $color2);
+
+  @if $contrast < $threshold {
+    @warn '⚠️  Low contrast: #{$color1}, #{$color2}, #{$contrast}';
+  }
+}

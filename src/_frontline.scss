@@ -4,6 +4,7 @@
 
 /// Base font size
 /// @group Main
+/// @type Number
 $fs-base-font-size: 16px !default;
 
 //------------------------------------------------------------------------//
@@ -38,6 +39,7 @@ $fs-base-font-size: 16px !default;
 @import 'mixins/_aspect-ratio.scss';
 @import 'mixins/_burger-icon.scss';
 @import 'mixins/_clearfix.scss';
+@import 'mixins/_contrast-test.scss';
 @import 'mixins/_debug.scss';
 @import 'mixins/_font-smoothing.scss';
 @import 'mixins/_hide-text.scss';
