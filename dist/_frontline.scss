@@ -78,6 +78,7 @@ $fs-base-font-size: 16px !default;
 ////
 
 /// Custom easings map
+/// @type Map
 /// @link https://github.com/jhardy/compass-ceaser-easing
 /// @link http://easings.net
 $fs-easings: (
@@ -324,6 +325,7 @@ $fs-easings: (
 ////
 
 /// Pi
+/// @type Number
 $fs-pi: 3.141592653589793;
 
 /// @access private
