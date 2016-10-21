@@ -1,10 +1,10 @@
 {
   "title": "frontline-sass",
   "name": "frontline-sass",
-  "version": "3.3.0",
+  "version": "3.4.0",
   "description": "Threespot's base Sass framework",
   "engines": {
-    "node": "6.6.0",
+    "node": "6.9.0",
     "npm": "3.10.3"
   },
   "repository": {
