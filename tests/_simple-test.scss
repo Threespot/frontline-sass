@@ -1,0 +1,74 @@
+@function test($name, $test-suite) {
+  $passing-tests: 0;
+  $tests: ();
+
+  @each $result, $expected-result in $test-suite {
+    $tests: append($tests, (
+      'expected': $expected-result,
+      'actual': $result,
+      'pass': $result == $expected-result,
+      'fail': $result == $expected-result
+    ), 'comma');
+
+    @if $result == $expected-result {
+      $passing-tests: $passing-tests + 1;
+    }
+  }
+
+  @return (
+    'name': $name,
+    'length': length($tests),
+    'tests': $tests,
+    'pass': $passing-tests,
+    'fail': length($tests) - $passing-tests
+  );
+}
+
+@mixin run($data) {
+  $name: map-get($data, 'name');
+  $tests: map-get($data, 'tests');
+  $length: length($tests);
+  $output: '';
+  $indent: '      ';
+  $line-break: '
+';
+
+  @each $test in $tests {
+    $index: index($tests, $test);
+    $expected: map-get($test, 'expected');
+    $actual: map-get($test, 'actual');
+
+    @if not map-get($test, 'pass') {
+      $output: $output
+        + $line-break
+        + $line-break
+        + $indent
+        + '❌  Test failed'
+        + $line-break
+        + $indent
+        + $indent
+        + 'Expected : #{$expected}'
+        + $line-break
+        + $indent
+        + $indent
+        + 'Actual   : #{$actual}';
+    }
+  }
+
+  @if str-length($output) > 0 {
+    $fails: map-get($data, 'fail');
+
+    $output: $output
+      + $line-break
+      + $line-break
+      + $indent
+      + '❌  Oops! #{$fails} test(s) failed out of #{$length} regarding `#{$name}` function.'
+      + $line-break
+      + $line-break;
+
+    @error $output;
+  }
+
+  @warn '✅  All #{$length} tests from `#{$name}` passed successfully.';
+}
+

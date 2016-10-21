@@ -1,0 +1,8 @@
+// Breakpoint tests
+$test-1: fs-auto-contrast(#fff, (#fff, #ccc, #999, #767676, #555, #000), $ratio: 4.5, $tolerance: 0);
+$test-2: fs-auto-contrast(#ccc, (#fff, #ccc, #999, #767676, #555, #000), $ratio: 4.5, $tolerance: 0);
+
+@include run(test('fs-auto-contrast', (
+  $test-1: #767676,
+  $test-2: #555
+)));

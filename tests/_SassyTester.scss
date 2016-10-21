@@ -11,7 +11,7 @@
 ///   * `pass`: number of passing tests out of `length`
 ///   * `fail`: number of failing tests out of `length`
 ///   * `tests`: list of maps containing:
-///       * `input`: test input (key from `$tests`) 
+///       * `input`: test input (key from `$tests`)
 ///       * `expected`: expected result from `input`
 ///       * `actual`: actual result from `input`
 ///       * `pass`: whether the test passed or not
@@ -47,7 +47,7 @@
 ///     ),
 ///     // ...
 ///   )
-@function test($function, $test-suite) {
+@function test-fn($function, $test-suite) {
   $passing-tests: 0;
   $tests: ();
 
@@ -65,7 +65,7 @@
       $passing-tests: $passing-tests + 1;
     }
   }
-  
+
   @return (
     'function': $function,
     'length': length($tests),
@@ -78,7 +78,7 @@
 
 
 /// Mixin decorating the result of `test(..)` function to throw it as an error
-/// 
+///
 /// @author Hugo Giraudel
 ///
 /// @param {Map} $data - Return of `test(..)` function
@@ -95,7 +95,7 @@
 ///   Test 4 out of 4... ✔
 ///   ----------
 ///   Finished: 0 test(s) failing out of 4
-@mixin run($data) {
+@mixin run-fn($data) {
   $function: map-get($data, 'function');
   $tests: map-get($data, 'tests');
   $length: length($tests);
@@ -112,10 +112,10 @@
 
     @if not map-get($test, 'pass') {
       $output: $output
-        + $line-break 
+        + $line-break
         + $line-break
         + $indent
-        + '✘ Test with input `#{$input}` failed dramatically.'
+        + '❌  Test with input `#{$input}` failed'
         + $line-break
         + $indent
         + $indent
@@ -131,15 +131,15 @@
     $fails: map-get($data, 'fail');
 
     $output: $output
-      + $line-break 
-      + $line-break 
+      + $line-break
+      + $line-break
       + $indent
-      + '✘ Oops! #{$fails} test(s) failed out of #{$length} regarding `#{$function}` function.'
+      + '❌  Oops! #{$fails} test(s) failed out of #{$length} regarding `#{$function}` function.'
       + $line-break
       + $line-break;
 
     @error $output;
   }
 
-  @warn '✔ All #{$length} tests from `#{$function}` passed successfully.';
+  @warn '✅  All #{$length} tests from `#{$function}` passed successfully.';
 }

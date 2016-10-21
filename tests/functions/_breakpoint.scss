@@ -1,0 +1,5 @@
+// Breakpoint tests
+@include run-fn(test-fn('fs-breakpoint', (
+  'narrow': 320px,
+  'wide': 960px
+)));

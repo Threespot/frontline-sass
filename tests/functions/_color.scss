@@ -1,0 +1,5 @@
+// Color mixin test
+@include run(test('fs-color', (
+  fs-color('red'): #ff4136,
+  fs-color('blue'): #0074d9
+)));
