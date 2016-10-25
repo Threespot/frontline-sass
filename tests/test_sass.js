@@ -3,7 +3,7 @@ var sassTrue = require('sass-true');
 
 // Files to test
 // ENHANCEMENT: glob files
-const testFiles = [
+var testFiles = [
   'variables/_fs-base-font-size.scss',
   'variables/_fs-breakpoints.scss',
   'variables/_fs-colors.scss',
@@ -14,7 +14,7 @@ const testFiles = [
 
 // Loop through each file name and run the test file.
 testFiles.forEach(function(file) {
-  let sassFile = path.join(__dirname, file);
+  var sassFile = path.join(__dirname, file);
   sassTrue.runSass({file: sassFile}, describe, it);
 });
 
