@@ -3,19 +3,7 @@
 // Import Frontline
 @import '../../src/_frontline.scss';
 
-@include test-module('Function: [fs-color]') {
-
-  @include test('variable `fs-colors` should exist and be a map') {
-    $exists: variable_exists(fs-colors);
-    $expect: true;
-    @include assert-equal($exists, $expect,
-      '$fs-colors exists');
-
-    $type: type-of($fs-colors);
-    $expect: map;
-    @include assert-equal($type, $expect,
-      '$fs-colors is a map');
-  }
+@include test-module('Function: fs-color') {
 
   // Testing Color Function
   @include test('returns a color from the $fs-colors map') {
@@ -27,6 +15,7 @@
       'Returns a color from the global `fs-color map`');
   }
 }
+/* END Module */
 
 
 /* Before */
@@ -38,7 +27,7 @@ $new-colors: (
 $fs-colors-original: $fs-colors;
 $fs-colors: map-merge($fs-colors, $new-colors);
 /* Test */
-@include test-module('Function: [fs-color]') {
+@include test-module('Function: fs-color') {
 
   // Testing Color Function
   @include test('returns a color that has been added to the $fs-color map') {
@@ -51,5 +40,6 @@ $fs-colors: map-merge($fs-colors, $new-colors);
 /* After */
 $new-colors: null;
 $fs-colors: $fs-colors-original;
+/* END Module */
 
 @include report;

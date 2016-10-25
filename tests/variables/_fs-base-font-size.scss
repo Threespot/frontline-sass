@@ -1,0 +1,22 @@
+@import "true";
+@import '../../src/_frontline.scss';
+
+@include test-module('Variable: fs-base-font-size') {
+
+  @include test('should exist') {
+    $var: fs-base-font-size;
+    $exists: variable_exists(#{$var});
+    $expect: true;
+    @include assert-equal($exists, $expect,
+      '$#{$var} exists');
+  }
+  
+  @include test('should be a number') {
+    $var: $fs-base-font-size;
+    $type: type-of($var);
+    $expect: number;
+    @include assert-equal($type, $expect,
+      '$#{$var} is a number');
+  }
+}
+/* END Module */
