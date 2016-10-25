@@ -27,7 +27,8 @@
   "homepage": "https://github.com/Threespot/frontline-sass",
   "scripts": {
     "gulp": "gulp",
-    "lint": "gulp sass-lint"
+    "lint": "gulp sass-lint",
+    "test": "mocha tests/test_sass.js --reporter list --growl"
   },
   "license": "MIT",
   "devDependencies": {
@@ -41,6 +42,8 @@
     "gulp-sass": "2.3.2",
     "gulp-scss-lint": "0.4.0",
     "js-yaml": "3.6.1",
+    "mocha": "^3.1.2",
+    "sass-true": "^2.1.3",
     "sassdoc": "2.1.20"
   }
 }
