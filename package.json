@@ -28,7 +28,7 @@
   "scripts": {
     "gulp": "gulp",
     "lint": "gulp sass-lint",
-    "test": "mocha tests/test_sass.js --reporter list --growl"
+    "test": "mocha tests/test_sass.js --reporter spec"
   },
   "license": "MIT",
   "devDependencies": {
