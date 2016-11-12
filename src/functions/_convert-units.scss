@@ -5,7 +5,7 @@
 /// @return {Number} $context - Context font-size in px
 /// @require {function} fs-em
 /// @require {function} fs-rem
-@function fs-convert-units($units, $value, $context) {
+@function fs-convert-units($units, $value, $context: $fs-base-font-size) {
   @if unit($value) != 'px' or unit($context) != 'px' {
     @error '🔴  fs-convert-units() only accepts pixel values';
   }
