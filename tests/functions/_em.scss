@@ -1,0 +1,29 @@
+// Import True
+@import "true";
+// Import Frontline
+@import '../../src/_frontline.scss';
+
+/* Before */
+/* Test */
+@include test-module('Function: fs-em') {
+
+  @include test('converts a pixel value to em') {
+    $base: 16px;
+    $test: nth(fs-em(16px), 1); // pluck the first (and only) value from the list
+    $expect: 1em;
+    @include assert-equal($test, $expect,
+      'Returns a em value based on the base-font-size');
+  }
+
+  @include test('converts a list of pixel values to a list of em values') {
+    $base: 16px 20px;
+    $test: fs-em($base);
+    $expect: 1em 1.25em;
+    @include assert-equal($test, $expect,
+      'Returns a em value based on the base-font-size');
+  }
+}
+/* After */
+/* END Module */
+
+@include report;

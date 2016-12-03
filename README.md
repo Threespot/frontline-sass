@@ -1,5 +1,5 @@
 # Frontline Sass
-[![npm version](https://badge.fury.io/js/frontline-sass.svg)](https://badge.fury.io/js/frontline-sass)
+[![npm version](https://badge.fury.io/js/frontline-sass.svg)](https://badge.fury.io/js/frontline-sass) [![Build Status](https://travis-ci.org/Threespot/frontline-sass.svg)](https://travis-ci.org/Threespot/frontline-sass)
 
 Threespot's Sass framework
 

@@ -1,5 +1,45 @@
-// Color mixin test
-@include run(test('fs-color', (
-  fs-color('red'): #ff4136,
-  fs-color('blue'): #0074d9
-)));
+// Import True
+@import "true";
+// Import Frontline
+@import '../../src/_frontline.scss';
+
+@include test-module('Function: fs-color') {
+
+  // Testing Color Function
+  @include test('returns a color from the $fs-colors map') {
+    $base: 'green';
+
+    $test: fs-color($base);
+    $expect: #2ecc40;
+    @include assert-equal($test, $expect,
+      'Returns a color from the global `fs-color map`');
+  }
+}
+/* END Module */
+
+
+/* Before */
+$new-colors: (
+  "brand": (
+    "red": #ff4136
+  )
+);
+$fs-colors-original: $fs-colors;
+$fs-colors: map-merge($fs-colors, $new-colors);
+/* Test */
+@include test-module('Function: fs-color') {
+
+  // Testing Color Function
+  @include test('returns a color that has been added to the $fs-color map') {
+    $test: fs-color('brand', 'red');
+    $expect: #ff4136;
+    @include assert-equal($test, $expect,
+      'Returns a color that was added to the global `fs-color map`');
+  }
+}
+/* After */
+$new-colors: null;
+$fs-colors: $fs-colors-original;
+/* END Module */
+
+@include report;

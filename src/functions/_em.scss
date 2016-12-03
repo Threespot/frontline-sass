@@ -1,6 +1,6 @@
 /// Convert px to em
 /// @group Main
-/// @param {Number | Map} $values - Value or values to convert
+/// @param {Number | List} $values - Value or values to convert
 /// @param {Number} $context [$fs-base-font-size] - Base font size
 /// @return {*} - Converted value or list of values
 /// @require {variable} $fs-base-font-size - Base font size

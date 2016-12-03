@@ -1,0 +1,22 @@
+@import "true";
+@import '../../src/_frontline.scss';
+
+@include test-module('Variable: fs-breakpoints') {
+
+  @include test('should exist') {
+    $var: fs-breakpoints;
+    $exists: variable_exists(#{$var});
+    $expect: true;
+    @include assert-equal($exists, $expect,
+      '$#{$var} exists');
+  }
+
+  @include test('should be a map') {
+    $var: $fs-breakpoints;
+    $type: type-of($var);
+    $expect: map;
+    @include assert-equal($type, $expect,
+      '$#{$var} is a map');
+  }
+}
+/* END Module */
