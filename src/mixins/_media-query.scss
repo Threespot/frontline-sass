@@ -83,7 +83,7 @@
 /// @example scss
 ///   @include fs-min-height(500px) {…}
 ///
-@mixin fs-min-height($width) {
+@mixin fs-min-height($height) {
   @include fs-media((min-height: $height)) {
     @content;
   }
@@ -96,7 +96,7 @@
 /// @example scss
 ///   @include fs-max-height(500px) {…}
 ///
-@mixin fs-max-height($width) {
+@mixin fs-max-height($height) {
   @include fs-media((max-height: $height)) {
     @content;
   }

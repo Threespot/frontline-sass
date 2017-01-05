@@ -3,7 +3,7 @@
 //      _______  ____  _  __________   _____  ______
 //     / __/ _ \/ __ \/ |/ /_  __/ /  /  _/ |/ / __/
 //    / _// , _/ /_/ /    / / / / /___/ //    / _/
-//   /_/ /_/|_|\____/_/|_/ /_/ /____/___/_/|_/___/   v3.5.0
+//   /_/ /_/|_|\____/_/|_/ /_/ /____/___/_/|_/___/   v3.5.1
 //
 //   This project is licensed under the terms of the MIT license
 
@@ -1480,7 +1480,7 @@ $fs-debug-mode: false !default;
 /// @example scss
 ///   @include fs-min-height(500px) {…}
 ///
-@mixin fs-min-height($width) {
+@mixin fs-min-height($height) {
   @include fs-media((min-height: $height)) {
     @content;
   }
@@ -1493,7 +1493,7 @@ $fs-debug-mode: false !default;
 /// @example scss
 ///   @include fs-max-height(500px) {…}
 ///
-@mixin fs-max-height($width) {
+@mixin fs-max-height($height) {
   @include fs-media((max-height: $height)) {
     @content;
   }
