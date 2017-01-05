@@ -3,7 +3,7 @@
 //      _______  ____  _  __________   _____  ______
 //     / __/ _ \/ __ \/ |/ /_  __/ /  /  _/ |/ / __/
 //    / _// , _/ /_/ /    / / / / /___/ //    / _/
-//   /_/ /_/|_|\____/_/|_/ /_/ /____/___/_/|_/___/   v3.4.0
+//   /_/ /_/|_|\____/_/|_/ /_/ /____/___/_/|_/___/   v3.5.0
 //
 //   This project is licensed under the terms of the MIT license
 
@@ -37,7 +37,7 @@ $fs-base-font-size: 16px !default;
 /// @return {Number} $context - Context font-size in px
 /// @require {function} fs-em
 /// @require {function} fs-rem
-@function fs-convert-units($units, $value, $context) {
+@function fs-convert-units($units, $value, $context: $fs-base-font-size) {
   @if unit($value) != 'px' or unit($context) != 'px' {
     @error '🔴  fs-convert-units() only accepts pixel values';
   }
@@ -317,11 +317,11 @@ $fs-easings: (
 /// @group Math
 /// @author xi
 /// @link https://github.com/xi/sass-planifolia/blob/master/sass/math.scss
-/// @ignore Based on work by strarsis, drtimofey, davidkpiano
+/// @ignore Based on work by davidkpiano, strarsis, drtimofey
+/// @ignore https://gist.github.com/davidkpiano/ad6e6771df050ff3727f
 /// @ignore https://github.com/strarsis/sass-math-pow
 /// @ignore https://github.com/thoughtbot/bitters/issues/167
 /// @ignore https://github.com/thoughtbot/bourbon/issues/717
-/// @ignore https://gist.github.com/davidkpiano/ad6e6771df050ff3727f
 ////
 
 /// Pi
@@ -1469,6 +1469,32 @@ $fs-debug-mode: false !default;
 ///
 @mixin fs-max-width($width) {
   @include fs-media((max-width: $width)) {
+    @content;
+  }
+}
+
+/// Min-height media query helper
+/// @require {mixin} fs-media
+/// @param {Number} $height - Breakpoint height
+///
+/// @example scss
+///   @include fs-min-height(500px) {…}
+///
+@mixin fs-min-height($width) {
+  @include fs-media((min-height: $height)) {
+    @content;
+  }
+}
+
+/// Max-height media query helper
+/// @require {mixin} fs-media
+/// @param {Number} $height - Breakpoint height
+///
+/// @example scss
+///   @include fs-max-height(500px) {…}
+///
+@mixin fs-max-height($width) {
+  @include fs-media((max-height: $height)) {
     @content;
   }
 }

@@ -75,3 +75,29 @@
     @content;
   }
 }
+
+/// Min-height media query helper
+/// @require {mixin} fs-media
+/// @param {Number} $height - Breakpoint height
+///
+/// @example scss
+///   @include fs-min-height(500px) {…}
+///
+@mixin fs-min-height($width) {
+  @include fs-media((min-height: $height)) {
+    @content;
+  }
+}
+
+/// Max-height media query helper
+/// @require {mixin} fs-media
+/// @param {Number} $height - Breakpoint height
+///
+/// @example scss
+///   @include fs-max-height(500px) {…}
+///
+@mixin fs-max-height($width) {
+  @include fs-media((max-height: $height)) {
+    @content;
+  }
+}
