@@ -4,8 +4,8 @@
   "version": "3.5.1",
   "description": "Threespot's base Sass framework",
   "engines": {
-    "node": "6.9.0",
-    "npm": "3.10.3"
+    "node": ">=6.0.0",
+    "npm": ">=3.0.0"
   },
   "repository": {
     "type": "git",
@@ -27,7 +27,8 @@
   "homepage": "https://github.com/Threespot/frontline-sass",
   "scripts": {
     "gulp": "gulp",
-    "lint": "gulp sass-lint"
+    "lint": "gulp sass-lint",
+    "postversion": "git push && git push --tags"
   },
   "license": "MIT",
   "devDependencies": {
