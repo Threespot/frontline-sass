@@ -1,3 +1,4 @@
+/* jshint node: true */
 'use strict';
 
 // -----------------------------------------------------------------------------
@@ -7,7 +8,7 @@ var fs = require('fs');
 var gulp = require('gulp');
 var cssimport = require('gulp-cssimport');
 var plugins = require('gulp-load-plugins')();
-var packageInfo = require('./package.json')
+var packageInfo = require('./package.json');
 var sass = require('gulp-sass');
 var sassdoc = require('sassdoc');
 var path = require('path');
