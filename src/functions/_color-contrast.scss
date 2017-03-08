@@ -81,7 +81,7 @@
         $first-match: $color;
 
         // Warn if low contrast
-        @if ($contrast < 4.4) {
+        @if ($contrast < $ratio) {
           @warn "#{$first-match} on #{$base} fails WCAG AA contrast test (#{$contrast})";
         }
       }
