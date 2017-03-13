@@ -3,7 +3,7 @@
 //      _______  ____  _  __________   _____  ______
 //     / __/ _ \/ __ \/ |/ /_  __/ /  /  _/ |/ / __/
 //    / _// , _/ /_/ /    / / / / /___/ //    / _/
-//   /_/ /_/|_|\____/_/|_/ /_/ /____/___/_/|_/___/   v3.5.1
+//   /_/ /_/|_|\____/_/|_/ /_/ /____/___/_/|_/___/   v3.6.0
 //
 //   This project is licensed under the terms of the MIT license
 
@@ -703,17 +703,27 @@ $π: $fs-pi;
 /// @param {Number} $arg - Value to strip
 /// @return {Number} - Stripped value
 /// @link http://stackoverflow.com/a/12335841/673457
-@function fs-strip($arg) {
+@function fs-strip-unit($arg) {
   // Return unitless value if valid number
   @if type-of($arg) == 'number' {
     @return $arg / ($arg * 0 + 1);
   }
   // Error if not a valid number
   @else {
-    @error '🔴  fs-strip(#{inspect($arg)} is not a valid number';
+    @error '🔴  fs-strip-unit(#{inspect($arg)} is not a valid number';
   }
 }
 
+/// **Deprication Warning!** use `fs-strip-unit` instead.
+/// Strips unit from value
+/// @group Utilities
+/// @param {Number} $arg - Value to strip
+/// @return {Number} - Stripped value
+/// @require {function} fs-strip-unit
+@function fs-strip($arg) {
+  @return fs-strip-unit($arg);
+}
+// Requires “strip-unit”
 
 // Functions with dependencies
 /// Named breakpoints map
@@ -895,7 +905,7 @@ $fs-colors: (
         $first-match: $color;
 
         // Warn if low contrast
-        @if ($contrast < 4.4) {
+        @if ($contrast < $ratio) {
           @warn "#{$first-match} on #{$base} fails WCAG AA contrast test (#{$contrast})";
         }
       }
@@ -1044,11 +1054,11 @@ $fs-svg-icons: (
 /// @param {Number} $a - Dividend
 /// @param {Number} $b - Divisor
 /// @return {Number} - Unitless ratio
-/// @require {function} fs-strip
+/// @require {function} fs-strip-unit
 @function fs-ratio($a, $b) {
   // Check if units match, or if divisor is unitless
   @if unit($a) == unit($b) or unitless($b) {
-    @return fs-strip($a / $b);
+    @return fs-strip-unit($a / $b);
   }
   // Warn if units don't match
   @else {
@@ -1554,6 +1564,63 @@ $fs-debug-mode: false !default;
   &:hover,
   &:active {
     @content;
+  }
+}
+
+////
+/// Helper mixins to add various pseudo parent selectors
+/// @group Selectors
+/// @ignore http://sassmeister.com/gist/35c9c323d22eefdbf293 (by @csswizardry)
+////
+
+/// Helper mixin to apply static pesudo selectors to parent
+@mixin fs-static-parent($parent:null) {
+  // Return content if valid string
+  @if type-of($parent) == 'string' {
+    #{$parent} &,
+    #{$parent}:link &,
+    #{$parent}:visited & {
+      @content;
+    }
+  }
+  // Error if not a valid string
+  @else {
+    @error '🔴  fs-static-parent(#{inspect($parent)} is not a valid string';
+  }
+}
+
+/// Helper mixin to apply `:hover`, `:focus`, and `:active` pesudo selectors to parent
+@mixin fs-attention-parent($parent:null) {
+  // Return content if valid string
+  @if type-of($parent) == 'string' {
+    #{$parent}:hover &,
+    #{$parent}:focus &,
+    #{$parent}:active & {
+      @content;
+    }
+  }
+  // Error if not a valid string
+  @else {
+    @error '🔴  fs-attention-parent(#{inspect($parent)} is not a valid string';
+  }
+}
+
+/// Helper mixin to apply all pesudo selectors to parent
+@mixin fs-all-states-parent($parent:null) {
+  // Return content if valid string
+  @if type-of($parent) == 'string' {
+    #{$parent} &,
+    #{$parent}:link &,
+    #{$parent}:visited &,
+    #{$parent}:focus &,
+    #{$parent}:hover &,
+    #{$parent}:active & {
+      @content;
+    }
+  }
+  // Error if not a valid string
+  @else {
+    @error '🔴  fs-all-states-parent(#{inspect($parent)} is not a valid string';
   }
 }
 
