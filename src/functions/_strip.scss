@@ -1,0 +1,9 @@
+/// **Deprication Warning!** use `fs-strip-unit` instead.
+/// Strips unit from value
+/// @group Utilities
+/// @param {Number} $arg - Value to strip
+/// @return {Number} - Stripped value
+/// @require {function} fs-strip-unit
+@function fs-strip($arg) {
+  @return fs-strip-unit($arg);
+}

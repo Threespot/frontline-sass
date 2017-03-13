@@ -21,6 +21,7 @@ $fs-base-font-size: 16px !default;
 @import 'functions/_str-replace.scss';
 @import 'functions/_str-to-num.scss';
 @import 'functions/_strip-unit.scss';
+@import 'functions/_strip.scss';// Requires “strip-unit”
 
 // Functions with dependencies
 @import 'functions/_breakpoint.scss';// Requires “map-functions”
