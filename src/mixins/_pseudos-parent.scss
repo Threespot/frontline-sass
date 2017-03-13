@@ -1,0 +1,56 @@
+////
+/// Helper mixins to add various pseudo parent selectors
+/// @group Selectors
+/// @ignore http://sassmeister.com/gist/35c9c323d22eefdbf293 (by @csswizardry)
+////
+
+/// Helper mixin to apply static pesudo selectors to parent
+@mixin fs-static-parent($parent:null) {
+  // Return content if valid string
+  @if type-of($parent) == 'string' {
+    #{$parent} &,
+    #{$parent}:link &,
+    #{$parent}:visited & {
+      @content;
+    }
+  }
+  // Error if not a valid string
+  @else {
+    @error '🔴  fs-static-parent(#{inspect($parent)} is not a valid string';
+  }
+}
+
+/// Helper mixin to apply `:hover`, `:focus`, and `:active` pesudo selectors to parent
+@mixin fs-attention-parent($parent:null) {
+  // Return content if valid string
+  @if type-of($parent) == 'string' {
+    #{$parent}:hover &,
+    #{$parent}:focus &,
+    #{$parent}:active & {
+      @content;
+    }
+  }
+  // Error if not a valid string
+  @else {
+    @error '🔴  fs-attention-parent(#{inspect($parent)} is not a valid string';
+  }
+}
+
+/// Helper mixin to apply all pesudo selectors to parent
+@mixin fs-all-states-parent($parent:null) {
+  // Return content if valid string
+  @if type-of($parent) == 'string' {
+    #{$parent} &,
+    #{$parent}:link &,
+    #{$parent}:visited &,
+    #{$parent}:focus &,
+    #{$parent}:hover &,
+    #{$parent}:active & {
+      @content;
+    }
+  }
+  // Error if not a valid string
+  @else {
+    @error '🔴  fs-all-states-parent(#{inspect($parent)} is not a valid string';
+  }
+}

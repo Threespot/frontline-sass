@@ -48,6 +48,7 @@ $fs-base-font-size: 16px !default;
 @import 'mixins/_media-query.scss';
 @import 'mixins/_print-utils.scss';
 @import 'mixins/_pseudos.scss';
+@import 'mixins/_pseudos-parent.scss';
 @import 'mixins/_quantity.scss';
 @import 'mixins/_reset-elements.scss';
 @import 'mixins/_selector-utils.scss';
