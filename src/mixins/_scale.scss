@@ -1,0 +1,43 @@
+/// Scale a value for any number of properites relative to the viewport width
+/// @group Main
+/// @param {String | List} $properties - Properties to scale
+/// @param {Number} $start - Starting value
+/// @param {Number} $end - Ending value
+/// @param {Number} $min-width - Starting viewport width
+/// @param {Number} $max-width - Ending viewport width
+/// @param {Boolean} $fallback [true] - Output starting value outside of media query
+/// @require {function} fs-rem
+/// @require {function} fs-scale
+/// @ignore Demo https://www.sassmeister.com/gist/9f87f8c19e91c811831d84fc8484ed24
+/// @link http://www.sassmeister.com/gist/7f22e44ace49b5124eec
+/// @link http://madebymike.com.au/writing/precise-control-responsive-typography/
+/// @link https://zellwk.com/blog/viewport-based-typography/
+/// @link http://codepen.io/indrekpaas/pen/VarLaJ?editors=1100
+/// @link http://codepen.io/maranomynet/pen/ozNpXV?editors=1100
+/// @link https://www.smashingmagazine.com/2016/05/fluid-typography/
+/// @example scss
+///   @include fs-scale(font-size, 20px, 30px, 320px, 400px);
+/// @example scss
+///   @include fs-scale(margin-bottom margin-top, 10px, 20px, 500px, 600px);
+@mixin fs-scale($properties, $start, $end, $min-width, $max-width, $fallback: true) {
+  // Starting size
+  @if $fallback {
+    @each $property in $properties {
+      #{$property}: fs-rem($start);
+    }
+  }
+
+  // Scale up with calc()
+  @media screen and (min-width: $min-width) {
+    @each $property in $properties {
+      #{$property}: fs-scale($start, $end, $min-width, $max-width);
+    }
+  }
+
+  // Final size
+  @media screen and (min-width: $max-width) {
+    @each $property in $properties {
+      #{$property}: fs-rem($end);
+    }
+  }
+}

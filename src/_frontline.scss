@@ -17,6 +17,7 @@ $fs-base-font-size: 16px !default;
 @import 'functions/_map-functions.scss';
 @import 'functions/_math.scss';
 @import 'functions/_rem.scss';
+@import 'functions/_scale.scss';
 @import 'functions/_slice.scss';
 @import 'functions/_str-replace.scss';
 @import 'functions/_str-to-num.scss';
@@ -51,6 +52,7 @@ $fs-base-font-size: 16px !default;
 @import 'mixins/_pseudos-parent.scss';
 @import 'mixins/_quantity.scss';
 @import 'mixins/_reset-elements.scss';
+@import 'mixins/_scale.scss';
 @import 'mixins/_selector-utils.scss';
 @import 'mixins/_text-inputs.scss';
 @import 'mixins/_text-rendering.scss';
@@ -60,4 +62,5 @@ $fs-base-font-size: 16px !default;
 @import 'mixins/_word-break.scss';
 
 // Minxins with dependencies
+@import 'mixins/_scale-mq.scss';// Requires “media-query”
 @import 'mixins/_scale-text.scss';// Requires “media-query” and “convert-units”
