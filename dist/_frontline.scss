@@ -3,7 +3,7 @@
 //      _______  ____  _  __________   _____  ______
 //     / __/ _ \/ __ \/ |/ /_  __/ /  /  _/ |/ / __/
 //    / _// , _/ /_/ /    / / / / /___/ //    / _/
-//   /_/ /_/|_|\____/_/|_/ /_/ /____/___/_/|_/___/   v3.6.1
+//   /_/ /_/|_|\____/_/|_/ /_/ /____/___/_/|_/___/   v3.7.0
 //
 //   This project is licensed under the terms of the MIT license
 
@@ -24,7 +24,7 @@ $fs-base-font-size: 16px !default;
 /// @group Utilities
 /// @param {List} $list - List of values.
 /// @param {*} $value - Value to check in the list.
-/// @return {Bool}
+/// @return {Boolean}
 /// @link http://www.sitepoint.com/bulletproof-function-validate-length-values-sass/
 @function fs-contains($list, $value) {
   @return not not index($list, $value);
@@ -219,7 +219,7 @@ $fs-easings: (
 /// @author Hugo Giraudel
 /// @param {Map} $map - Map
 /// @param {Arglist} $keys - Keys to test
-/// @return {Bool}
+/// @return {Boolean}
 @function fs-map-has-keys($map, $keys...) {
   @each $key in $keys {
     @if not map-has-key($map, $key) {
@@ -234,7 +234,7 @@ $fs-easings: (
 /// @author Hugo Giraudel
 /// @param {Map} $map - Map
 /// @param {Arglist} $keys - Keys to test
-/// @return {Bool}
+/// @return {Boolean}
 @function fs-map-has-nested-keys($map, $keys...) {
   @each $key in $keys {
     @if not map-has-key($map, $key) {
@@ -279,7 +279,7 @@ $fs-easings: (
 /// * is not recursive
 /// @param {Map} $map - first map
 /// @param {ArgList} $maps - other maps
-/// @param {Bool} $deep - recursive mode
+/// @param {Boolean} $deep - recursive mode
 /// @return {Map}
 @function fs-map-extend($map, $maps.../*, $deep */) {
   $last: nth($maps, -1);
@@ -549,6 +549,41 @@ $π: $fs-pi;
 
   // Return converted value(s)
   @return $output;
+}
+
+/// Scale a value relative to the viewport width using `calc()` and viewport units
+/// @group Main
+/// @param {Number} $start - Starting value
+/// @param {Number} $end - Ending value
+/// @param {Number} $min-width - Starting viewport width
+/// @param {Number} $max-width - Ending viewport width
+/// @return {String} - Custom `calc()` formula
+/// @ignore Demo https://www.sassmeister.com/gist/9f87f8c19e91c811831d84fc8484ed24
+/// @link http://www.sassmeister.com/gist/7f22e44ace49b5124eec
+/// @link http://madebymike.com.au/writing/precise-control-responsive-typography/
+/// @link https://zellwk.com/blog/viewport-based-typography/
+/// @link http://codepen.io/indrekpaas/pen/VarLaJ?editors=1100
+/// @link http://codepen.io/maranomynet/pen/ozNpXV?editors=1100
+/// @link https://www.smashingmagazine.com/2016/05/fluid-typography/
+/// @example scss
+///   p {
+///     font-size: fs-scale(20px, 30px, 320px, 400px);
+///   }
+@function fs-scale($start, $end, $min-width, $max-width) {
+  @if $start > 0 and $end > 0 and unit($start) != unit($end) {
+    @error '🔴  fs-scale() units don’t match';
+  }
+
+  $slope: ($end - $start) / ($max-width - $min-width);
+
+  $intercept: $end - ($slope * $max-width);
+
+  @if ($intercept == 0) {
+    @return $slope * 100vw;
+  }
+  @else {
+    @return calc(#{$slope * 100vw} + #{fs-rem($intercept)});
+  }
 }
 
 /// Slices `$list` between `$start` and `$end`.
@@ -1042,7 +1077,7 @@ $fs-svg-icons: (
 /// Check whether `$value` is a valid length.
 /// @group Utilities
 /// @param {*} $value - Value to validate.
-/// @return {Bool}
+/// @return {Boolean}
 /// @link http://www.sitepoint.com/bulletproof-function-validate-length-values-sass/
 /// @require {function} fs-contains
 @function fs-is-length($value) {
@@ -1790,6 +1825,50 @@ $fs-debug-mode: false !default;
   padding-left: 0;
 }
 
+/// Scale a value for any number of properites relative to the viewport width
+/// @group Main
+/// @param {String | List} $properties - Properties to scale
+/// @param {Number} $start - Starting value
+/// @param {Number} $end - Ending value
+/// @param {Number} $min-width - Starting viewport width
+/// @param {Number} $max-width - Ending viewport width
+/// @param {Boolean} $fallback [true] - Output starting value outside of media query
+/// @require {function} fs-rem
+/// @require {function} fs-scale
+/// @ignore Demo https://www.sassmeister.com/gist/9f87f8c19e91c811831d84fc8484ed24
+/// @link http://www.sassmeister.com/gist/7f22e44ace49b5124eec
+/// @link http://madebymike.com.au/writing/precise-control-responsive-typography/
+/// @link https://zellwk.com/blog/viewport-based-typography/
+/// @link http://codepen.io/indrekpaas/pen/VarLaJ?editors=1100
+/// @link http://codepen.io/maranomynet/pen/ozNpXV?editors=1100
+/// @link https://www.smashingmagazine.com/2016/05/fluid-typography/
+/// @example scss
+///   @include fs-scale(font-size, 20px, 30px, 320px, 400px);
+/// @example scss
+///   @include fs-scale(margin-bottom margin-top, 10px, 20px, 500px, 600px);
+@mixin fs-scale($properties, $start, $end, $min-width, $max-width, $fallback: true) {
+  // Starting size
+  @if $fallback {
+    @each $property in $properties {
+      #{$property}: fs-rem($start);
+    }
+  }
+
+  // Scale up with calc()
+  @media screen and (min-width: $min-width) {
+    @each $property in $properties {
+      #{$property}: fs-scale($start, $end, $min-width, $max-width);
+    }
+  }
+
+  // Final size
+  @media screen and (min-width: $max-width) {
+    @each $property in $properties {
+      #{$property}: fs-rem($end);
+    }
+  }
+}
+
 ////
 /// @group Selectors
 /// @link http://sass-lang.com/documentation/Sass/Script/Functions.html#selector_functions
@@ -2033,6 +2112,101 @@ $fs-debug-mode: false !default;
 
 
 // Minxins with dependencies
+/// Scale a value relative to the viewport width by generating media queries at set intervals
+/// @group Main
+/// @param {String} $property - Property to scale
+/// @param {Number} $start - Starting value
+/// @param {Number} $end - Ending value
+/// @param {Number} $min-width - Starting viewport width
+/// @param {Number} $max-width - Ending viewport width
+/// @param {Number} $min-step [null] - Minimum increment to adjust value
+/// @param {Number} $max-steps [10] - Maximum number of times to adjust the value
+/// @require {mixin} fs-min-width
+/// @ignore Demo https://www.sassmeister.com/gist/aafd476fd2e7671c92e2ebb47a431821
+/// @ignore Inspired by http://www.bookcasey.com/fittext/
+/// @link https://github.com/bookcasey/fittext
+/// @example scss
+///   @include fs-scale-mq(line-height, 1.7, 1.5, 320px, 450px, $min-step: 0.05);
+@mixin fs-scale-mq($property, $start, $end, $min-width, $max-width, $min-step: null, $max-steps: 10) {
+  @if $min-width >= $max-width {
+    @error '🔴  fs-scale-mq() max-width must be greater than min-width';
+  }
+
+  @if unit($start) != unit($end) {
+    @error '🔴  fs-scale-mq() units don’t match';
+  }
+
+  @if $min-step != null and unit($min-step) != unit($start) {
+    @error '🔴  $min-step units in fs-scale-mq() don’t match';
+  }
+
+  @if not unitless($max-steps) or type-of($max-steps) != 'number' {
+    @error '🔴  $max-steps in fs-scale-mq() must be a unitless number';
+  }
+
+  @if $start == $end {
+    @warn '⚠️ fs-scale-mq() values are the same';
+  }
+
+  // Multiplier used to control whether value should increase or descrease
+  $sign: if($end < $start, -1, 1);
+
+  // Total amount value will change
+  $spread: abs($end - $start);
+
+  // Number of times to adjust the value between $min-width and $max-width
+  // Will adjust later if necessary based on $min-step value
+  $steps: $max-steps;
+
+  // Amount to increase/decrease the value at each step
+  // Based on $max-steps by default, will adjust later if necessary based on $min-step value
+  $step: $spread / $max-steps;
+
+  // If $min-step was defined, compare steps to $max-steps
+  @if $min-step != null {
+
+    // Only update steps count if $min-step amount results in fewer steps than $max-steps
+    @if ($spread / $min-step) < $max-steps {
+      $step: $min-step;
+      $steps: $spread / $min-step;
+    }
+  }
+
+  // If $steps isn’t a whole number, round up
+  // We will make sure this doesn’t result in extra code below
+  $steps: ceil($steps);
+
+  // Media query spread
+  $mq-spread: $max-width - $min-width;
+
+  // Calcuate media query step size
+  $mq-step: round(($max-width - $min-width) / $steps);
+
+  // Debug
+  // content: 'spread: #{$spread}, steps: #{$steps}, step: #{$step}, mqSpread: #{$mq-spread}, mqStep: #{$mq-step}';
+
+  // Starting value
+  #{$property}: $start;
+
+  // Generate media queries
+  @for $i from 1 through $steps {
+    $breakpoint: $min-width + ($mq-step * $i);
+    $value: $start + ($sign * $step * $i);
+
+    // Ensure we don’t output extra media queries due to rounding
+    @if $breakpoint < $max-width and (if $sign == 1, $value < $end, $value > $end) {
+      @include fs-min-width($breakpoint) {
+        #{$property}: $value;
+      }
+    }
+  }// end @for loop
+
+  // Ending value
+  @include fs-min-width($max-width) {
+    #{$property}: $end;
+  }
+}
+// Requires “media-query”
 /// Automatically scale font-size and line-height
 /// @group Main
 /// @require {mixin} fs-min-width - Min-width media query mixin
