@@ -12,7 +12,7 @@ var packageInfo = require('./package.json');
 var sass = require('gulp-sass');
 var sassdoc = require('sassdoc');
 var path = require('path');
-var gh = require('gh-pages');
+var ghPages = require('gh-pages');
 var yaml = require('js-yaml');
 var scsslint = require('gulp-scss-lint');
 
@@ -50,7 +50,7 @@ gulp.task('scss-lint', function() {
 
 
 // -----------------------------------------------------------------------------
-// Sass API documentation
+// Generate documentation site using http://sassdoc.com
 // -----------------------------------------------------------------------------
 gulp.task('sassdoc', function () {
   var options = yaml.safeLoad(fs.readFileSync('.sassdocrc', 'utf-8'));
@@ -66,28 +66,19 @@ gulp.task('sassdoc', function () {
 
 
 // -----------------------------------------------------------------------------
-// GH-pages task
-// -----------------------------------------------------------------------------
-gulp.task('gh-pages', ['build', 'sassdoc'], function () {
-  gh.publish(path.join(__dirname, 'sassdoc'), {
-    add: true,
-    message: 'Automatic SassDoc update from Gulp',
-    logger: function(message) {
-      console.log(message);
-    }
-  }, function(err) {
-    if (err) console.log(err);
-  });
-});
-
-
-// -----------------------------------------------------------------------------
 // Default task
 // -----------------------------------------------------------------------------
 gulp.task('default', ['build', 'scss-lint']);
 
 
 // -----------------------------------------------------------------------------
-// Deploy documentation task
+// Deploy to gh-pages
 // -----------------------------------------------------------------------------
-gulp.task('deploy', ['gh-pages']);
+gulp.task('deploy', ['build', 'sassdoc'], function () {
+  ghPages.publish(path.join(__dirname, 'sassdoc'), {
+    add: true,
+    message: 'Automatic SassDoc update from Gulp'
+  }, function(err) {
+    if (err) console.log(err);
+  });
+});
