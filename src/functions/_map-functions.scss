@@ -60,7 +60,7 @@
 /// @author Hugo Giraudel
 /// @param {Map} $map - Map
 /// @param {Arglist} $keys - Keys to test
-/// @return {Bool}
+/// @return {Boolean}
 @function fs-map-has-keys($map, $keys...) {
   @each $key in $keys {
     @if not map-has-key($map, $key) {
@@ -75,7 +75,7 @@
 /// @author Hugo Giraudel
 /// @param {Map} $map - Map
 /// @param {Arglist} $keys - Keys to test
-/// @return {Bool}
+/// @return {Boolean}
 @function fs-map-has-nested-keys($map, $keys...) {
   @each $key in $keys {
     @if not map-has-key($map, $key) {
@@ -120,7 +120,7 @@
 /// * is not recursive
 /// @param {Map} $map - first map
 /// @param {ArgList} $maps - other maps
-/// @param {Bool} $deep - recursive mode
+/// @param {Boolean} $deep - recursive mode
 /// @return {Map}
 @function fs-map-extend($map, $maps.../*, $deep */) {
   $last: nth($maps, -1);

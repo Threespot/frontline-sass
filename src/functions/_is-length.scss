@@ -1,7 +1,7 @@
 /// Check whether `$value` is a valid length.
 /// @group Utilities
 /// @param {*} $value - Value to validate.
-/// @return {Bool}
+/// @return {Boolean}
 /// @link http://www.sitepoint.com/bulletproof-function-validate-length-values-sass/
 /// @require {function} fs-contains
 @function fs-is-length($value) {
