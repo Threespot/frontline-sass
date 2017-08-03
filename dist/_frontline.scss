@@ -3,7 +3,7 @@
 //      _______  ____  _  __________   _____  ______
 //     / __/ _ \/ __ \/ |/ /_  __/ /  /  _/ |/ / __/
 //    / _// , _/ /_/ /    / / / / /___/ //    / _/
-//   /_/ /_/|_|\____/_/|_/ /_/ /____/___/_/|_/___/   v3.7.1
+//   /_/ /_/|_|\____/_/|_/ /_/ /____/___/_/|_/___/   v3.7.2
 //
 //   This project is licensed under the terms of the MIT license
 
@@ -756,6 +756,7 @@ $π: $fs-pi;
 /// @return {Number} - Stripped value
 /// @require {function} fs-strip-unit
 @function fs-strip($arg) {
+  @warn '“fs-strip” will be deprecated in the next release, please use “fs-strip-unit” instead';
   @return fs-strip-unit($arg);
 }
 // Requires “strip-unit”
@@ -952,7 +953,7 @@ $fs-colors: (
   }
   @else {
     $last-color: nth($colors, length($colors));
-    @error "🔴  #{$last-color} on #{$base} fails WCAG AA contrast test (#{fs-color-contrast($base, $last-color)})";
+    @warn "⚠️  All text colors on #{$base} fail the WCAG AA contrast test at #{$ratio} ratio";
   }
 }
 // Requires pow() from “math”
@@ -1825,50 +1826,6 @@ $fs-debug-mode: false !default;
   padding-left: 0;
 }
 
-/// Scale a value for any number of properites relative to the viewport width
-/// @group Main
-/// @param {String | List} $properties - Properties to scale
-/// @param {Number} $start - Starting value
-/// @param {Number} $end - Ending value
-/// @param {Number} $min-width - Starting viewport width
-/// @param {Number} $max-width - Ending viewport width
-/// @param {Boolean} $fallback [true] - Output starting value outside of media query
-/// @require {function} fs-rem
-/// @require {function} fs-scale
-/// @ignore Demo https://www.sassmeister.com/gist/9f87f8c19e91c811831d84fc8484ed24
-/// @link http://www.sassmeister.com/gist/7f22e44ace49b5124eec
-/// @link http://madebymike.com.au/writing/precise-control-responsive-typography/
-/// @link https://zellwk.com/blog/viewport-based-typography/
-/// @link http://codepen.io/indrekpaas/pen/VarLaJ?editors=1100
-/// @link http://codepen.io/maranomynet/pen/ozNpXV?editors=1100
-/// @link https://www.smashingmagazine.com/2016/05/fluid-typography/
-/// @example scss
-///   @include fs-scale(font-size, 20px, 30px, 320px, 400px);
-/// @example scss
-///   @include fs-scale(margin-bottom margin-top, 10px, 20px, 500px, 600px);
-@mixin fs-scale($properties, $start, $end, $min-width, $max-width, $fallback: true) {
-  // Starting size
-  @if $fallback {
-    @each $property in $properties {
-      #{$property}: fs-rem($start);
-    }
-  }
-
-  // Scale up with calc()
-  @media screen and (min-width: $min-width) {
-    @each $property in $properties {
-      #{$property}: fs-scale($start, $end, $min-width, $max-width);
-    }
-  }
-
-  // Final size
-  @media screen and (min-width: $max-width) {
-    @each $property in $properties {
-      #{$property}: fs-rem($end);
-    }
-  }
-}
-
 ////
 /// @group Selectors
 /// @link http://sass-lang.com/documentation/Sass/Script/Functions.html#selector_functions
@@ -2112,6 +2069,52 @@ $fs-debug-mode: false !default;
 
 
 // Minxins with dependencies
+/// Scale a value for any number of properites relative to the viewport width
+/// @group Main
+/// @param {String | List} $properties - Properties to scale
+/// @param {Number} $start - Starting value
+/// @param {Number} $end - Ending value
+/// @param {Number} $min-width - Starting viewport width
+/// @param {Number} $max-width - Ending viewport width
+/// @param {Boolean} $fallback [true] - Output starting value outside of media query
+/// @require {function} fs-rem
+/// @require {function} fs-scale
+/// @require {mixin} fs-min-width
+/// @require {mixin} fs-max-width
+/// @ignore Demo https://www.sassmeister.com/gist/9f87f8c19e91c811831d84fc8484ed24
+/// @link http://www.sassmeister.com/gist/7f22e44ace49b5124eec
+/// @link http://madebymike.com.au/writing/precise-control-responsive-typography/
+/// @link https://zellwk.com/blog/viewport-based-typography/
+/// @link http://codepen.io/indrekpaas/pen/VarLaJ?editors=1100
+/// @link http://codepen.io/maranomynet/pen/ozNpXV?editors=1100
+/// @link https://www.smashingmagazine.com/2016/05/fluid-typography/
+/// @example scss
+///   @include fs-scale(font-size, 20px, 30px, 320px, 400px);
+/// @example scss
+///   @include fs-scale(margin-bottom margin-top, 10px, 20px, 500px, 600px);
+@mixin fs-scale($properties, $start, $end, $min-width, $max-width, $fallback: true) {
+  // Starting size
+  @if $fallback {
+    @each $property in $properties {
+      #{$property}: fs-rem($start);
+    }
+  }
+
+  // Scale up with calc()
+  @include fs-min-width($min-width) {
+    @each $property in $properties {
+      #{$property}: fs-scale($start, $end, $min-width, $max-width);
+    }
+  }
+
+  // Final size
+  @include fs-min-width($max-width) {
+    @each $property in $properties {
+      #{$property}: fs-rem($end);
+    }
+  }
+}
+// Requires “media-query”
 /// Scale a value relative to the viewport width by generating media queries at set intervals
 /// @group Main
 /// @param {String} $property - Property to scale
@@ -2280,7 +2283,7 @@ $fs-debug-mode: false !default;
     $line-height-diff: $end-line-height - $start-line-height;
 
     // If no change in line-height, ignore it
-    @if $line-height-diff == 0 {
+    @if fs-strip-unit($line-height-diff) == 0 {
       $has-line-height: false;
     }
     @else {
