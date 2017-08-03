@@ -25,7 +25,7 @@
 
   $intercept: $end - ($slope * $max-width);
 
-  @if ($intercept == 0) {
+  @if (fs-strip-unit($intercept) == 0) {
     @return $slope * 100vw;
   }
   @else {
