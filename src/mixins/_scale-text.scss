@@ -71,7 +71,7 @@
     $line-height-diff: $end-line-height - $start-line-height;
 
     // If no change in line-height, ignore it
-    @if $line-height-diff == 0 {
+    @if fs-strip-unit($line-height-diff) == 0 {
       $has-line-height: false;
     }
     @else {
