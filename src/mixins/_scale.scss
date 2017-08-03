@@ -8,6 +8,8 @@
 /// @param {Boolean} $fallback [true] - Output starting value outside of media query
 /// @require {function} fs-rem
 /// @require {function} fs-scale
+/// @require {mixin} fs-min-width
+/// @require {mixin} fs-max-width
 /// @ignore Demo https://www.sassmeister.com/gist/9f87f8c19e91c811831d84fc8484ed24
 /// @link http://www.sassmeister.com/gist/7f22e44ace49b5124eec
 /// @link http://madebymike.com.au/writing/precise-control-responsive-typography/
@@ -28,14 +30,14 @@
   }
 
   // Scale up with calc()
-  @media screen and (min-width: $min-width) {
+  @include fs-min-width($min-width) {
     @each $property in $properties {
       #{$property}: fs-scale($start, $end, $min-width, $max-width);
     }
   }
 
   // Final size
-  @media screen and (min-width: $max-width) {
+  @include fs-min-width($max-width) {
     @each $property in $properties {
       #{$property}: fs-rem($end);
     }
