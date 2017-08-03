@@ -93,6 +93,6 @@
   }
   @else {
     $last-color: nth($colors, length($colors));
-    @error "🔴  #{$last-color} on #{$base} fails WCAG AA contrast test (#{fs-color-contrast($base, $last-color)})";
+    @warn "⚠️  All text colors on #{$base} fail the WCAG AA contrast test at #{$ratio} ratio";
   }
 }
