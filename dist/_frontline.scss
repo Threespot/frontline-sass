@@ -3,7 +3,7 @@
 //      _______  ____  _  __________   _____  ______
 //     / __/ _ \/ __ \/ |/ /_  __/ /  /  _/ |/ / __/
 //    / _// , _/ /_/ /    / / / / /___/ //    / _/
-//   /_/ /_/|_|\____/_/|_/ /_/ /____/___/_/|_/___/   v3.7.2
+//   /_/ /_/|_|\____/_/|_/ /_/ /____/___/_/|_/___/   v3.7.3
 //
 //   This project is licensed under the terms of the MIT license
 
@@ -578,7 +578,7 @@ $π: $fs-pi;
 
   $intercept: $end - ($slope * $max-width);
 
-  @if ($intercept == 0) {
+  @if (fs-strip-unit($intercept) == 0) {
     @return $slope * 100vw;
   }
   @else {
