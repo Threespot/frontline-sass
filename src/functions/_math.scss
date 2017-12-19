@@ -103,19 +103,24 @@ $π: $fs-pi;
 /// @require {function} fs-exp-taylor
 /// @require {function} fs-ln
 /// @require {function} fs-pow-int
+/// @require {function} fs-strip-unit
 @function fs-pow($x, $exponent, $steps: 32) {
+  // We must strip the units and add them back at the end
+  $units: $x / fs-strip-unit($x);
+  $x: fs-strip-unit($x);
+
   $exp1: round($exponent);
   $exp2: $exponent - $exp1;
   $pow1: fs-pow-int($x, $exp1);
 
   @if $exp2 == 0 {
-    @return $pow1;
+    @return $pow1 * $units;
   }
   @else {
     $y: fs-ln($x, $steps) * $exp2;
     $pow2: fs-exp-taylor($y, $steps);
 
-    @return $pow1 * $pow2;
+    @return $pow1 * $pow2 * $units;
   }
 }
 

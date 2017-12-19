@@ -15,7 +15,6 @@ $fs-base-font-size: 16px !default;
 @import 'functions/_easings.scss';
 @import 'functions/_em.scss';
 @import 'functions/_map-functions.scss';
-@import 'functions/_math.scss';
 @import 'functions/_rem.scss';
 @import 'functions/_scale.scss';
 @import 'functions/_slice.scss';
@@ -25,6 +24,7 @@ $fs-base-font-size: 16px !default;
 @import 'functions/_strip.scss';// Requires “strip-unit”
 
 // Functions with dependencies
+@import 'functions/_math.scss';// Requires “strip-unit”
 @import 'functions/_breakpoint.scss';// Requires “map-functions”
 @import 'functions/_color.scss';// Requires “map-functions”
 @import 'functions/_color-contrast.scss';// Requires pow() from “math”
