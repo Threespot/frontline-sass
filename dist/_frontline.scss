@@ -3,7 +3,7 @@
 //      _______  ____  _  __________   _____  ______
 //     / __/ _ \/ __ \/ |/ /_  __/ /  /  _/ |/ / __/
 //    / _// , _/ /_/ /    / / / / /___/ //    / _/
-//   /_/ /_/|_|\____/_/|_/ /_/ /____/___/_/|_/___/   v3.7.4
+//   /_/ /_/|_|\____/_/|_/ /_/ /____/___/_/|_/___/   v3.7.5
 //
 //   This project is licensed under the terms of the MIT license
 
@@ -715,6 +715,10 @@ $π: $fs-pi;
 
 /// @access private
 @function fs-sin-taylor($x, $steps) {
+  // We must strip the units and add them back at the end
+  $units: $x / fs-strip-unit($x);
+  $x: fs-strip-unit($x);
+
   $item: $x;
   $result: $x;
 
@@ -723,7 +727,7 @@ $π: $fs-pi;
     $result: $result + $item;
   }
 
-  @return $result;
+  @return $result * $units;
 }
 
 /// Sine function
@@ -1165,7 +1169,7 @@ $fs-zindex: (
   $opposite-angle: (90deg - $angle);
 
   // hypotenuse
-  $c: $a / fs-sin($opposite-angle);
+  $c: $a / fs-strip-unit(fs-sin($opposite-angle));
 
   // calculate height using Pythagorean theorem
   $b: fs-sqrt(fs-pow($c, 2) - fs-pow($a, 2));
