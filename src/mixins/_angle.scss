@@ -12,7 +12,7 @@
   $opposite-angle: (90deg - $angle);
 
   // hypotenuse
-  $c: $a / fs-sin($opposite-angle);
+  $c: $a / fs-strip-unit(fs-sin($opposite-angle));
 
   // calculate height using Pythagorean theorem
   $b: fs-sqrt(fs-pow($c, 2) - fs-pow($a, 2));

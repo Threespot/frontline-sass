@@ -157,6 +157,10 @@ $π: $fs-pi;
 
 /// @access private
 @function fs-sin-taylor($x, $steps) {
+  // We must strip the units and add them back at the end
+  $units: $x / fs-strip-unit($x);
+  $x: fs-strip-unit($x);
+
   $item: $x;
   $result: $x;
 
@@ -165,7 +169,7 @@ $π: $fs-pi;
     $result: $result + $item;
   }
 
-  @return $result;
+  @return $result * $units;
 }
 
 /// Sine function
