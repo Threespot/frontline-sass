@@ -5,6 +5,8 @@ Threespot's Sass framework
 
 [Documentation](http://threespot.github.io/frontline-sass/documentation/)
 
+[Atom Snippets](https://atom.io/packages/frontline-sass-snippets)
+
 
 ## License
 
