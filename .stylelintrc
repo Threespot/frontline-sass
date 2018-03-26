@@ -33,6 +33,7 @@
         "selector-attribute-operator-space-before": "never",
         "selector-attribute-quotes": "always",
         "selector-combinator-space-after": "always",
-        "selector-pseudo-element-colon-notation": null
+        "selector-pseudo-element-colon-notation": null,
+        "string-no-newline": null
     }
 }

@@ -26,7 +26,7 @@
   ],
   "homepage": "https://github.com/Threespot/frontline-sass",
   "scripts": {
-    "gulp": "gulp && yarn lint",
+    "gulp": "gulp",
     "build": "gulp build",
     "deploy": "NODE_DEBUG='gh-pages' gulp deploy",
     "lint": "stylelint 'src/**/*.scss'",

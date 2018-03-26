@@ -3,7 +3,6 @@
 /// @type Map
 /// @ignore Symbol reference http://www.w3schools.com/tags/ref_urlencode.asp
 /// @ignore Note: gulp-minify-css (which uses clean-css) isn’t applying config options correctly causing data URLs to not be wrapped in quote, so we have to convert double quotes (") to percent encoded symbols.
-/* stylelint-disable string-no-newline */
 $fs-escape-chars: (
   ' ': '%20',
   '\'': '%22',
@@ -115,5 +114,3 @@ $fs-svg-icons: (
   // Return inline SVG data
   @return 'data:image/svg+xml,' + fs-url-encode('<svg version="1.1" baseProfile="full" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ' + $width + ' ' + $height + '" width="' + $width + '" height="' + $height + '" preserveAspectRatio="xMidYMid meet"' + $fill + $custom-attrs + '>' + unquote($data) + '</svg>');
 }
-
-/* stylelint-enable */
