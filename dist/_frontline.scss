@@ -3,7 +3,7 @@
 //      _______  ____  _  __________   _____  ______
 //     / __/ _ \/ __ \/ |/ /_  __/ /  /  _/ |/ / __/
 //    / _// , _/ /_/ /    / / / / /___/ //    / _/
-//   /_/ /_/|_|\____/_/|_/ /_/ /____/___/_/|_/___/   v3.7.5
+//   /_/ /_/|_|\____/_/|_/ /_/ /____/___/_/|_/___/   v3.7.6
 //
 //   This project is licensed under the terms of the MIT license
 
@@ -975,7 +975,6 @@ $fs-colors: (
 /// @type Map
 /// @ignore Symbol reference http://www.w3schools.com/tags/ref_urlencode.asp
 /// @ignore Note: gulp-minify-css (which uses clean-css) isn’t applying config options correctly causing data URLs to not be wrapped in quote, so we have to convert double quotes (") to percent encoded symbols.
-/* stylelint-disable string-no-newline */
 $fs-escape-chars: (
   ' ': '%20',
   '\'': '%22',
@@ -1087,8 +1086,6 @@ $fs-svg-icons: (
   // Return inline SVG data
   @return 'data:image/svg+xml,' + fs-url-encode('<svg version="1.1" baseProfile="full" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ' + $width + ' ' + $height + '" width="' + $width + '" height="' + $height + '" preserveAspectRatio="xMidYMid meet"' + $fill + $custom-attrs + '>' + unquote($data) + '</svg>');
 }
-
-/* stylelint-enable */
 // Requires “str-replace”
 /// Check whether `$value` is a valid length.
 /// @group Utilities
@@ -2040,11 +2037,9 @@ $fs-debug-mode: false !default;
 /// @link http://snook.ca/archives/html_and_css/hiding-content-for-accessibility
 /// @link https://github.com/h5bp/html5-boilerplate/blob/master/dist/css/main.css
 /// @author Jonathan Snook
-/*
- * 1. For long content, line feeds are not interpreted as spaces and small width
- * causes content to wrap 1 word per line:
- * https://medium.com/@jessebeach/beware-smushed-off-screen-accessible-text-5952a4c2cbfe
-*/
+///
+/// @ignore 1. For long content, line feeds are not interpreted as spaces and small width causes content to wrap 1 word per line:
+/// @ignore https://medium.com/@jessebeach/beware-smushed-off-screen-accessible-text-5952a4c2cbfe
 @mixin fs-visually-hidden {
   border: 0;
   clip: rect(0 0 0 0);
