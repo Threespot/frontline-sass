@@ -26,13 +26,23 @@
   ],
   "homepage": "https://github.com/Threespot/frontline-sass",
   "scripts": {
-    "gulp": "gulp",
-    "lint": "gulp sass-lint",
+    "gulp": "gulp && yarn lint",
+    "build": "gulp build",
     "deploy": "NODE_DEBUG='gh-pages' gulp deploy",
+    "lint": "stylelint 'src/**/*.scss'",
+    "npm-patch": "bower version patch && npm version patch --force -m \"version %s\"",
+    "npm-minor": "bower version minor && npm version minor --force -m \"version %s\"",
+    "npm-major": "bower version major && npm version major --force -m \"version %s\"",
+    "patch": "read -p 'Confirm create new patch (0.0.x) to npm: (y/n) ' -n 1 -r \n if [[ $REPLY =~ ^[Yy]$ ]] \n then \n yarn npm-patch \n fi",
+    "minor": "read -p 'Confirm create new minor version (0.x.0) to npm (y/n) ' -n 1 -r \n if [[ $REPLY =~ ^[Yy]$ ]] \n then \n yarn npm-minor \n fi",
+    "major": "read -p 'Confirm create new major version (x.0.0) to npm (y/n) ' -n 1 -r \n if [[ $REPLY =~ ^[Yy]$ ]] \n then \n yarn npm-major \n fi",
+    "preversion": "yarn lint",
+    "version": "yarn build && yarn gulp sassdoc && git add .",
     "postversion": "git push && git push --tags"
   },
   "license": "MIT",
   "devDependencies": {
+    "bower": "^1.8.2",
     "gh-pages": "0.11.0",
     "gulp": "3.9.1",
     "gulp-concat": "2.6.1",
@@ -41,8 +51,10 @@
     "gulp-load-plugins": "1.5.0",
     "gulp-replace": "0.6.0",
     "gulp-sass": "3.1.0",
-    "gulp-scss-lint": "0.4.0",
     "js-yaml": "3.8.4",
-    "sassdoc": "2.3.0"
-  }
+    "sassdoc": "2.3.0",
+    "stylelint": "^9.1.3",
+    "stylelint-config-standard": "^18.2.0"
+  },
+  "dependencies": {}
 }

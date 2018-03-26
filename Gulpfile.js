@@ -14,7 +14,6 @@ var sassdoc = require('sassdoc');
 var path = require('path');
 var ghPages = require('gh-pages');
 var yaml = require('js-yaml');
-var scsslint = require('gulp-scss-lint');
 
 // -----------------------------------------------------------------------------
 // Dist
@@ -41,15 +40,6 @@ gulp.task('test', function () {
 
 
 // -----------------------------------------------------------------------------
-// Lint
-// -----------------------------------------------------------------------------
-gulp.task('scss-lint', function() {
-  return gulp.src('./src/*/*.scss')
-    .pipe(scsslint());
-});
-
-
-// -----------------------------------------------------------------------------
 // Generate documentation site using http://sassdoc.com
 // -----------------------------------------------------------------------------
 gulp.task('sassdoc', function () {
@@ -68,7 +58,7 @@ gulp.task('sassdoc', function () {
 // -----------------------------------------------------------------------------
 // Default task
 // -----------------------------------------------------------------------------
-gulp.task('default', ['build', 'scss-lint']);
+gulp.task('default', ['build']);
 
 
 // -----------------------------------------------------------------------------

@@ -93,7 +93,7 @@
   @if ($color != auto) {
     &:before,
     &:after {
-        background-color: $color;
+      background-color: $color;
     }
   }
 
