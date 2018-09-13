@@ -4,7 +4,7 @@
 ///
 /// @example scss - 16:9 aspect ratio
 ///   .foo {
-///     @include aspectRatio(16/9);
+///     @include fs-aspect-ratio(16/9);
 ///   }
 ///
 @mixin fs-aspect-ratio($ratio) {
