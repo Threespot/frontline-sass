@@ -3,7 +3,7 @@
 //      _______  ____  _  __________   _____  ______
 //     / __/ _ \/ __ \/ |/ /_  __/ /  /  _/ |/ / __/
 //    / _// , _/ /_/ /    / / / / /___/ //    / _/
-//   /_/ /_/|_|\____/_/|_/ /_/ /____/___/_/|_/___/   v3.7.6
+//   /_/ /_/|_|\____/_/|_/ /_/ /____/___/_/|_/___/   v3.7.7
 //
 //   This project is licensed under the terms of the MIT license
 
@@ -1218,7 +1218,7 @@ $fs-zindex: (
 ///
 /// @example scss - 16:9 aspect ratio
 ///   .foo {
-///     @include aspectRatio(16/9);
+///     @include fs-aspect-ratio(16/9);
 ///   }
 ///
 @mixin fs-aspect-ratio($ratio) {
