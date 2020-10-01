@@ -42,7 +42,6 @@
   },
   "license": "MIT",
   "devDependencies": {
-    "bower": "^1.8.2",
     "gh-pages": "0.11.0",
     "gulp": "3.9.1",
     "gulp-concat": "2.6.1",
