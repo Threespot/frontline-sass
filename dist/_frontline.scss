@@ -3,7 +3,7 @@
 //      _______  ____  _  __________   _____  ______
 //     / __/ _ \/ __ \/ |/ /_  __/ /  /  _/ |/ / __/
 //    / _// , _/ /_/ /    / / / / /___/ //    / _/
-//   /_/ /_/|_|\____/_/|_/ /_/ /____/___/_/|_/___/   v3.7.7
+//   /_/ /_/|_|\____/_/|_/ /_/ /____/___/_/|_/___/   v3.7.8
 //
 //   This project is licensed under the terms of the MIT license
 
@@ -2210,7 +2210,8 @@ $fs-debug-mode: false !default;
     $value: $start + ($sign * $step * $i);
 
     // Ensure we don’t output extra media queries due to rounding
-    @if $breakpoint < $max-width and (if $sign == 1, $value < $end, $value > $end) {
+    $is-below-cutoff: if($sign == 1, $value < $end, $value > $end);
+    @if $breakpoint < $max-width and $is-below-cutoff {
       @include fs-min-width($breakpoint) {
         #{$property}: $value;
       }
