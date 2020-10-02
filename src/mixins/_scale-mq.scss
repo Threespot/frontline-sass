@@ -80,7 +80,8 @@
     $value: $start + ($sign * $step * $i);
 
     // Ensure we don’t output extra media queries due to rounding
-    @if $breakpoint < $max-width and (if $sign == 1, $value < $end, $value > $end) {
+    $is-below-cutoff: if($sign == 1, $value < $end, $value > $end);
+    @if $breakpoint < $max-width and $is-below-cutoff {
       @include fs-min-width($breakpoint) {
         #{$property}: $value;
       }
