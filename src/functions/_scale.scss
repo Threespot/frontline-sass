@@ -16,7 +16,7 @@
 ///   p {
 ///     font-size: fs-scale(20px, 30px, 320px, 400px);
 ///   }
-@function fs-scale($start, $end, $min-width, $max-width) {
+@function fs-scale($start, $end, $min-width, $max-width, $units: 'rem') {
   @if $start > 0 and $end > 0 and unit($start) != unit($end) {
     @error '🔴  fs-scale() units don’t match';
   }
@@ -29,6 +29,11 @@
     @return $slope * 100vw;
   }
   @else {
-    @return calc(#{$slope * 100vw} + #{fs-rem($intercept)});
+    @if $units == 'em' {
+      @return calc(#{$slope * 100vw} + #{fs-em($intercept)});
+    }
+    @else {
+      @return calc(#{$slope * 100vw} + #{fs-rem($intercept)});
+    }
   }
 }

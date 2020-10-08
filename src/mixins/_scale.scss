@@ -21,25 +21,35 @@
 ///   @include fs-scale(font-size, 20px, 30px, 320px, 400px);
 /// @example scss
 ///   @include fs-scale(margin-bottom margin-top, 10px, 20px, 500px, 600px);
-@mixin fs-scale($properties, $start, $end, $min-width, $max-width, $fallback: true) {
+@mixin fs-scale($properties, $start, $end, $min-width, $max-width, $fallback: true, $units: 'rem') {
   // Starting size
   @if $fallback {
     @each $property in $properties {
-      #{$property}: fs-rem($start);
+      @if $units == 'em' {
+        #{$property}: fs-em($start);
+      }
+      @else {
+        #{$property}: fs-rem($start);
+      }
     }
   }
 
   // Scale up with calc()
   @include fs-min-width($min-width) {
     @each $property in $properties {
-      #{$property}: fs-scale($start, $end, $min-width, $max-width);
+      #{$property}: fs-scale($start, $end, $min-width, $max-width, $units);
     }
   }
 
   // Final size
   @include fs-min-width($max-width) {
     @each $property in $properties {
-      #{$property}: fs-rem($end);
+      @if $units == 'em' {
+        #{$property}: fs-em($end);
+      }
+      @else {
+        #{$property}: fs-rem($end);
+      }
     }
   }
 }
