@@ -15,6 +15,8 @@
 /// @link http://caniuse.com/#feat=datauri
 ///
 @function fs-svg($name, $color: false, $other: false) {
+  @warn 'DEPRECATED: Please upgrade to fs-svg-url() instead';
+
   // Check if icon exists
   @if not map-has-key($fs-svg-icons, $name) {
     @error '🔴  icon “#{$name}” does not exists in $fs-svg-icons map';

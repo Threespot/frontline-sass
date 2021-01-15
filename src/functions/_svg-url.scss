@@ -1,0 +1,48 @@
+/// @group Main
+/// Inline SVG for background-image
+/// @param {String} $name - SVG name
+/// @param {Map} $props - SVG attributes
+/// @return {String} - Inline SVG as url("data:image/svg+xml,…")
+/// @require {variable} $fs-escape-chars
+/// @require {variable} $fs-svgs
+/// @require {function} fs-str-replace
+/// @require {function} fs-url-encode
+/// @link https://www.sassmeister.com/gist/c2f12e64b242469d728f335ed612ae35
+/// @link https://css-tricks.com/probably-dont-base64-svg/
+/// @link https://codepen.io/tigt/post/optimizing-svgs-in-data-uris
+/// @link https://codepen.io/jakob-e/pen/doMoML
+/// @link https://yoksel.github.io/url-encoder/
+/// @link https://www.sassmeister.com/gist/594de57bc18015df9dc568e96aff9075
+/// @example scss
+///   .foo {
+///     background-image: fs-svg-url('chevDown', (fill: none, stroke: red, stroke-width: 1px));
+///   }
+@function fs-svg-url($name, $props: false, $svg-map: $fs-svgs) {
+  @if not $svg-map {
+    @error '🔴  $svg-map doesn’t exist';
+    @return false;
+  }
+
+  @if not type-of($svg-map) == 'map' {
+    @error '🔴  $svg-map isn’t a valid Sass map';
+    @return false;
+  }
+
+  @if not map-has-key($svg-map, $name) {
+    @error '🔴  icon “#{$name}” not found in $svg-map';
+    @return false;
+  }
+
+  $svg: map-get($svg-map, $name);
+
+  // Add custom properties
+  @if $props {
+    $props-string: '';
+    @each $key, $val in $props {
+      $props-string: $props-string + " #{$key}='#{$val}'";
+    }
+    $svg: fs-str-replace($svg, '<svg', '<svg' + $props-string);
+  }
+
+  @return url("data:image/svg+xml,#{unquote(fs-url-encode($svg))}");
+}

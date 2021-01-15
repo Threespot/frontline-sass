@@ -10,6 +10,7 @@
 @import 'variables/_easings.scss';
 @import 'variables/_escape-chars.scss';
 @import 'variables/_svg-icons.scss';
+@import 'variables/_svgs.scss';
 @import 'variables/_z-index.scss';
 
 // Functions
@@ -39,6 +40,7 @@
 // Functions with nested dependencies
 @import 'functions/_color-contrast.scss';// Requires pow() from “math”
 @import 'functions/_inline-svg.scss';// Requires “fs-url-encode”
+@import 'functions/_svg-url.scss';// Requires “str-replace” and “fs-url-encode”
 
 // Mixins
 //---------------------------------
