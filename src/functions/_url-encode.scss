@@ -1,0 +1,13 @@
+/// URL-encode string
+/// @group Utilities
+/// @param {String} $string - String to encode
+/// @return {String} - URL-encoded string
+/// @require {variable} $fs-escape-chars
+/// @require {function} fs-str-replace
+///
+@function fs-url-encode($string) {
+  @each $char, $code in $fs-escape-chars {
+    $string: fs-str-replace($string, $char, $code);
+  }
+  @return $string;
+}

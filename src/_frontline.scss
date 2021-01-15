@@ -25,21 +25,23 @@
 @import 'functions/_str-replace.scss';
 @import 'functions/_str-to-num.scss';
 @import 'functions/_strip-unit.scss';
-@import 'functions/_strip.scss';// Requires “strip-unit”
 
 // Functions with dependencies
-@import 'functions/_math.scss';// Requires “strip-unit”
 @import 'functions/_breakpoint.scss';// Requires “map-functions”
 @import 'functions/_color.scss';// Requires “map-functions”
-@import 'functions/_color-contrast.scss';// Requires pow() from “math”
-@import 'functions/_inline-svg.scss';// Requires “str-replace”
 @import 'functions/_is-length.scss';// Requires “contains”
+@import 'functions/_math.scss';// Requires “strip-unit”
 @import 'functions/_ratio.scss';// Requires “strip-unit”
+@import 'functions/_strip.scss';// Requires “strip-unit”
+@import 'functions/_url-encode.scss';// Requires “str-replace”
 @import 'functions/_z-index.scss';// Requires “map-functions”
 
-//------------------------------------------------------------------------//
+// Functions with nested dependencies
+@import 'functions/_color-contrast.scss';// Requires pow() from “math”
+@import 'functions/_inline-svg.scss';// Requires “fs-url-encode”
+
 // Mixins
-//------------------------------------------------------------------------//
+//---------------------------------
 @import 'mixins/_absolute-fill.scss';
 @import 'mixins/_angle.scss';
 @import 'mixins/_aspect-ratio.scss';

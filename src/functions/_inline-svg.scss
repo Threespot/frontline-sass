@@ -1,34 +1,3 @@
-/// URL-encode SVG code
-/// @access private
-/// @param {String} $string - String to encode
-/// @return {String} - URL-encoded string
-/// @require {variable} $fs-escape-chars
-/// @require {function} fs-str-replace
-///
-@function fs-url-encode($string) {
-  $escaped-string: '';
-
-  // Loop through each character in string
-  @for $i from 1 through str-length($string) {
-    $char: str-slice($string, $i, $i);
-
-    // Check if character is in symbol map
-    $char-lookup: map-get($fs-escape-chars, $char);
-
-    // If it is, use escaped version
-    @if $char-lookup != null {
-      $char: $char-lookup;
-    }
-
-    // Append character to escaped string
-    $escaped-string: $escaped-string + $char;
-  }
-
-  // Return escaped string
-  @return $escaped-string;
-}
-
-
 /// Helper to get URL-escaped inline SVG code for use with `background-image`
 /// @group Main
 /// @param {String} $name - Icon name
