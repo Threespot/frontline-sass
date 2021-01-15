@@ -2,14 +2,18 @@
 // Global vars
 //------------------------------------------------------------------------//
 
-/// Base font size
-/// @group Main
-/// @type Number
-$fs-base-font-size: 16px !default;
+// Variables
+//---------------------------------
+@import 'variables/_base-font-size.scss';
+@import 'variables/_breakpoints.scss';
+@import 'variables/_colors.scss';
+@import 'variables/_easings.scss';
+@import 'variables/_escape-chars.scss';
+@import 'variables/_svg-icons.scss';
+@import 'variables/_z-index.scss';
 
-//------------------------------------------------------------------------//
 // Functions
-//------------------------------------------------------------------------//
+//---------------------------------
 @import 'functions/_contains.scss';
 @import 'functions/_convert-units.scss';
 @import 'functions/_easings.scss';

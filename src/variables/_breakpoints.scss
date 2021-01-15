@@ -1,0 +1,12 @@
+/// Named breakpoints map
+/// @group Main
+/// @type Map
+$fs-breakpoints: (
+  'global': (
+    'narrow' : 320px,
+    'small'  : 480px,
+    'medium' : 640px,
+    'wide'   : 960px,
+    'full'   : 1200px
+  )
+) !default;

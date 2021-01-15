@@ -1,0 +1,17 @@
+/// Colors map
+/// @group Main
+/// @type Map
+/// @link http://clrs.cc
+$fs-colors: (
+  'base': (
+    'red': #ff4136,
+    'orange': #ff851b,
+    'yellow': #ffdc00,
+    'green': #2ecc40,
+    'blue': #0074d9,
+    'purple': #b10dc9,
+    'white': #fff,
+    'gray': #ccc,
+    'black': #000,
+  )
+) !default;

@@ -1,0 +1,9 @@
+/// Z-index layer map
+/// @group Main
+/// @type Map
+$fs-zindex: (
+  'main': 100,
+  'tooltip': 200,
+  'nav': 300,
+  'modal': 9999,
+) !default;
