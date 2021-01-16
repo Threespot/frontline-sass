@@ -2,54 +2,29 @@
 /// @group Main
 /// @param {String | List} $properties - Properties to scale
 /// @param {Number} $start - Starting value
-/// @param {Number} $end - Ending value
-/// @param {Number} $min-width - Starting viewport width
-/// @param {Number} $max-width - Ending viewport width
-/// @param {Boolean} $fallback [true] - Output starting value outside of media query
+/// @param {String} $units - Output units
 /// @require {function} fs-rem
 /// @require {function} fs-scale
 /// @require {mixin} fs-min-width
 /// @require {mixin} fs-max-width
-/// @ignore Demo https://www.sassmeister.com/gist/9f87f8c19e91c811831d84fc8484ed24
+/// @ignore Demo https://www.sassmeister.com/gist/f8ba9be15cf926d2dc983a7004c089a6
 /// @link http://www.sassmeister.com/gist/7f22e44ace49b5124eec
 /// @link http://madebymike.com.au/writing/precise-control-responsive-typography/
 /// @link https://zellwk.com/blog/viewport-based-typography/
 /// @link http://codepen.io/indrekpaas/pen/VarLaJ?editors=1100
 /// @link http://codepen.io/maranomynet/pen/ozNpXV?editors=1100
 /// @link https://www.smashingmagazine.com/2016/05/fluid-typography/
+/// @link https://github.com/Jakobud/poly-fluid-sizing
 /// @example scss
-///   @include fs-scale(font-size, 20px, 30px, 320px, 400px);
+///   @include fs-scale(font-size, (320px:18px, 768px:26px, 1024px:38px);
 /// @example scss
-///   @include fs-scale(margin-bottom margin-top, 10px, 20px, 500px, 600px);
-@mixin fs-scale($properties, $start, $end, $min-width, $max-width, $fallback: true, $units: 'rem') {
-  // Starting size
-  @if $fallback {
-    @each $property in $properties {
-      @if $units == 'em' {
-        #{$property}: fs-em($start);
-      }
-      @else {
-        #{$property}: fs-rem($start);
-      }
-    }
+///   @include fs-scale(margin-bottom margin-top, (320px:18px, 768px:26px, 1024px:38px));
+/// TODO: In next major version, rename fs-scale-poly() as fs-scale() and delete this code.
+@mixin fs-scale($args...) {
+  @if length($args) > 1 and type-of(nth($args, 2)) == 'map' {
+    @include fs-scale-poly($args...);
   }
-
-  // Scale up with calc()
-  @include fs-min-width($min-width) {
-    @each $property in $properties {
-      #{$property}: fs-scale($start, $end, $min-width, $max-width, $units);
-    }
-  }
-
-  // Final size
-  @include fs-min-width($max-width) {
-    @each $property in $properties {
-      @if $units == 'em' {
-        #{$property}: fs-em($end);
-      }
-      @else {
-        #{$property}: fs-rem($end);
-      }
-    }
+  @else {
+    @include fs-scale-legacy($args...);
   }
 }

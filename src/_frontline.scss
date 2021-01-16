@@ -70,5 +70,7 @@
 
 // Minxins with dependencies
 @import 'mixins/_scale.scss';// Requires “media-query”
+@import 'mixins/_scale-legacy.scss';// Requires “fs-scale”
 @import 'mixins/_scale-mq.scss';// Requires “media-query”
+@import 'mixins/_scale-poly.scss';// Requires “fs-scale”
 @import 'mixins/_scale-text.scss';// Requires “media-query” and “convert-units”
