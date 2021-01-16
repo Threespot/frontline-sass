@@ -3,7 +3,7 @@
 //      _______  ____  _  __________   _____  ______
 //     / __/ _ \/ __ \/ |/ /_  __/ /  /  _/ |/ / __/
 //    / _// , _/ /_/ /    / / / / /___/ //    / _/
-//   /_/ /_/|_|\____/_/|_/ /_/ /____/___/_/|_/___/   v3.8.0
+//   /_/ /_/|_|\____/_/|_/ /_/ /____/___/_/|_/___/   v3.9.0
 //
 //   This project is licensed under the terms of the MIT license
 
@@ -12,14 +12,149 @@
 // Global vars
 //------------------------------------------------------------------------//
 
+// Variables
+//---------------------------------
 /// Base font size
 /// @group Main
 /// @type Number
 $fs-base-font-size: 16px !default;
 
-//------------------------------------------------------------------------//
+/// Named breakpoints map
+/// @group Main
+/// @type Map
+$fs-breakpoints: (
+  'global': (
+    'narrow' : 320px,
+    'small'  : 480px,
+    'medium' : 640px,
+    'wide'   : 960px,
+    'full'   : 1200px
+  )
+) !default;
+
+/// Colors map
+/// @group Main
+/// @type Map
+/// @link http://clrs.cc
+$fs-colors: (
+  'base': (
+    'red': #ff4136,
+    'orange': #ff851b,
+    'yellow': #ffdc00,
+    'green': #2ecc40,
+    'blue': #0074d9,
+    'purple': #b10dc9,
+    'white': #fff,
+    'gray': #ccc,
+    'black': #000,
+  )
+) !default;
+
+/// Custom easings map
+/// @type Map
+/// @link https://github.com/jhardy/compass-ceaser-easing
+/// @link http://easings.net
+$fs-easings: (
+  'linear'         : '0.250, 0.250, 0.750, 0.750',
+  'ease'           : '0.250, 0.100, 0.250, 1.000',
+  'ease-in'        : '0.420, 0.000, 1.000, 1.000',
+  'ease-out'       : '0.000, 0.000, 0.580, 1.000',
+  'ease-in-out'    : '0.420, 0.000, 0.580, 1.000',
+  'easeInQuad'     : '0.550, 0.085, 0.680, 0.530',
+  'easeInCubic'    : '0.550, 0.055, 0.675, 0.190',
+  'easeInQuart'    : '0.895, 0.030, 0.685, 0.220',
+  'easeInQuint'    : '0.755, 0.050, 0.855, 0.060',
+  'easeInSine'     : '0.470, 0.000, 0.745, 0.715',
+  'easeInExpo'     : '0.950, 0.050, 0.795, 0.035',
+  'easeInCirc'     : '0.600, 0.040, 0.980, 0.335',
+  'easeInBack'     : '0.600, -0.280, 0.735, 0.045',
+  'easeOutQuad'    : '0.250, 0.460, 0.450, 0.940',
+  'easeOutCubic'   : '0.215, 0.610, 0.355, 1.000',
+  'easeOutQuart'   : '0.165, 0.840, 0.440, 1.000',
+  'easeOutQuint'   : '0.230, 1.000, 0.320, 1.000',
+  'easeOutSine'    : '0.390, 0.575, 0.565, 1.000',
+  'easeOutExpo'    : '0.190, 1.000, 0.220, 1.000',
+  'easeOutCirc'    : '0.075, 0.820, 0.165, 1.000',
+  'easeOutBack'    : '0.175, 0.885, 0.320, 1.275',
+  'easeInOutQuad'  : '0.455, 0.030, 0.515, 0.955',
+  'easeInOutCubic' : '0.645, 0.045, 0.355, 1.000',
+  'easeInOutQuart' : '0.770, 0.000, 0.175, 1.000',
+  'easeInOutQuint' : '0.860, 0.000, 0.070, 1.000',
+  'easeInOutSine'  : '0.445, 0.050, 0.550, 0.950',
+  'easeInOutExpo'  : '1.000, 0.000, 0.000, 1.000',
+  'easeInOutCirc'  : '0.785, 0.135, 0.150, 0.860',
+  'easeInOutBack'  : '0.680, -0.550, 0.265, 1.55'
+);
+
+/// Characters to escape from SVGs
+/// @group Main
+/// @type Map
+/// @ignore Symbol reference http://www.w3schools.com/tags/ref_urlencode.asp
+/// @ignore Note: gulp-minify-css (which uses clean-css) isn’t applying config options correctly causing data URLs to not be wrapped in quote, so we have to convert double quotes (") to percent encoded symbols.
+$fs-escape-chars: (
+  '"': '\'',
+  '%': '%25',
+  '#': '%23',
+  '<': '%3C',
+  '>': '%3E',
+);
+// Only add additional characters if necessary
+// (e.g. if SVG contains inline styles or CSS)
+//-------------------------------------------
+// '(': '%28',
+// ')': '%29',
+// '/': '%2F',
+// ':': '%3A',
+// ';': '%3B',
+// '=': '%3D',
+// '?': '%3F',
+// '@': '%40',
+// '\\': '%5C',
+// '^': '%5E',
+// '`': '%60',
+// '{': '%7B',
+// '|': '%7C',
+// '}': '%7D',
+// These shouldn’t be necessary, just here for reference
+// ' ': '%20',
+// '\'': '%22',
+// '"': '%27',
+/// DEPRECATED: SVG icon map for `fs-svg` (use $fs-svg instead)
+/// @group Main
+/// @type Map
+$fs-svg-icons: (
+  close: (
+    height: 28,
+    width: 22,
+    data: '<path d="M20.28 20.66q0 .62-.44 1.06l-2.12 2.12q-.44.44-1.06.44t-1.07-.44l-4.6-4.6-4.6 4.6q-.43.44-1.06.44t-1.06-.44l-2.12-2.12q-.44-.44-.44-1.06t.44-1.07l4.6-4.6-4.6-4.6q-.44-.43-.44-1.06t.44-1.06l2.12-2.12q.44-.44 1.06-.44t1.07.44l4.6 4.6 4.6-4.6q.43-.44 1.06-.44t1.06.44l2.12 2.12q.44.44.44 1.06t-.44 1.07l-4.6 4.6 4.6 4.6q.44.43.44 1.06z"/>'
+  ),
+  search: (
+    height: 28,
+    width: 26,
+    data: '<path d="M18 13q0-2.9-2.06-4.95T11 6 6.05 8.06 4 13t2.05 4.95T11 20t4.95-2.06T18 13zm8 13q0 .8-.6 1.4T24 28q-.84 0-1.4-.6l-5.37-5.34Q14.43 24 11 24q-2.23 0-4.27-.87T3.2 20.8.88 17.26 0 13t.87-4.27T3.2 5.2t3.53-2.33T11 2t4.27.87T18.8 5.2t2.33 3.53T22 13q0 3.44-1.94 6.23l5.36 5.36q.58.57.58 1.4z"/>'
+  )
+) !default;
+
+/// SVG icons
+/// @group Main
+/// @type Map
+$fs-svgs: (
+  'chevDown': '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 14 10" preserveAspectRatio="xMidYMid meet"><path d="M12 0l2 2-7 7.1-7-7L2-.1l5 5z"/></svg>'
+);
+
+/// Z-index layer map
+/// @group Main
+/// @type Map
+$fs-zindex: (
+  'main': 100,
+  'tooltip': 200,
+  'nav': 300,
+  'modal': 9999,
+) !default;
+
+
 // Functions
-//------------------------------------------------------------------------//
+//---------------------------------
 /// Check whether `$list` contains `$value`.
 /// @group Utilities
 /// @param {List} $list - List of values.
@@ -73,47 +208,8 @@ $fs-base-font-size: 16px !default;
   }
 }
 
-////
-/// @group Main
-////
-
-/// Custom easings map
-/// @type Map
-/// @link https://github.com/jhardy/compass-ceaser-easing
-/// @link http://easings.net
-$fs-easings: (
-  'linear'         : '0.250, 0.250, 0.750, 0.750',
-  'ease'           : '0.250, 0.100, 0.250, 1.000',
-  'ease-in'        : '0.420, 0.000, 1.000, 1.000',
-  'ease-out'       : '0.000, 0.000, 0.580, 1.000',
-  'ease-in-out'    : '0.420, 0.000, 0.580, 1.000',
-  'easeInQuad'     : '0.550, 0.085, 0.680, 0.530',
-  'easeInCubic'    : '0.550, 0.055, 0.675, 0.190',
-  'easeInQuart'    : '0.895, 0.030, 0.685, 0.220',
-  'easeInQuint'    : '0.755, 0.050, 0.855, 0.060',
-  'easeInSine'     : '0.470, 0.000, 0.745, 0.715',
-  'easeInExpo'     : '0.950, 0.050, 0.795, 0.035',
-  'easeInCirc'     : '0.600, 0.040, 0.980, 0.335',
-  'easeInBack'     : '0.600, -0.280, 0.735, 0.045',
-  'easeOutQuad'    : '0.250, 0.460, 0.450, 0.940',
-  'easeOutCubic'   : '0.215, 0.610, 0.355, 1.000',
-  'easeOutQuart'   : '0.165, 0.840, 0.440, 1.000',
-  'easeOutQuint'   : '0.230, 1.000, 0.320, 1.000',
-  'easeOutSine'    : '0.390, 0.575, 0.565, 1.000',
-  'easeOutExpo'    : '0.190, 1.000, 0.220, 1.000',
-  'easeOutCirc'    : '0.075, 0.820, 0.165, 1.000',
-  'easeOutBack'    : '0.175, 0.885, 0.320, 1.275',
-  'easeInOutQuad'  : '0.455, 0.030, 0.515, 0.955',
-  'easeInOutCubic' : '0.645, 0.045, 0.355, 1.000',
-  'easeInOutQuart' : '0.770, 0.000, 0.175, 1.000',
-  'easeInOutQuint' : '0.860, 0.000, 0.070, 1.000',
-  'easeInOutSine'  : '0.445, 0.050, 0.550, 0.950',
-  'easeInOutExpo'  : '1.000, 0.000, 0.000, 1.000',
-  'easeInOutCirc'  : '0.785, 0.135, 0.150, 0.860',
-  'easeInOutBack'  : '0.680, -0.550, 0.265, 1.55'
-);
-
 /// Custom easing function
+/// @group Main
 /// @param {String} $name - Name of easing
 /// @return {String} - Easing code
 /// @require {variable} $fs-easings - Custom easing map
@@ -552,19 +648,83 @@ $fs-easings: (
   }
 }
 
-/// **Deprication Warning!** use `fs-strip-unit` instead.
-/// Strips unit from value
-/// @group Utilities
-/// @param {Number} $arg - Value to strip
-/// @return {Number} - Stripped value
-/// @require {function} fs-strip-unit
-@function fs-strip($arg) {
-  @warn '“fs-strip” will be deprecated in the next release, please use “fs-strip-unit” instead';
-  @return fs-strip-unit($arg);
-}
-// Requires “strip-unit”
 
 // Functions with dependencies
+/// Helper to get named breakpoint value from `$fs-breakpoints` map. Defaults to using 'base' as key if a single argument is passed.
+/// @group Main
+/// @param {Arglist} $keys - key/value
+/// @return {Number} - Breakpoint width
+/// @require {function} fs-map-deep-get - Fetch nested keys
+/// @require {variable} $fs-breakpoints - Named breakpoints map
+@function fs-breakpoint($keys...) {
+  @if not global-variable-exists(fs-breakpoints) {
+    @error '🔴  $fs-breakpoints map does not exist';
+  }
+
+  @if not length($fs-breakpoints) {
+    @error '🔴  $fs-breakpoints map does not contain any items';
+  }
+
+  $default-key: 'global';
+
+  // If a single value was passed, use the default key
+  @if length($keys) == 1 and type-of(map-get($fs-breakpoints, $default-key)) != 'null' {
+    $keys: join($default-key, $keys, comma);
+  }
+
+  $val: fs-map-deep-get($fs-breakpoints, $keys...);
+
+  // Validate value
+  @if type-of($val) != 'null' {
+    @return $val;
+  }
+  @else {
+    @error '🔴  “#{$keys}” breakpoint not found';
+  }
+}
+// Requires “map-functions”
+/// Helper to get color value from `$fs-colors` map
+/// @group Main
+/// @param {Arglist} $keys - key/value
+/// @return {Color} - Color value
+/// @require {function} fs-map-deep-get - Fetch nested keys
+/// @require {variable} $fs-colors - Named colors map
+@function fs-color($keys...) {
+  @if not global-variable-exists(fs-colors) {
+    @error '🔴  $fs-colors map does not exist';
+  }
+
+  @if not length($fs-colors) {
+    @error '🔴  Color map does not contain any items';
+  }
+
+  $default-key: 'base';
+
+  // If a single value was passed, use the default key
+  @if length($keys) == 1 and type-of(map-get($fs-colors, $default-key)) != 'null' {
+    $keys: join($default-key, $keys, comma);
+  }
+
+  $val: fs-map-deep-get($fs-colors, $keys...);
+
+  // Validate
+  @if type-of($val) != 'color' {
+    @error '🔴  #{$keys} is not a valid color';
+  }
+
+  @return $val;
+}
+// Requires “map-functions”
+/// Check whether `$value` is a valid length.
+/// @group Utilities
+/// @param {*} $value - Value to validate.
+/// @return {Boolean}
+/// @link http://www.sitepoint.com/bulletproof-function-validate-length-values-sass/
+/// @require {function} fs-contains
+@function fs-is-length($value) {
+  @return fs-contains(0 'auto' 'initial' 'inherit', $value) or type-of($value) == 'number' and not unitless($value) or str-slice($value + '', 1, 4) == 'calc';
+}
+// Requires “contains”
 ////
 /// @group Math
 /// @author xi
@@ -780,102 +940,70 @@ $π: $fs-pi;
   @return fs-sin($x, $steps) / $cos($x, $steps);
 }
 // Requires “strip-unit”
-/// Named breakpoints map
-/// @group Main
-/// @type Map
-$fs-breakpoints: (
-  'global': (
-    'narrow' : 320px,
-    'small'  : 480px,
-    'medium' : 640px,
-    'wide'   : 960px,
-    'full'   : 1200px
-  )
-) !default;
-
-/// Helper to get named breakpoint value from `$fs-breakpoints` map. Defaults to using 'base' as key if a single argument is passed.
-/// @group Main
-/// @param {Arglist} $keys - key/value
-/// @return {Number} - Breakpoint width
-/// @require {function} fs-map-deep-get - Fetch nested keys
-/// @require {variable} $fs-breakpoints - Named breakpoints map
-@function fs-breakpoint($keys...) {
-  @if not global-variable-exists(fs-breakpoints) {
-    @error '🔴  $fs-breakpoints map does not exist';
+/// Return unitless ratio of two values
+/// @group Math
+/// @param {Number} $a - Dividend
+/// @param {Number} $b - Divisor
+/// @return {Number} - Unitless ratio
+/// @require {function} fs-strip-unit
+@function fs-ratio($a, $b) {
+  // Check if units match, or if divisor is unitless
+  @if unit($a) == unit($b) or unitless($b) {
+    @return fs-strip-unit($a / $b);
   }
-
-  @if not length($fs-breakpoints) {
-    @error '🔴  $fs-breakpoints map does not contain any items';
-  }
-
-  $default-key: 'global';
-
-  // If a single value was passed, use the default key
-  @if length($keys) == 1 and type-of(map-get($fs-breakpoints, $default-key)) != 'null' {
-    $keys: join($default-key, $keys, comma);
-  }
-
-  $val: fs-map-deep-get($fs-breakpoints, $keys...);
-
-  // Validate value
-  @if type-of($val) != 'null' {
-    @return $val;
-  }
+  // Warn if units don't match
   @else {
-    @error '🔴  “#{$keys}” breakpoint not found';
+    @error '🔴  Units do not match: fs-ratio(#{$a}, #{$b})';
   }
 }
-// Requires “map-functions”
-/// Colors map
-/// @group Main
-/// @type Map
-/// @link http://clrs.cc
-$fs-colors: (
-  'base': (
-    'red': #ff4136,
-    'orange': #ff851b,
-    'yellow': #ffdc00,
-    'green': #2ecc40,
-    'blue': #0074d9,
-    'purple': #b10dc9,
-    'white': #fff,
-    'gray': #ccc,
-    'black': #000,
-  )
-) !default;
-
-/// Helper to get color value from `$fs-colors` map
+// Requires “strip-unit”
+/// **Deprication Warning!** use `fs-strip-unit` instead.
+/// Strips unit from value
+/// @group Utilities
+/// @param {Number} $arg - Value to strip
+/// @return {Number} - Stripped value
+/// @require {function} fs-strip-unit
+@function fs-strip($arg) {
+  @warn '“fs-strip” will be deprecated in the next release, please use “fs-strip-unit” instead';
+  @return fs-strip-unit($arg);
+}
+// Requires “strip-unit”
+/// URL-encode string
+/// @group Utilities
+/// @param {String} $string - String to encode
+/// @return {String} - URL-encoded string
+/// @require {variable} $fs-escape-chars
+/// @require {function} fs-str-replace
+///
+@function fs-url-encode($string) {
+  @each $char, $code in $fs-escape-chars {
+    $string: fs-str-replace($string, $char, $code);
+  }
+  @return $string;
+}
+// Requires “str-replace”
+/// Get z-index layer from `$fs-zindex` map variable
 /// @group Main
 /// @param {Arglist} $keys - key/value
-/// @return {Color} - Color value
+/// @return {Number} - z-index value
 /// @require {function} fs-map-deep-get - Fetch nested keys
-/// @require {variable} $fs-colors - Named colors map
-@function fs-color($keys...) {
-  @if not global-variable-exists(fs-colors) {
-    @error '🔴  $fs-colors map does not exist';
+/// @require {variable} $fs-zindex - Global z-index map
+/// @link https://twitter.com/HugoGiraudel/status/480022470431608832
+/// @link http://www.sitepoint.com/better-solution-managing-z-index-sass/
+@function fs-zindex($keys...) {
+  @if not global-variable-exists(fs-zindex) {
+    @error '🔴  $fs-zindex map does not exist';
   }
 
-  @if not length($fs-colors) {
-    @error '🔴  Color map does not contain any items';
+  @if not length($fs-zindex) {
+    @error '🔴  $fs-zindex map does not contain any items';
   }
 
-  $default-key: 'base';
-
-  // If a single value was passed, use the default key
-  @if length($keys) == 1 and type-of(map-get($fs-colors, $default-key)) != 'null' {
-    $keys: join($default-key, $keys, comma);
-  }
-
-  $val: fs-map-deep-get($fs-colors, $keys...);
-
-  // Validate
-  @if type-of($val) != 'color' {
-    @error '🔴  #{$keys} is not a valid color';
-  }
-
-  @return $val;
+  @return fs-map-deep-get($fs-zindex, $keys...);
 }
 // Requires “map-functions”
+
+// Functions with nested dependencies
 ////
 /// @group Main
 /// @author Based on work by voxpelli and xi
@@ -975,77 +1103,6 @@ $fs-colors: (
   }
 }
 // Requires pow() from “math”
-/// Characters to escape from SVGs
-/// @access private
-/// @type Map
-/// @ignore Symbol reference http://www.w3schools.com/tags/ref_urlencode.asp
-/// @ignore Note: gulp-minify-css (which uses clean-css) isn’t applying config options correctly causing data URLs to not be wrapped in quote, so we have to convert double quotes (") to percent encoded symbols.
-$fs-escape-chars: (
-  ' ': '%20',
-  '\'': '%22',
-  '"': '%27',
-  '#': '%23',
-  '/': '%2F',
-  ':': '%3A',
-  '(': '%28',
-  ')': '%29',
-  '%': '%25',
-  '<': '%3C',
-  '>': '%3E',
-  '\\': '%5C',
-  '^': '%5E',
-  '{': '%7B',
-  '|': '%7C',
-  '}': '%7D',
-);
-
-/// SVG icon map for use with `fs-svg` function
-/// @group Main
-/// @type Map
-$fs-svg-icons: (
-  close: (
-    height: 28,
-    width: 22,
-    data: '<path d="M20.28 20.66q0 .62-.44 1.06l-2.12 2.12q-.44.44-1.06.44t-1.07-.44l-4.6-4.6-4.6 4.6q-.43.44-1.06.44t-1.06-.44l-2.12-2.12q-.44-.44-.44-1.06t.44-1.07l4.6-4.6-4.6-4.6q-.44-.43-.44-1.06t.44-1.06l2.12-2.12q.44-.44 1.06-.44t1.07.44l4.6 4.6 4.6-4.6q.43-.44 1.06-.44t1.06.44l2.12 2.12q.44.44.44 1.06t-.44 1.07l-4.6 4.6 4.6 4.6q.44.43.44 1.06z"/>'
-  ),
-  search: (
-    height: 28,
-    width: 26,
-    data: '<path d="M18 13q0-2.9-2.06-4.95T11 6 6.05 8.06 4 13t2.05 4.95T11 20t4.95-2.06T18 13zm8 13q0 .8-.6 1.4T24 28q-.84 0-1.4-.6l-5.37-5.34Q14.43 24 11 24q-2.23 0-4.27-.87T3.2 20.8.88 17.26 0 13t.87-4.27T3.2 5.2t3.53-2.33T11 2t4.27.87T18.8 5.2t2.33 3.53T22 13q0 3.44-1.94 6.23l5.36 5.36q.58.57.58 1.4z"/>'
-  )
-) !default;
-
-/// URL-encode SVG code
-/// @access private
-/// @param {String} $string - String to encode
-/// @return {String} - URL-encoded string
-/// @require {variable} $fs-escape-chars
-/// @require {function} fs-str-replace
-///
-@function fs-url-encode($string) {
-  $escaped-string: '';
-
-  // Loop through each character in string
-  @for $i from 1 through str-length($string) {
-    $char: str-slice($string, $i, $i);
-
-    // Check if character is in symbol map
-    $char-lookup: map-get($fs-escape-chars, $char);
-
-    // If it is, use escaped version
-    @if $char-lookup != null {
-      $char: $char-lookup;
-    }
-
-    // Append character to escaped string
-    $escaped-string: $escaped-string + $char;
-  }
-
-  // Return escaped string
-  @return $escaped-string;
-}
-
-
 /// Helper to get URL-escaped inline SVG code for use with `background-image`
 /// @group Main
 /// @param {String} $name - Icon name
@@ -1063,6 +1120,8 @@ $fs-svg-icons: (
 /// @link http://caniuse.com/#feat=datauri
 ///
 @function fs-svg($name, $color: false, $other: false) {
+  @warn 'DEPRECATED: Please upgrade to fs-svg-url() instead';
+
   // Check if icon exists
   @if not map-has-key($fs-svg-icons, $name) {
     @error '🔴  icon “#{$name}” does not exists in $fs-svg-icons map';
@@ -1091,68 +1150,59 @@ $fs-svg-icons: (
   // Return inline SVG data
   @return 'data:image/svg+xml,' + fs-url-encode('<svg version="1.1" baseProfile="full" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ' + $width + ' ' + $height + '" width="' + $width + '" height="' + $height + '" preserveAspectRatio="xMidYMid meet"' + $fill + $custom-attrs + '>' + unquote($data) + '</svg>');
 }
-// Requires “str-replace”
-/// Check whether `$value` is a valid length.
-/// @group Utilities
-/// @param {*} $value - Value to validate.
-/// @return {Boolean}
-/// @link http://www.sitepoint.com/bulletproof-function-validate-length-values-sass/
-/// @require {function} fs-contains
-@function fs-is-length($value) {
-  @return fs-contains(0 'auto' 'initial' 'inherit', $value) or type-of($value) == 'number' and not unitless($value) or str-slice($value + '', 1, 4) == 'calc';
-}
-// Requires “contains”
-/// Return unitless ratio of two values
-/// @group Math
-/// @param {Number} $a - Dividend
-/// @param {Number} $b - Divisor
-/// @return {Number} - Unitless ratio
-/// @require {function} fs-strip-unit
-@function fs-ratio($a, $b) {
-  // Check if units match, or if divisor is unitless
-  @if unit($a) == unit($b) or unitless($b) {
-    @return fs-strip-unit($a / $b);
-  }
-  // Warn if units don't match
-  @else {
-    @error '🔴  Units do not match: fs-ratio(#{$a}, #{$b})';
-  }
-}
-// Requires “strip-unit”
-/// Z-index layer map
+// Requires “fs-url-encode”
 /// @group Main
-/// @type Map
-$fs-zindex: (
-  'main': 100,
-  'tooltip': 200,
-  'nav': 300,
-  'modal': 9999,
-) !default;
-
-/// Get z-index layer from `$fs-zindex` map variable
-/// @group Main
-/// @param {Arglist} $keys - key/value
-/// @return {Number} - z-index value
-/// @require {function} fs-map-deep-get - Fetch nested keys
-/// @require {variable} $fs-zindex - Global z-index map
-/// @link https://twitter.com/HugoGiraudel/status/480022470431608832
-/// @link http://www.sitepoint.com/better-solution-managing-z-index-sass/
-@function fs-zindex($keys...) {
-  @if not global-variable-exists(fs-zindex) {
-    @error '🔴  $fs-zindex map does not exist';
+/// Inline SVG for background-image
+/// @param {String} $name - SVG name
+/// @param {Map} $props - SVG attributes
+/// @return {String} - Inline SVG as url("data:image/svg+xml,…")
+/// @require {variable} $fs-escape-chars
+/// @require {variable} $fs-svgs
+/// @require {function} fs-str-replace
+/// @require {function} fs-url-encode
+/// @link https://www.sassmeister.com/gist/c2f12e64b242469d728f335ed612ae35
+/// @link https://css-tricks.com/probably-dont-base64-svg/
+/// @link https://codepen.io/tigt/post/optimizing-svgs-in-data-uris
+/// @link https://codepen.io/jakob-e/pen/doMoML
+/// @link https://yoksel.github.io/url-encoder/
+/// @link https://www.sassmeister.com/gist/594de57bc18015df9dc568e96aff9075
+/// @example scss
+///   .foo {
+///     background-image: fs-svg-url('chevDown', (fill: none, stroke: red, stroke-width: 1px));
+///   }
+@function fs-svg-url($name, $props: false, $svg-map: $fs-svgs) {
+  @if not $svg-map {
+    @error '🔴  $svg-map doesn’t exist';
+    @return false;
   }
 
-  @if not length($fs-zindex) {
-    @error '🔴  $fs-zindex map does not contain any items';
+  @if not type-of($svg-map) == 'map' {
+    @error '🔴  $svg-map isn’t a valid Sass map';
+    @return false;
   }
 
-  @return fs-map-deep-get($fs-zindex, $keys...);
+  @if not map-has-key($svg-map, $name) {
+    @error '🔴  icon “#{$name}” not found in $svg-map';
+    @return false;
+  }
+
+  $svg: map-get($svg-map, $name);
+
+  // Add custom properties
+  @if $props {
+    $props-string: '';
+    @each $key, $val in $props {
+      $props-string: $props-string + " #{$key}='#{$val}'";
+    }
+    $svg: fs-str-replace($svg, '<svg', '<svg' + $props-string);
+  }
+
+  @return url("data:image/svg+xml,#{unquote(fs-url-encode($svg))}");
 }
-// Requires “map-functions”
+// Requires “str-replace” and “fs-url-encode”
 
-//------------------------------------------------------------------------//
 // Mixins
-//------------------------------------------------------------------------//
+//---------------------------------
 /// Absolutely position an element and fill available space
 /// @group Main
 @mixin fs-absolute-fill {
@@ -2091,6 +2141,37 @@ $fs-debug-mode: false !default;
 /// @group Main
 /// @param {String | List} $properties - Properties to scale
 /// @param {Number} $start - Starting value
+/// @param {String} $units - Output units
+/// @require {function} fs-rem
+/// @require {function} fs-scale
+/// @require {mixin} fs-min-width
+/// @require {mixin} fs-max-width
+/// @ignore Demo https://www.sassmeister.com/gist/f8ba9be15cf926d2dc983a7004c089a6
+/// @link http://www.sassmeister.com/gist/7f22e44ace49b5124eec
+/// @link http://madebymike.com.au/writing/precise-control-responsive-typography/
+/// @link https://zellwk.com/blog/viewport-based-typography/
+/// @link http://codepen.io/indrekpaas/pen/VarLaJ?editors=1100
+/// @link http://codepen.io/maranomynet/pen/ozNpXV?editors=1100
+/// @link https://www.smashingmagazine.com/2016/05/fluid-typography/
+/// @link https://github.com/Jakobud/poly-fluid-sizing
+/// @example scss
+///   @include fs-scale(font-size, (320px:18px, 768px:26px, 1024px:38px);
+/// @example scss
+///   @include fs-scale(margin-bottom margin-top, (320px:18px, 768px:26px, 1024px:38px));
+/// TODO: In next major version, rename fs-scale-poly() as fs-scale() and delete this code.
+@mixin fs-scale($args...) {
+  @if length($args) > 1 and type-of(nth($args, 2)) == 'map' {
+    @include fs-scale-poly($args...);
+  }
+  @else {
+    @include fs-scale-legacy($args...);
+  }
+}
+// Requires “media-query”
+/// Legacy scale mixin
+/// @group Main
+/// @param {String | List} $properties - Properties to scale
+/// @param {Number} $start - Starting value
 /// @param {Number} $end - Ending value
 /// @param {Number} $min-width - Starting viewport width
 /// @param {Number} $max-width - Ending viewport width
@@ -2110,7 +2191,9 @@ $fs-debug-mode: false !default;
 ///   @include fs-scale(font-size, 20px, 30px, 320px, 400px);
 /// @example scss
 ///   @include fs-scale(margin-bottom margin-top, 10px, 20px, 500px, 600px);
-@mixin fs-scale($properties, $start, $end, $min-width, $max-width, $fallback: true, $units: 'rem') {
+@mixin fs-scale-legacy($properties, $start, $end, $min-width, $max-width, $fallback: true, $units: 'rem') {
+  @warn 'DEPRECATED: Please use new map syntax fs-scale(#{$properties}, (#{$min-width}: #{$start}, #{$max-width}: #{$end}))';
+
   // Starting size
   @if $fallback {
     @each $property in $properties {
@@ -2142,7 +2225,7 @@ $fs-debug-mode: false !default;
     }
   }
 }
-// Requires “media-query”
+// Requires “fs-scale”
 /// Scale a value relative to the viewport width by generating media queries at set intervals
 /// @group Main
 /// @param {String} $property - Property to scale
@@ -2239,6 +2322,79 @@ $fs-debug-mode: false !default;
   }
 }
 // Requires “media-query”
+/// Scale a value for any number of properites relative to the viewport width
+/// @group Main
+/// @param {String | List} $properties - Properties to scale
+/// @param {Number} $start - Starting value
+/// @param {String} $units - Output units
+/// @require {function} fs-rem
+/// @require {function} fs-scale
+/// @require {mixin} fs-min-width
+/// @require {mixin} fs-max-width
+/// @ignore Demo https://www.sassmeister.com/gist/f8ba9be15cf926d2dc983a7004c089a6
+/// @link http://www.sassmeister.com/gist/7f22e44ace49b5124eec
+/// @link http://madebymike.com.au/writing/precise-control-responsive-typography/
+/// @link https://zellwk.com/blog/viewport-based-typography/
+/// @link http://codepen.io/indrekpaas/pen/VarLaJ?editors=1100
+/// @link http://codepen.io/maranomynet/pen/ozNpXV?editors=1100
+/// @link https://www.smashingmagazine.com/2016/05/fluid-typography/
+/// @link https://github.com/Jakobud/poly-fluid-sizing
+/// @example scss
+///   @include fs-scale(font-size, (320px:18px, 768px:26px, 1024px:38px);
+/// @example scss
+///   @include fs-scale(margin-bottom margin-top, (320px:18px, 768px:26px, 1024px:38px));
+@mixin fs-scale-poly($properties, $map, $units: 'rem') {
+  $length: length($map);
+
+  @if ($length < 2) {
+    @error "fs-scale() requires at least two breakpoints"
+  }
+
+  $breakpoints: map-keys($map);
+  $values: map-values($map);
+
+  // Initial value
+  $start-val: nth($values, 1);
+
+  @each $property in $properties {
+    @if $units == 'em' {
+      #{$property}: fs-em($start-val);
+    }
+    @else {
+      #{$property}: fs-rem($start-val);
+    }
+  }
+
+  // Scale up with calc() at each breakpoint
+  @for $i from 1 through ($length - 1) {
+    $prev-breakpoint: nth($breakpoints, $i);
+    $new-breakpoint: nth($breakpoints, $i + 1);
+    $prev-value: nth($values, $i);
+    $new-value: nth($values, $i + 1);
+
+    @include fs-min-width($new-breakpoint) {
+      @each $property in $properties {
+        #{$property}: fs-scale($prev-value, $new-value, $prev-breakpoint, $new-breakpoint, $units);
+      }
+    }
+  }
+
+  // Final value
+  $end-val: nth($values, $length);
+  $end-breakpoint: nth($breakpoints, $length);
+
+  @include fs-min-width($end-breakpoint) {
+    @each $property in $properties {
+      @if $units == 'em' {
+        #{$property}: fs-em($end-val);
+      }
+      @else {
+        #{$property}: fs-rem($end-val);
+      }
+    }
+  }
+}
+// Requires “fs-scale”
 /// Automatically scale font-size and line-height
 /// @group Main
 /// @require {mixin} fs-min-width - Min-width media query mixin
