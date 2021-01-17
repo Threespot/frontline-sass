@@ -3,7 +3,7 @@
 //      _______  ____  _  __________   _____  ______
 //     / __/ _ \/ __ \/ |/ /_  __/ /  /  _/ |/ / __/
 //    / _// , _/ /_/ /    / / / / /___/ //    / _/
-//   /_/ /_/|_|\____/_/|_/ /_/ /____/___/_/|_/___/   v3.7.9
+//   /_/ /_/|_|\____/_/|_/ /_/ /____/___/_/|_/___/   v3.9.1
 //
 //   This project is licensed under the terms of the MIT license
 
@@ -120,6 +120,7 @@ $fs-escape-chars: (
 // ' ': '%20',
 // '\'': '%22',
 // '"': '%27',
+
 /// **⚠️ DEPRECATED:** use `$fs-svgs` instead.
 /// SVG icon map for deprecated `fs-svg()` mixin
 /// @group Main
@@ -2357,7 +2358,7 @@ $fs-debug-mode: false !default;
   $length: length($map);
 
   @if ($length < 2) {
-    @error "fs-scale() requires at least two breakpoints"
+    @error "fs-scale() requires at least two breakpoints";
   }
 
   $breakpoints: map-keys($map);
