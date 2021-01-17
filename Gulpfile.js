@@ -43,7 +43,7 @@ gulp.task('test', function () {
 // Generate documentation site using http://sassdoc.com
 // -----------------------------------------------------------------------------
 gulp.task('sassdoc', function () {
-  var options = yaml.safeLoad(fs.readFileSync('.sassdocrc', 'utf-8'));
+  var options = yaml.load(fs.readFileSync('.sassdocrc', 'utf-8'));
   options.dest = './sassdoc/documentation';
   options.verbose = true;
   options.package = require('./package.json');
@@ -58,13 +58,12 @@ gulp.task('sassdoc', function () {
 // -----------------------------------------------------------------------------
 // Default task
 // -----------------------------------------------------------------------------
-gulp.task('default', ['build']);
-
+gulp.task('default', gulp.parallel('build'));
 
 // -----------------------------------------------------------------------------
 // Deploy to gh-pages
 // -----------------------------------------------------------------------------
-gulp.task('deploy', ['build', 'sassdoc'], function () {
+gulp.task('deploy', gulp.parallel('build', 'sassdoc'), function () {
   ghPages.publish(path.join(__dirname, 'sassdoc'), {
     add: true,
     message: 'Automatic SassDoc update from Gulp'
