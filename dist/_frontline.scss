@@ -3,7 +3,7 @@
 //      _______  ____  _  __________   _____  ______
 //     / __/ _ \/ __ \/ |/ /_  __/ /  /  _/ |/ / __/
 //    / _// , _/ /_/ /    / / / / /___/ //    / _/
-//   /_/ /_/|_|\____/_/|_/ /_/ /____/___/_/|_/___/   v3.9.1
+//   /_/ /_/|_|\____/_/|_/ /_/ /____/___/_/|_/___/   v3.10.0
 //
 //   This project is licensed under the terms of the MIT license
 
@@ -2150,7 +2150,7 @@ $fs-debug-mode: false !default;
 /// @require {function} fs-scale
 /// @require {mixin} fs-min-width
 /// @require {mixin} fs-max-width
-/// @ignore Demo https://www.sassmeister.com/gist/f8ba9be15cf926d2dc983a7004c089a6
+/// @ignore Demo https://www.sassmeister.com/gist/37c4f4876609516eebab247178ea4b3b
 /// @link http://www.sassmeister.com/gist/7f22e44ace49b5124eec
 /// @link http://madebymike.com.au/writing/precise-control-responsive-typography/
 /// @link https://zellwk.com/blog/viewport-based-typography/
@@ -2182,6 +2182,7 @@ $fs-debug-mode: false !default;
 /// @param {Number} $min-width - Starting viewport width
 /// @param {Number} $max-width - Ending viewport width
 /// @param {Boolean} $fallback [true] - Output starting value outside of media query
+/// @param {String} $units ['rem'] - Output units
 /// @require {function} fs-rem
 /// @require {function} fs-scale
 /// @require {mixin} fs-min-width
@@ -2337,12 +2338,13 @@ $fs-debug-mode: false !default;
 /// @ignore TODO: In next major version, rename fs-scale-poly() as fs-scale()
 /// @param {String | List} $properties - Properties to scale
 /// @param {Number} $start - Starting value
-/// @param {String} $units - Output units
+/// @param {Boolean} $initial [true] - Output initial value (not inside media query)
+/// @param {String} $units ['rem'] - Output units
 /// @require {function} fs-rem
 /// @require {function} fs-scale
 /// @require {mixin} fs-min-width
 /// @require {mixin} fs-max-width
-/// @ignore Demo https://www.sassmeister.com/gist/f8ba9be15cf926d2dc983a7004c089a6
+/// @ignore Demo https://www.sassmeister.com/gist/37c4f4876609516eebab247178ea4b3b
 /// @link http://www.sassmeister.com/gist/7f22e44ace49b5124eec
 /// @link http://madebymike.com.au/writing/precise-control-responsive-typography/
 /// @link https://zellwk.com/blog/viewport-based-typography/
@@ -2351,10 +2353,18 @@ $fs-debug-mode: false !default;
 /// @link https://www.smashingmagazine.com/2016/05/fluid-typography/
 /// @link https://github.com/Jakobud/poly-fluid-sizing
 /// @example scss
-///   @include fs-scale(font-size, (320px:18px, 768px:26px, 1024px:38px);
+///   @include fs-scale(font-size, (320px: 18px, 1024px: 38px));
 /// @example scss
-///   @include fs-scale(margin-bottom margin-top, (320px:18px, 768px:26px, 1024px:38px));
-@mixin fs-scale-poly($properties, $map, $units: 'rem') {
+///   @include fs-scale(margin-bottom margin-top, (
+///     320px: 18px,
+///     768px: 26px,
+///     1024px: 38px
+///   ));
+/// @example scss
+///   @include fs-scale(font-size, (768px: 26px, 1024px: 38px), $initial: false);
+/// @example scss
+///   @include fs-scale(font-size, (768px: 26px, 1024px: 38px), $units: 'em');
+@mixin fs-scale-poly($properties, $map, $initial: true, $units: 'rem') {
   $length: length($map);
 
   @if ($length < 2) {
@@ -2367,12 +2377,14 @@ $fs-debug-mode: false !default;
   // Initial value
   $start-val: nth($values, 1);
 
-  @each $property in $properties {
-    @if $units == 'em' {
-      #{$property}: fs-em($start-val);
-    }
-    @else {
-      #{$property}: fs-rem($start-val);
+  @if $initial {
+    @each $property in $properties {
+      @if $units == 'em' {
+        #{$property}: fs-em($start-val);
+      }
+      @else {
+        #{$property}: fs-rem($start-val);
+      }
     }
   }
 
