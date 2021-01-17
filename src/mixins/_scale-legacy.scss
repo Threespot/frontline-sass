@@ -8,6 +8,7 @@
 /// @param {Number} $min-width - Starting viewport width
 /// @param {Number} $max-width - Ending viewport width
 /// @param {Boolean} $fallback [true] - Output starting value outside of media query
+/// @param {String} $units ['rem'] - Output units
 /// @require {function} fs-rem
 /// @require {function} fs-scale
 /// @require {mixin} fs-min-width
