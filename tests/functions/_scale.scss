@@ -1,0 +1,8 @@
+// Breakpoint tests
+$test-1: fs-scale(20px, 30px, 320px, 900px, $units: 'rem');
+$test-2: fs-scale(-10px, 0, 320px, 900px, $units: 'em');
+
+@include run(test('fs-scale', (
+  $test-1: calc(1.72414vw + 0.90517rem),
+  $test-2: calc(1.72414vw + -0.96983em)
+)));
