@@ -12,7 +12,6 @@ var packageInfo = require('./package.json');
 var sass = require('gulp-sass');
 var sassdoc = require('sassdoc');
 var path = require('path');
-var ghPages = require('gh-pages');
 var yaml = require('js-yaml');
 
 // -----------------------------------------------------------------------------
@@ -58,16 +57,4 @@ gulp.task('sassdoc', function () {
 // -----------------------------------------------------------------------------
 // Default task
 // -----------------------------------------------------------------------------
-gulp.task('default', gulp.parallel('build'));
-
-// -----------------------------------------------------------------------------
-// Deploy to gh-pages
-// -----------------------------------------------------------------------------
-gulp.task('deploy', gulp.parallel('build', 'sassdoc'), function () {
-  ghPages.publish(path.join(__dirname, 'sassdoc'), {
-    add: true,
-    message: 'Automatic SassDoc update from Gulp'
-  }, function(err) {
-    if (err) console.log(err);
-  });
-});
+gulp.task('default', gulp.series('build'));
