@@ -3,7 +3,7 @@
 //      _______  ____  _  __________   _____  ______
 //     / __/ _ \/ __ \/ |/ /_  __/ /  /  _/ |/ / __/
 //    / _// , _/ /_/ /    / / / / /___/ //    / _/
-//   /_/ /_/|_|\____/_/|_/ /_/ /____/___/_/|_/___/   v3.10.0
+//   /_/ /_/|_|\____/_/|_/ /_/ /____/___/_/|_/___/   v3.10.1
 //
 //   This project is licensed under the terms of the MIT license
 
@@ -2144,8 +2144,9 @@ $fs-debug-mode: false !default;
 /// Scale a value for any number of properites relative to the viewport width
 /// @group Main
 /// @param {String | List} $properties - Properties to scale
-/// @param {Number} $start - Starting value
-/// @param {String} $units - Output units
+/// @param {Map} $map - Map of breakpoints and values
+/// @param {Boolean} $initial [true] - Output initial value (not inside media query)
+/// @param {String} $units ['rem'] - Output units
 /// @require {function} fs-rem
 /// @require {function} fs-scale
 /// @require {mixin} fs-min-width
@@ -2159,9 +2160,17 @@ $fs-debug-mode: false !default;
 /// @link https://www.smashingmagazine.com/2016/05/fluid-typography/
 /// @link https://github.com/Jakobud/poly-fluid-sizing
 /// @example scss
-///   @include fs-scale(font-size, (320px:18px, 768px:26px, 1024px:38px);
+///   @include fs-scale(font-size, (320px: 18px, 1024px: 38px));
 /// @example scss
-///   @include fs-scale(margin-bottom margin-top, (320px:18px, 768px:26px, 1024px:38px));
+///   @include fs-scale(margin-bottom margin-top, (
+///     320px: 18px,
+///     768px: 26px,
+///     1024px: 38px
+///   ));
+/// @example scss
+///   @include fs-scale(font-size, (768px: 26px, 1024px: 38px), $initial: false);
+/// @example scss
+///   @include fs-scale(font-size, (768px: 26px, 1024px: 38px), $units: 'em');
 @mixin fs-scale($args...) {
   /// TODO: In next major version, rename fs-scale-poly() as fs-scale() and delete this code.
   @if length($args) > 1 and type-of(nth($args, 2)) == 'map' {
@@ -2337,7 +2346,7 @@ $fs-debug-mode: false !default;
 /// @access private
 /// @ignore TODO: In next major version, rename fs-scale-poly() as fs-scale()
 /// @param {String | List} $properties - Properties to scale
-/// @param {Number} $start - Starting value
+/// @param {Map} $map - Map of breakpoints and values
 /// @param {Boolean} $initial [true] - Output initial value (not inside media query)
 /// @param {String} $units ['rem'] - Output units
 /// @require {function} fs-rem
