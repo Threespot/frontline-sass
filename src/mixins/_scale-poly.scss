@@ -25,7 +25,7 @@
   $length: length($map);
 
   @if ($length < 2) {
-    @error "fs-scale() requires at least two breakpoints"
+    @error "fs-scale() requires at least two breakpoints";
   }
 
   $breakpoints: map-keys($map);
