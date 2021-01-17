@@ -1,9 +1,0 @@
-/// Hide text in element, requires setting height and width
-/// @link http://compass-style.org/reference/compass/typography/text/replacement/#mixin-hide-text
-///
-@mixin fs-hide-text {
-  font-size: 0;
-  overflow: hidden;
-  text-indent: 110%;// > 100% prevents issues with inline-block elements
-  white-space: nowrap;
-}
