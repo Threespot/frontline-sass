@@ -2,7 +2,8 @@
 /// @group Main
 /// @param {String | List} $properties - Properties to scale
 /// @param {Number} $start - Starting value
-/// @param {String} $units - Output units
+/// @param {Boolean} $initial [true] - Output initial value (not inside media query)
+/// @param {String} $units ['rem'] - Output units
 /// @require {function} fs-rem
 /// @require {function} fs-scale
 /// @require {mixin} fs-min-width
@@ -16,9 +17,17 @@
 /// @link https://www.smashingmagazine.com/2016/05/fluid-typography/
 /// @link https://github.com/Jakobud/poly-fluid-sizing
 /// @example scss
-///   @include fs-scale(font-size, (320px:18px, 768px:26px, 1024px:38px);
+///   @include fs-scale(font-size, (320px: 18px, 1024px: 38px));
 /// @example scss
-///   @include fs-scale(margin-bottom margin-top, (320px:18px, 768px:26px, 1024px:38px));
+///   @include fs-scale(margin-bottom margin-top, (
+///     320px: 18px,
+///     768px: 26px,
+///     1024px: 38px
+///   ));
+/// @example scss
+///   @include fs-scale(font-size, (768px: 26px, 1024px: 38px), $initial: false);
+/// @example scss
+///   @include fs-scale(font-size, (768px: 26px, 1024px: 38px), $units: 'em');
 @mixin fs-scale($args...) {
   /// TODO: In next major version, rename fs-scale-poly() as fs-scale() and delete this code.
   @if length($args) > 1 and type-of(nth($args, 2)) == 'map' {
