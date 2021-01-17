@@ -1,5 +1,5 @@
+/// Inline SVG in url() for background-image
 /// @group Main
-/// Inline SVG for background-image
 /// @param {String} $name - SVG name
 /// @param {Map} $props - SVG attributes
 /// @return {String} - Inline SVG as url("data:image/svg+xml,…")

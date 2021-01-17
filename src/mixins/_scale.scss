@@ -19,8 +19,8 @@
 ///   @include fs-scale(font-size, (320px:18px, 768px:26px, 1024px:38px);
 /// @example scss
 ///   @include fs-scale(margin-bottom margin-top, (320px:18px, 768px:26px, 1024px:38px));
-/// TODO: In next major version, rename fs-scale-poly() as fs-scale() and delete this code.
 @mixin fs-scale($args...) {
+  /// TODO: In next major version, rename fs-scale-poly() as fs-scale() and delete this code.
   @if length($args) > 1 and type-of(nth($args, 2)) == 'map' {
     @include fs-scale-poly($args...);
   }

@@ -1,10 +1,10 @@
-/// **Deprication Warning!** use `fs-strip-unit` instead.
+/// **⚠️ DEPRECATED:** use `fs-strip-unit` instead.
 /// Strips unit from value
-/// @group Utilities
+/// @group Sass Utils
 /// @param {Number} $arg - Value to strip
 /// @return {Number} - Stripped value
 /// @require {function} fs-strip-unit
 @function fs-strip($arg) {
-  @warn '“fs-strip” will be deprecated in the next release, please use “fs-strip-unit” instead';
+  @warn 'fs-strip() is deprecated, use fs-strip-unit(#{$arg}) instead';
   @return fs-strip-unit($arg);
 }

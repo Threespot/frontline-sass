@@ -1,5 +1,7 @@
 /// Scale a value for any number of properites relative to the viewport width
 /// @group Main
+/// @access private
+/// @ignore TODO: In next major version, rename fs-scale-poly() as fs-scale()
 /// @param {String | List} $properties - Properties to scale
 /// @param {Number} $start - Starting value
 /// @param {String} $units - Output units

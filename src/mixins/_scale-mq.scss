@@ -1,3 +1,4 @@
+/// **⚠️ DEPRECATED:** use `fs-scale` instead.
 /// Scale a value relative to the viewport width by generating media queries at set intervals
 /// @group Main
 /// @param {String} $property - Property to scale
@@ -14,6 +15,8 @@
 /// @example scss
 ///   @include fs-scale-mq(line-height, 1.7, 1.5, 320px, 450px, $min-step: 0.05);
 @mixin fs-scale-mq($property, $start, $end, $min-width, $max-width, $min-step: null, $max-steps: 10) {
+  @warn 'fs-scale-mq() is deprecated, use fs-scale(#{$property}, (#{$min-width}: #{$start}, #{$max-width}: #{$end}))';
+
   @if $min-width >= $max-width {
     @error '🔴  fs-scale-mq() max-width must be greater than min-width';
   }

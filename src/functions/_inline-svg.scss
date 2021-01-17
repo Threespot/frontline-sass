@@ -1,3 +1,4 @@
+/// **⚠️ DEPRECATED:** use `fs-svg-url` instead.
 /// Helper to get URL-escaped inline SVG code for use with `background-image`
 /// @group Main
 /// @param {String} $name - Icon name
@@ -15,7 +16,7 @@
 /// @link http://caniuse.com/#feat=datauri
 ///
 @function fs-svg($name, $color: false, $other: false) {
-  @warn 'DEPRECATED: Please upgrade to fs-svg-url() instead';
+  @warn 'fs-svg() is deprecated, use fs-svg-url(#{$name}, (fill: #{$color})) instead';
 
   // Check if icon exists
   @if not map-has-key($fs-svg-icons, $name) {

@@ -1,5 +1,7 @@
-/// Legacy scale mixin
+/// **⚠️ DEPRECATED:** use `fs-scale` instead.
+/// Scale a value relative to the viewport width using `calc()` and viewport units
 /// @group Main
+/// @access private
 /// @param {String | List} $properties - Properties to scale
 /// @param {Number} $start - Starting value
 /// @param {Number} $end - Ending value
@@ -22,7 +24,7 @@
 /// @example scss
 ///   @include fs-scale(margin-bottom margin-top, 10px, 20px, 500px, 600px);
 @mixin fs-scale-legacy($properties, $start, $end, $min-width, $max-width, $fallback: true, $units: 'rem') {
-  @warn 'DEPRECATED: Please use new map syntax fs-scale(#{$properties}, (#{$min-width}: #{$start}, #{$max-width}: #{$end}))';
+  @warn 'Upgrade fs-scale() to new map syntax, fs-scale(#{$properties}, (#{$min-width}: #{$start}, #{$max-width}: #{$end}))';
 
   // Starting size
   @if $fallback {
