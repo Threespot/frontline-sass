@@ -1,7 +1,7 @@
 /// Scale a value for any number of properites relative to the viewport width
 /// @group Main
 /// @param {String | List} $properties - Properties to scale
-/// @param {Number} $start - Starting value
+/// @param {Map} $map - Map of breakpoints and values
 /// @param {Boolean} $initial [true] - Output initial value (not inside media query)
 /// @param {String} $units ['rem'] - Output units
 /// @require {function} fs-rem
