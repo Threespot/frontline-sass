@@ -61,7 +61,7 @@
     $prev-value: nth($values, $i);
     $new-value: nth($values, $i + 1);
 
-    @include fs-min-width($new-breakpoint) {
+    @include fs-min-width($prev-breakpoint) {
       @each $property in $properties {
         #{$property}: fs-scale($prev-value, $new-value, $prev-breakpoint, $new-breakpoint, $units);
       }
