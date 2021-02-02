@@ -3,7 +3,7 @@
 //      _______  ____  _  __________   _____  ______
 //     / __/ _ \/ __ \/ |/ /_  __/ /  /  _/ |/ / __/
 //    / _// , _/ /_/ /    / / / / /___/ //    / _/
-//   /_/ /_/|_|\____/_/|_/ /_/ /____/___/_/|_/___/   v3.10.1
+//   /_/ /_/|_|\____/_/|_/ /_/ /____/___/_/|_/___/   v3.10.2
 //
 //   This project is licensed under the terms of the MIT license
 
@@ -2399,14 +2399,14 @@ $fs-debug-mode: false !default;
 
   // Scale up with calc() at each breakpoint
   @for $i from 1 through ($length - 1) {
-    $prev-breakpoint: nth($breakpoints, $i);
-    $new-breakpoint: nth($breakpoints, $i + 1);
-    $prev-value: nth($values, $i);
-    $new-value: nth($values, $i + 1);
+    $start-breakpoint: nth($breakpoints, $i);
+    $end-breakpoint: nth($breakpoints, $i + 1);
+    $start-value: nth($values, $i);
+    $end-value: nth($values, $i + 1);
 
-    @include fs-min-width($new-breakpoint) {
+    @include fs-min-width($start-breakpoint) {
       @each $property in $properties {
-        #{$property}: fs-scale($prev-value, $new-value, $prev-breakpoint, $new-breakpoint, $units);
+        #{$property}: fs-scale($start-value, $end-value, $start-breakpoint, $end-breakpoint, $units);
       }
     }
   }
