@@ -3,9 +3,6 @@
   "name": "frontline-sass",
   "version": "3.10.2",
   "description": "Threespot's base Sass framework",
-  "engines": {
-    "node": ">=14.0.0"
-  },
   "repository": {
     "type": "git",
     "url": "https://github.com/Threespot/frontline-sass.git"
