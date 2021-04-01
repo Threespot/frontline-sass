@@ -18,18 +18,6 @@
 /// @link http://codepen.io/maranomynet/pen/ozNpXV?editors=1100
 /// @link https://www.smashingmagazine.com/2016/05/fluid-typography/
 /// @link https://github.com/Jakobud/poly-fluid-sizing
-/// @example scss
-///   @include fs-scale(font-size, (320px: 18px, 1024px: 38px));
-/// @example scss
-///   @include fs-scale(margin-bottom margin-top, (
-///     320px: 18px,
-///     768px: 26px,
-///     1024px: 38px
-///   ));
-/// @example scss
-///   @include fs-scale(font-size, (768px: 26px, 1024px: 38px), $initial: false);
-/// @example scss
-///   @include fs-scale(font-size, (768px: 26px, 1024px: 38px), $units: 'em');
 @mixin fs-scale-poly($properties, $map, $initial: true, $units: 'rem') {
   $length: length($map);
 
@@ -61,9 +49,40 @@
     $start-value: nth($values, $i);
     $end-value: nth($values, $i + 1);
 
-    @include fs-min-width($start-breakpoint) {
-      @each $property in $properties {
-        #{$property}: fs-scale($start-value, $end-value, $start-breakpoint, $end-breakpoint, $units);
+    @if length($start-value) > 2 {
+      @warn "fs-scale(): #{$start-breakpoint}: (#{$start-value}) contains too many values, only the first two will be used";
+    }
+
+    @if length($end-value) > 2 {
+      @warn "fs-scale(): #{$end-breakpoint}: (#{$end-value}) contains too many values, only the first two will be used";
+    }
+
+    // If multiple start values exist, use the second one.
+    // Note: The first value was the ending value in the previous media query.
+    @if length($start-value) > 1 {
+      // If multiple end values exist, use the first one.
+      $new-end-value: if(length($end-value) > 1, nth($end-value, 1), $end-value);
+
+      @include fs-min-width($start-breakpoint) {
+        @each $property in $properties {
+          #{$property}: fs-scale(nth($start-value, 2), $new-end-value, $start-breakpoint, $end-breakpoint, $units);
+        }
+      }
+    }
+    // If muliple ending values exist, use the first one.
+    @else if length($end-value) > 1 {
+      @include fs-min-width($start-breakpoint) {
+        @each $property in $properties {
+          #{$property}: fs-scale($start-value, nth($end-value, 1), $start-breakpoint, $end-breakpoint, $units);
+        }
+      }
+    }
+    // Single values
+    @else {
+      @include fs-min-width($start-breakpoint) {
+        @each $property in $properties {
+          #{$property}: fs-scale($start-value, $end-value, $start-breakpoint, $end-breakpoint, $units);
+        }
       }
     }
   }

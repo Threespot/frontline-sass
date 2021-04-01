@@ -25,6 +25,12 @@
 ///     1024px: 38px
 ///   ));
 /// @example scss
+///   @include fs-scale(font-size, (
+///     320px: 18px,
+///     800px: (32px 24px),// scale up from 18px–32px, then reset to 24px at 800px wide and scale up to 38px
+///     1024px: 38px
+///   ));
+/// @example scss
 ///   @include fs-scale(font-size, (768px: 26px, 1024px: 38px), $initial: false);
 /// @example scss
 ///   @include fs-scale(font-size, (768px: 26px, 1024px: 38px), $units: 'em');
