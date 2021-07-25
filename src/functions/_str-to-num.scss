@@ -1,7 +1,7 @@
 /// Add `$unit` to `$value`
 /// @group Sass Utils
-/// @author Hugo Giraudel
-/// @link http://hugogiraudel.com/2014/01/15/sass-string-to-number/
+/// @author Kitty Giraudel
+/// @link https://kittygiraudel.com/2014/01/15/sass-string-to-number/
 /// @param {Number} $value - Value to add unit to
 /// @param {String} $unit - String representation of the unit
 /// @return {Number} - `$value` expressed in `$unit`
@@ -20,8 +20,8 @@
 /// @group Sass Utils
 /// @param {String | Number} $value - Value to be parsed
 /// @return {Number}
-/// @author Hugo Giraudel
-/// @link http://hugogiraudel.com/2014/01/15/sass-string-to-number/
+/// @author Kitty Giraudel
+/// @link https://kittygiraudel.com/2014/01/15/sass-string-to-number/
 @function fs-to-number($value) {
   @if type-of($value) == 'number' {
     @return $value;

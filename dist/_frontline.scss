@@ -258,7 +258,7 @@ $fs-zindex: (
 
 ////
 /// @group Sass Utils
-/// @author Hugo Giraudel
+/// @author Kitty Giraudel
 /// @link http://www.sitepoint.com/extra-map-functions-sass/
 ////
 
@@ -275,7 +275,7 @@ $fs-zindex: (
 }
 
 /// Update a key deeply nested
-/// @author Hugo Giraudel
+/// @author Kitty Giraudel
 /// @param {Map} $map - Map to update
 /// @param {Arglist} $keys - Keys to access to value to update
 /// @param {*} $value - New value (last member of `$keys`)
@@ -315,7 +315,7 @@ $fs-zindex: (
 }
 
 /// Test if map got all `$keys` at first level
-/// @author Hugo Giraudel
+/// @author Kitty Giraudel
 /// @param {Map} $map - Map
 /// @param {Arglist} $keys - Keys to test
 /// @return {Boolean}
@@ -330,7 +330,7 @@ $fs-zindex: (
 }
 
 /// Test if map got all `$keys` nested with each others
-/// @author Hugo Giraudel
+/// @author Kitty Giraudel
 /// @param {Map} $map - Map
 /// @param {Arglist} $keys - Keys to test
 /// @return {Boolean}
@@ -487,7 +487,7 @@ $fs-zindex: (
 
 /// Slices `$list` between `$start` and `$end`.
 /// @group Sass Utils
-/// @author Hugo Giraudel
+/// @author Kitty Giraudel
 /// @link http://sassylists.com/documentation.html#fs-slice
 ///
 /// @param {List}   $list                  - list to slice
@@ -555,13 +555,13 @@ $fs-zindex: (
 
 /// Replace `$search` with `$replace` in `$string`
 /// @group Sass Utils
-/// @author Hugo Giraudel
+/// @author Kitty Giraudel
 /// @param {String} $string - Initial string
 /// @param {String} $search - Substring to replace
 /// @param {String} $replace ('') - New value
 /// @return {String} - Updated string
 /// @link http://sassmeister.com/gist/1b4f2da5527830088e4d
-/// @link http://hugogiraudel.com/2014/01/13/sass-string-replacement-function/
+/// @link https://kittygiraudel.com/2014/01/13/sass-string-replacement-function/
 ///
 /// @example scss
 ///   fs-str-replace("abcde", "bc", "a") => "aade"
@@ -578,8 +578,8 @@ $fs-zindex: (
 
 /// Add `$unit` to `$value`
 /// @group Sass Utils
-/// @author Hugo Giraudel
-/// @link http://hugogiraudel.com/2014/01/15/sass-string-to-number/
+/// @author Kitty Giraudel
+/// @link https://kittygiraudel.com/2014/01/15/sass-string-to-number/
 /// @param {Number} $value - Value to add unit to
 /// @param {String} $unit - String representation of the unit
 /// @return {Number} - `$value` expressed in `$unit`
@@ -598,8 +598,8 @@ $fs-zindex: (
 /// @group Sass Utils
 /// @param {String | Number} $value - Value to be parsed
 /// @return {Number}
-/// @author Hugo Giraudel
-/// @link http://hugogiraudel.com/2014/01/15/sass-string-to-number/
+/// @author Kitty Giraudel
+/// @link https://kittygiraudel.com/2014/01/15/sass-string-to-number/
 @function fs-to-number($value) {
   @if type-of($value) == 'number' {
     @return $value;
@@ -991,7 +991,7 @@ $π: $fs-pi;
 /// @return {Number} - z-index value
 /// @require {function} fs-map-deep-get - Fetch nested keys
 /// @require {variable} $fs-zindex - Global z-index map
-/// @link https://twitter.com/HugoGiraudel/status/480022470431608832
+/// @link https://twitter.com/KittyGiraudel/status/480022470431608832
 /// @link http://www.sitepoint.com/better-solution-managing-z-index-sass/
 @function fs-zindex($keys...) {
   @if not global-variable-exists(fs-zindex) {
@@ -1218,7 +1218,7 @@ $π: $fs-pi;
 }
 
 ////
-/// @author Hugo Giraudel
+/// @author Kitty Giraudel
 /// @link http://codepen.io/SitePoint/pen/dppJzX/
 ////
 

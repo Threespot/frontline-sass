@@ -1,12 +1,12 @@
 /// Replace `$search` with `$replace` in `$string`
 /// @group Sass Utils
-/// @author Hugo Giraudel
+/// @author Kitty Giraudel
 /// @param {String} $string - Initial string
 /// @param {String} $search - Substring to replace
 /// @param {String} $replace ('') - New value
 /// @return {String} - Updated string
 /// @link http://sassmeister.com/gist/1b4f2da5527830088e4d
-/// @link http://hugogiraudel.com/2014/01/13/sass-string-replacement-function/
+/// @link https://kittygiraudel.com/2014/01/13/sass-string-replacement-function/
 ///
 /// @example scss
 ///   fs-str-replace("abcde", "bc", "a") => "aade"
