@@ -30,10 +30,20 @@
   }
   @else {
     @if $units == 'em' {
-      @return calc(#{$slope * 100vw} + #{fs-em($intercept)});
+      @if $slope == 0 {
+        @return fs-em($intercept);
+      }
+      @else {
+        @return calc(#{$slope * 100vw} + #{fs-em($intercept)});
+      }
     }
     @else {
-      @return calc(#{$slope * 100vw} + #{fs-rem($intercept)});
+      @if $slope == 0 {
+        @return fs-em($intercept);
+      }
+      @else {
+        @return calc(#{$slope * 100vw} + #{fs-rem($intercept)});
+      }
     }
   }
 }
