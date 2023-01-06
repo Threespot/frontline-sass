@@ -52,7 +52,7 @@
   $tests: ();
 
   @each $test, $expected-result in $test-suite {
-    $result: call($function, $test);
+    $result: call(get-function($function), $test);
     $tests: append($tests, (
       'input': $test,
       'expected': $expected-result,
@@ -101,8 +101,7 @@
   $length: length($tests);
   $output: '';
   $indent: '      ';
-  $line-break: '
-';
+  $line-break: ' ';
 
   @each $test in $tests {
     $index: index($tests, $test);

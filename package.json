@@ -45,13 +45,15 @@
     "gulp-concat": "^2.6.1",
     "gulp-cssimport": "^7.0.0",
     "gulp-header": "^2.0.9",
-    "gulp-load-plugins": "^2.0.4",
-    "gulp-replace": "^1.0.0",
-    "gulp-sass": "^4.1.0",
-    "js-yaml": "^4.0.0",
-    "sassdoc": "^2.7.3",
-    "stylelint": "^13.7.2",
-    "stylelint-config-standard": "^20.0.0"
-  },
-  "dependencies": {}
+    "gulp-load-plugins": "^2.0.8",
+    "gulp-replace": "^1.1.4",
+    "gulp-sass": "^5.1.0",
+    "js-yaml": "^4.1.0",
+    "postcss-scss": "^4.0.6",
+    "sass": "^1.57.1",
+    "sassdoc": "^2.7.4",
+    "stylelint": "^14.16.1",
+    "stylelint-config-standard": "^29.0.0",
+    "stylelint-scss": "^4.3.0"
+  }
 }

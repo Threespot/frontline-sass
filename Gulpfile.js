@@ -4,15 +4,15 @@
 // -----------------------------------------------------------------------------
 // Dependencies
 // -----------------------------------------------------------------------------
-var fs = require('fs');
-var gulp = require('gulp');
-var cssimport = require('gulp-cssimport');
-var plugins = require('gulp-load-plugins')();
-var packageInfo = require('./package.json');
-var sass = require('gulp-sass');
-var sassdoc = require('sassdoc');
-var path = require('path');
-var yaml = require('js-yaml');
+const fs = require('fs');
+const gulp = require('gulp');
+const cssimport = require('gulp-cssimport');
+const plugins = require('gulp-load-plugins')();
+const packageInfo = require('./package.json');
+const sass = require('gulp-sass')(require('sass'));
+const sassdoc = require('sassdoc');
+const path = require('path');
+const yaml = require('js-yaml');
 
 // -----------------------------------------------------------------------------
 // Dist

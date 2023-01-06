@@ -30,8 +30,7 @@
   $length: length($tests);
   $output: '';
   $indent: '      ';
-  $line-break: '
-';
+  $line-break: ' ';
 
   @each $test in $tests {
     $index: index($tests, $test);
