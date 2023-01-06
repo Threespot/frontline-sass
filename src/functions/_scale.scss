@@ -21,7 +21,7 @@
     @error '🔴  fs-scale() units don’t match';
   }
 
-  $slope: ($end - $start) / ($max-width - $min-width);
+  $slope: math.div($end - $start, $max-width - $min-width);
 
   $intercept: $end - ($slope * $max-width);
 

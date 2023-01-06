@@ -5,7 +5,6 @@
 /// @return {*} - Converted value or list of values
 /// @require {variable} $fs-base-font-size - Base font size
 @function fs-rem($values) {
-
   // Placeholder list for converted values
   $output: ();
 
@@ -14,7 +13,7 @@
     // Check if pixel value
     @if type-of($val) == 'number' and unit($val) == 'px' {
       // Convert to rems
-      $val: ($val / $fs-base-font-size) * 1rem;
+      $val: math.div($val, $fs-base-font-size) * 1rem;
     }
 
     // Do nothing to all other values

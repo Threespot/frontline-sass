@@ -2,7 +2,6 @@
 /// @author Hugo Giraudel
 /// @link http://codepen.io/SitePoint/pen/dppJzX/
 ////
-
 /// Computes the height of the tilted pseudo-element based on the given angle
 /// @access private
 //  b ◣c
@@ -12,7 +11,7 @@
   $opposite-angle: (90deg - $angle);
 
   // hypotenuse
-  $c: $a / fs-strip-unit(fs-sin($opposite-angle));
+  $c: math.div($a, fs-strip-unit(fs-sin($opposite-angle)));
 
   // calculate height using Pythagorean theorem
   $b: fs-sqrt(fs-pow($c, 2) - fs-pow($a, 2));

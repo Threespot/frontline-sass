@@ -8,7 +8,6 @@
 /// @ignore https://github.com/thoughtbot/bitters/issues/167
 /// @ignore https://github.com/thoughtbot/bourbon/issues/717
 ////
-
 /// Pi
 /// @type Number
 $fs-pi: 3.141592653589793;
@@ -22,7 +21,7 @@ $π: $fs-pi;
   $result: 1;
 
   @for $i from 1 to $steps {
-    $item: $item * $x / $i;
+    $item: $item * math.div($x, $i);
     $result: $result + $item;
   }
 
@@ -31,13 +30,13 @@ $π: $fs-pi;
 
 /// @access private
 @function fs-ln-taylor($x, $steps) {
-  $z: ($x - 1) / ($x + 1);
+  $z: math.div($x - 1, $x + 1);
   $power: $z;
   $result: $z;
 
   @for $i from 1 to $steps {
     $power: $power * $z * $z;
-    $result: $result + $power / (2 * $i + 1);
+    $result: $result + math.div($power, (2 * $i + 1));
   }
 
   @return 2 * $result;
@@ -46,7 +45,7 @@ $π: $fs-pi;
 /// @access private
 @function fs-pow-int($base, $exponent) {
   @if $exponent < 0 {
-    @return 1 / fs-pow-int($base, -$exponent);
+    @return math.div(1, fs-pow-int($base, -$exponent));
   }
   @else if $exponent == 0 {
     @return 1;
@@ -55,7 +54,7 @@ $π: $fs-pi;
     @return $base;
   }
   @else {
-    $exp: floor($exponent / 2);
+    $exp: floor($exponent * 0.5);
     $pow: fs-pow-int($base, $exp);
 
     @if $exp * 2 == $exponent {
@@ -77,7 +76,7 @@ $π: $fs-pi;
     @return str-length(inspect(round($x))) - 1;
   }
   @else {
-    @return -1 * str-length(inspect(round(1 / $x)));
+    @return -1 * str-length(inspect(round(math.div(1, $x))));
   }
 }
 
@@ -90,7 +89,7 @@ $π: $fs-pi;
   $approx: fs-log-approx($x);
 
   // $y is in range [1, 10]
-  $y: $x / fs-pow-int(10, $approx);
+  $y: math.div($x, fs-pow-int(10, $approx));
 
   @return $approx * $ln10 + fs-ln-taylor($y, $steps);
 }
@@ -106,7 +105,7 @@ $π: $fs-pi;
 /// @require {function} fs-strip-unit
 @function fs-pow($x, $exponent, $steps: 32) {
   // We must strip the units and add them back at the end
-  $units: $x / fs-strip-unit($x);
+  $units: math.div($x, fs-strip-unit($x));
   $x: fs-strip-unit($x);
 
   $exp1: round($exponent);
@@ -132,7 +131,7 @@ $π: $fs-pi;
 /// @return {Number}
 /// @require {function} fs-pow
 @function fs-sqrt($x, $exponent: 2, $steps: 40) {
-  @return fs-pow($x, 1 / $exponent, $steps);
+  @return fs-pow($x, math.div(1, $exponent), $steps);
 }
 
 
@@ -158,14 +157,14 @@ $π: $fs-pi;
 /// @access private
 @function fs-sin-taylor($x, $steps) {
   // We must strip the units and add them back at the end
-  $units: $x / fs-strip-unit($x);
+  $units: math.div($x, fs-strip-unit($x));
   $x: fs-strip-unit($x);
 
   $item: $x;
   $result: $x;
 
   @for $i from 1 to $steps {
-    $item: -$item * $x * $x / (2 * $i) / (2 * $i + 1);
+    $item: -$item * $x * math.div(math.div($x, (2 * $i)), (2 * $i + 1));
     $result: $result + $item;
   }
 
@@ -200,7 +199,7 @@ $π: $fs-pi;
 /// @require {variable} $fs-pi
 /// @require {function} fs-sin
 @function fs-cos($x, $steps: 32) {
-  @return fs-sin($x - $π / 2, $steps);
+  @return fs-sin($x - $π * 0.5, $steps);
 }
 
 /// Tangent function
@@ -210,5 +209,5 @@ $π: $fs-pi;
 /// @require {function} fs-cos
 /// @require {function} fs-sin
 @function fs-tan($x, $steps: 32) {
-  @return fs-sin($x, $steps) / $cos($x, $steps);
+  @return math.div(fs-sin($x, $steps), fs-cos($x, $steps));
 }

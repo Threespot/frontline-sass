@@ -14,7 +14,6 @@
 /// @ignore Note: EMs in media queries are relative to the initial browser font-size (16px) http://www.w3.org/TR/css3-mediaqueries/#units
 /// @ignore Demo: http://www.sassmeister.com/gist/908ff8ee2e2e0b18f768fcbc87df385c
 @mixin fs-media($conditions) {
-
   // Check if $conditions is a valid map
   @if type-of($conditions) != 'map' {
     @error '🔴 “#{$conditions}” is not a valid Sass map';
@@ -30,12 +29,12 @@
 
         // Convert px to em
         @if unit($value) == 'px' {
-          $value: ($value / 16px) * 1em;
+          $value: math.div($value, 16px) * 1em;
         }
 
         // Convert rem to em
         @else if unit($value) == 'rem' {
-          $value: ($value / 1rem) * 1em;
+          $value: math.div($value, 1rem) * 1em;
         }
       }
 

@@ -4,7 +4,6 @@
 /// @link https://gist.github.com/voxpelli/6304812
 /// @link https://github.com/xi/sass-planifolia/blob/master/sass/contrast.scss
 ////
-
 /// Color luminance function
 /// @access private
 /// @param {Color} $color - Color
@@ -20,13 +19,13 @@
 
   @each $name, $value in $colors {
     $adjusted: 0;
-    $value: $value / 255;
+    $value: math.div($value, 255);
 
     @if $value < 0.03928 {
-      $value: $value / 12.92;
+      $value: math.div($value, 12.92);
     }
     @else {
-      $value: ($value + 0.055) / 1.055;
+      $value: math.div(($value + 0.055), 1.055);
       $value: fs-pow($value, 2.4);
     }
 
@@ -46,10 +45,10 @@
 @function fs-color-contrast($color1, $color2) {
   $lum1: fs-luminance($color1) + 0.05;
   $lum2: fs-luminance($color2) + 0.05;
-  $ratio: $lum1 / $lum2;
+  $ratio: math.div($lum1, $lum2);
 
   @if $lum2 > $lum1 {
-    $ratio: 1 / $ratio;
+    $ratio: math.div(1, $ratio);
   }
 
   @return $ratio;

@@ -7,7 +7,7 @@
 @function fs-ratio($a, $b) {
   // Check if units match, or if divisor is unitless
   @if unit($a) == unit($b) or unitless($b) {
-    @return fs-strip-unit($a / $b);
+    @return fs-strip-unit(math.div($a, $b));
   }
   // Warn if units don't match
   @else {

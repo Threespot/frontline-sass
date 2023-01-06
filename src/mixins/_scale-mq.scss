@@ -49,15 +49,15 @@
 
   // Amount to increase/decrease the value at each step
   // Based on $max-steps by default, will adjust later if necessary based on $min-step value
-  $step: $spread / $max-steps;
+  $step: math.div($spread, $max-steps);
 
   // If $min-step was defined, compare steps to $max-steps
   @if $min-step != null {
 
     // Only update steps count if $min-step amount results in fewer steps than $max-steps
-    @if ($spread / $min-step) < $max-steps {
+    @if math.div($spread, $min-step) < $max-steps {
       $step: $min-step;
-      $steps: $spread / $min-step;
+      $steps: math.div($spread, $min-step);
     }
   }
 
@@ -69,7 +69,7 @@
   $mq-spread: $max-width - $min-width;
 
   // Calcuate media query step size
-  $mq-step: round(($max-width - $min-width) / $steps);
+  $mq-step: round(math.div($max-width - $min-width, $steps));
 
   // Debug
   // content: 'spread: #{$spread}, steps: #{$steps}, step: #{$step}, mqSpread: #{$mq-spread}, mqStep: #{$mq-step}';

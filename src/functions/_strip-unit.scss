@@ -6,7 +6,7 @@
 @function fs-strip-unit($arg) {
   // Return unitless value if valid number
   @if type-of($arg) == 'number' {
-    @return $arg / ($arg * 0 + 1);
+    @return math.div($arg, ($arg * 0 + 1));
   }
   // Error if not a valid number
   @else {

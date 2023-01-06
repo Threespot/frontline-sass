@@ -16,7 +16,7 @@
       @return $value;
     }
     @else {
-      @return percentage($value / $context);
+      @return percentage(math.div($value, $context));
     }
   }
 

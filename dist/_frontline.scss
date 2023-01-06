@@ -8,6 +8,8 @@
 //   This project is licensed under the terms of the MIT license
 
 
+@use 'sass:math';
+
 //------------------------------------------------------------------------//
 // Global vars
 //------------------------------------------------------------------------//
@@ -186,7 +188,7 @@ $fs-zindex: (
       @return $value;
     }
     @else {
-      @return percentage($value / $context);
+      @return percentage(math.div($value, $context));
     }
   }
 
@@ -227,7 +229,6 @@ $fs-zindex: (
 /// @return {*} - Converted value or list of values
 /// @require {variable} $fs-base-font-size - Base font size
 @function fs-em($values, $context: $fs-base-font-size) {
-
   // Ensure context size is in pixels
   @if unit($context) != 'px' {
     @error '🔴  #{$context} size must be in pixels';
@@ -240,7 +241,7 @@ $fs-zindex: (
     // Check if pixel value
     @if type-of($val) == 'number' and unit($val) == 'px' {
       // Convert to ems
-      $val: ($val / $context) * 1em;
+      $val: math.div($val, $context) * 1em;
     }
 
     // Do nothing to all other values
@@ -420,7 +421,6 @@ $fs-zindex: (
 /// @return {*} - Converted value or list of values
 /// @require {variable} $fs-base-font-size - Base font size
 @function fs-rem($values) {
-
   // Placeholder list for converted values
   $output: ();
 
@@ -429,7 +429,7 @@ $fs-zindex: (
     // Check if pixel value
     @if type-of($val) == 'number' and unit($val) == 'px' {
       // Convert to rems
-      $val: ($val / $fs-base-font-size) * 1rem;
+      $val: math.div($val, $fs-base-font-size) * 1rem;
     }
 
     // Do nothing to all other values
@@ -468,7 +468,7 @@ $fs-zindex: (
     @error '🔴  fs-scale() units don’t match';
   }
 
-  $slope: ($end - $start) / ($max-width - $min-width);
+  $slope: math.div($end - $start, $max-width - $min-width);
 
   $intercept: $end - ($slope * $max-width);
 
@@ -638,7 +638,7 @@ $fs-zindex: (
     }
     @else {
       $digits: $digits * 10;
-      $result: $result + map-get($numbers, $character) / $digits;
+      $result: $result + math.div(map-get($numbers, $character), $digits);
     }
   }
 
@@ -653,7 +653,7 @@ $fs-zindex: (
 @function fs-strip-unit($arg) {
   // Return unitless value if valid number
   @if type-of($arg) == 'number' {
-    @return $arg / ($arg * 0 + 1);
+    @return math.div($arg, ($arg * 0 + 1));
   }
   // Error if not a valid number
   @else {
@@ -748,7 +748,6 @@ $fs-zindex: (
 /// @ignore https://github.com/thoughtbot/bitters/issues/167
 /// @ignore https://github.com/thoughtbot/bourbon/issues/717
 ////
-
 /// Pi
 /// @type Number
 $fs-pi: 3.141592653589793;
@@ -762,7 +761,7 @@ $π: $fs-pi;
   $result: 1;
 
   @for $i from 1 to $steps {
-    $item: $item * $x / $i;
+    $item: $item * math.div($x, $i);
     $result: $result + $item;
   }
 
@@ -771,13 +770,13 @@ $π: $fs-pi;
 
 /// @access private
 @function fs-ln-taylor($x, $steps) {
-  $z: ($x - 1) / ($x + 1);
+  $z: math.div($x - 1, $x + 1);
   $power: $z;
   $result: $z;
 
   @for $i from 1 to $steps {
     $power: $power * $z * $z;
-    $result: $result + $power / (2 * $i + 1);
+    $result: $result + math.div($power, (2 * $i + 1));
   }
 
   @return 2 * $result;
@@ -786,7 +785,7 @@ $π: $fs-pi;
 /// @access private
 @function fs-pow-int($base, $exponent) {
   @if $exponent < 0 {
-    @return 1 / fs-pow-int($base, -$exponent);
+    @return math.div(1, fs-pow-int($base, -$exponent));
   }
   @else if $exponent == 0 {
     @return 1;
@@ -795,7 +794,7 @@ $π: $fs-pi;
     @return $base;
   }
   @else {
-    $exp: floor($exponent / 2);
+    $exp: floor($exponent * 0.5);
     $pow: fs-pow-int($base, $exp);
 
     @if $exp * 2 == $exponent {
@@ -817,7 +816,7 @@ $π: $fs-pi;
     @return str-length(inspect(round($x))) - 1;
   }
   @else {
-    @return -1 * str-length(inspect(round(1 / $x)));
+    @return -1 * str-length(inspect(round(math.div(1, $x))));
   }
 }
 
@@ -830,7 +829,7 @@ $π: $fs-pi;
   $approx: fs-log-approx($x);
 
   // $y is in range [1, 10]
-  $y: $x / fs-pow-int(10, $approx);
+  $y: math.div($x, fs-pow-int(10, $approx));
 
   @return $approx * $ln10 + fs-ln-taylor($y, $steps);
 }
@@ -846,7 +845,7 @@ $π: $fs-pi;
 /// @require {function} fs-strip-unit
 @function fs-pow($x, $exponent, $steps: 32) {
   // We must strip the units and add them back at the end
-  $units: $x / fs-strip-unit($x);
+  $units: math.div($x, fs-strip-unit($x));
   $x: fs-strip-unit($x);
 
   $exp1: round($exponent);
@@ -872,7 +871,7 @@ $π: $fs-pi;
 /// @return {Number}
 /// @require {function} fs-pow
 @function fs-sqrt($x, $exponent: 2, $steps: 40) {
-  @return fs-pow($x, 1 / $exponent, $steps);
+  @return fs-pow($x, math.div(1, $exponent), $steps);
 }
 
 
@@ -898,14 +897,14 @@ $π: $fs-pi;
 /// @access private
 @function fs-sin-taylor($x, $steps) {
   // We must strip the units and add them back at the end
-  $units: $x / fs-strip-unit($x);
+  $units: math.div($x, fs-strip-unit($x));
   $x: fs-strip-unit($x);
 
   $item: $x;
   $result: $x;
 
   @for $i from 1 to $steps {
-    $item: -$item * $x * $x / (2 * $i) / (2 * $i + 1);
+    $item: -$item * $x * math.div(math.div($x, (2 * $i)), (2 * $i + 1));
     $result: $result + $item;
   }
 
@@ -940,7 +939,7 @@ $π: $fs-pi;
 /// @require {variable} $fs-pi
 /// @require {function} fs-sin
 @function fs-cos($x, $steps: 32) {
-  @return fs-sin($x - $π / 2, $steps);
+  @return fs-sin($x - $π * 0.5, $steps);
 }
 
 /// Tangent function
@@ -950,7 +949,7 @@ $π: $fs-pi;
 /// @require {function} fs-cos
 /// @require {function} fs-sin
 @function fs-tan($x, $steps: 32) {
-  @return fs-sin($x, $steps) / $cos($x, $steps);
+  @return math.div(fs-sin($x, $steps), fs-cos($x, $steps));
 }
 // Requires “strip-unit”
 /// Return unitless ratio of two values
@@ -962,7 +961,7 @@ $π: $fs-pi;
 @function fs-ratio($a, $b) {
   // Check if units match, or if divisor is unitless
   @if unit($a) == unit($b) or unitless($b) {
-    @return fs-strip-unit($a / $b);
+    @return fs-strip-unit(math.div($a, $b));
   }
   // Warn if units don't match
   @else {
@@ -1023,7 +1022,6 @@ $π: $fs-pi;
 /// @link https://gist.github.com/voxpelli/6304812
 /// @link https://github.com/xi/sass-planifolia/blob/master/sass/contrast.scss
 ////
-
 /// Color luminance function
 /// @access private
 /// @param {Color} $color - Color
@@ -1039,13 +1037,13 @@ $π: $fs-pi;
 
   @each $name, $value in $colors {
     $adjusted: 0;
-    $value: $value / 255;
+    $value: math.div($value, 255);
 
     @if $value < 0.03928 {
-      $value: $value / 12.92;
+      $value: math.div($value, 12.92);
     }
     @else {
-      $value: ($value + 0.055) / 1.055;
+      $value: math.div(($value + 0.055), 1.055);
       $value: fs-pow($value, 2.4);
     }
 
@@ -1065,10 +1063,10 @@ $π: $fs-pi;
 @function fs-color-contrast($color1, $color2) {
   $lum1: fs-luminance($color1) + 0.05;
   $lum2: fs-luminance($color2) + 0.05;
-  $ratio: $lum1 / $lum2;
+  $ratio: math.div($lum1, $lum2);
 
   @if $lum2 > $lum1 {
-    $ratio: 1 / $ratio;
+    $ratio: math.div(1, $ratio);
   }
 
   @return $ratio;
@@ -1231,7 +1229,6 @@ $π: $fs-pi;
 /// @author Hugo Giraudel
 /// @link http://codepen.io/SitePoint/pen/dppJzX/
 ////
-
 /// Computes the height of the tilted pseudo-element based on the given angle
 /// @access private
 //  b ◣c
@@ -1241,7 +1238,7 @@ $π: $fs-pi;
   $opposite-angle: (90deg - $angle);
 
   // hypotenuse
-  $c: $a / fs-strip-unit(fs-sin($opposite-angle));
+  $c: math.div($a, fs-strip-unit(fs-sin($opposite-angle)));
 
   // calculate height using Pythagorean theorem
   $b: fs-sqrt(fs-pow($c, 2) - fs-pow($a, 2));
@@ -1298,7 +1295,7 @@ $π: $fs-pi;
   &:before {
     content: '';
     display: block;
-    padding-top: percentage(1 / $ratio);
+    padding-top: percentage(math.div(1, $ratio));
   }
 }
 
@@ -1540,7 +1537,6 @@ $fs-debug-mode: false !default;
 /// @ignore Note: EMs in media queries are relative to the initial browser font-size (16px) http://www.w3.org/TR/css3-mediaqueries/#units
 /// @ignore Demo: http://www.sassmeister.com/gist/908ff8ee2e2e0b18f768fcbc87df385c
 @mixin fs-media($conditions) {
-
   // Check if $conditions is a valid map
   @if type-of($conditions) != 'map' {
     @error '🔴 “#{$conditions}” is not a valid Sass map';
@@ -1556,12 +1552,12 @@ $fs-debug-mode: false !default;
 
         // Convert px to em
         @if unit($value) == 'px' {
-          $value: ($value / 16px) * 1em;
+          $value: math.div($value, 16px) * 1em;
         }
 
         // Convert rem to em
         @else if unit($value) == 'rem' {
-          $value: ($value / 1rem) * 1em;
+          $value: math.div($value, 1rem) * 1em;
         }
       }
 
@@ -2006,8 +2002,8 @@ $fs-debug-mode: false !default;
   $background-color: if(length($color) == 2, nth($color, 2), transparent);
 
   @if ($direction == up) or ($direction == down) or ($direction == right) or ($direction == left) {
-    $width: $width / 2;
-    $height: if(length($size) > 1, $height, $height / 2);
+    $width: $width * 0.5;
+    $height: if(length($size) > 1, $height, $height * 0.5);
 
     @if $direction == up {
       border-bottom: $height solid $foreground-color;
@@ -2309,15 +2305,15 @@ $fs-debug-mode: false !default;
 
   // Amount to increase/decrease the value at each step
   // Based on $max-steps by default, will adjust later if necessary based on $min-step value
-  $step: $spread / $max-steps;
+  $step: math.div($spread, $max-steps);
 
   // If $min-step was defined, compare steps to $max-steps
   @if $min-step != null {
 
     // Only update steps count if $min-step amount results in fewer steps than $max-steps
-    @if ($spread / $min-step) < $max-steps {
+    @if math.div($spread, $min-step) < $max-steps {
       $step: $min-step;
-      $steps: $spread / $min-step;
+      $steps: math.div($spread, $min-step);
     }
   }
 
@@ -2329,7 +2325,7 @@ $fs-debug-mode: false !default;
   $mq-spread: $max-width - $min-width;
 
   // Calcuate media query step size
-  $mq-step: round(($max-width - $min-width) / $steps);
+  $mq-step: round(math.div($max-width - $min-width, $steps));
 
   // Debug
   // content: 'spread: #{$spread}, steps: #{$steps}, step: #{$step}, mqSpread: #{$mq-spread}, mqStep: #{$mq-step}';
@@ -2542,7 +2538,7 @@ $fs-debug-mode: false !default;
     }
     @else {
       // Determine if line-height increaes or decreses
-      $line-height-sign: $line-height-diff / abs($line-height-diff);// returns 1 or -1
+      $line-height-sign: math.div($line-height-diff, abs($line-height-diff));// returns 1 or -1
     }
   }
 
@@ -2592,7 +2588,7 @@ $fs-debug-mode: false !default;
   }
 
   // Calculate how many times the font-size will need to be adjusted, rounded up to nearest whole number
-  $font-size-steps: ceil(($end-font-size - $start-font-size) / $font-increment);
+  $font-size-steps: ceil(math.div($end-font-size - $start-font-size, $font-increment));
 
   // Warn if >10 breakpoints will be generated
   @if $fs-debug-mode and ($font-size-steps > 10) {
@@ -2600,16 +2596,16 @@ $fs-debug-mode: false !default;
   }
 
   // Calculate the media query interval
-  $font-size-mq-step: ($end-width - $start-width) / $font-size-steps;
+  $font-size-mq-step: math.div($end-width - $start-width, $font-size-steps);
 
   // Determine how many font steps equals one line-height step (e.g. increase line-height every nth font steps)
   @if $has-line-height {
-    $line-height-steps: abs($font-size-steps / ($line-height-diff / $line-height-increment));
+    $line-height-steps: abs(math.div($font-size-steps, math.div($line-height-diff, $line-height-increment)));
   }
 
   // If there are more line-height steps than font steps, adjust line-height increment so they are equal
   @if $line-height-steps < 1 {
-    $line-height-increment: $line-height-increment / $line-height-steps;
+    $line-height-increment: math.div($line-height-increment, $line-height-steps);
     $line-height-steps: 1;
   }
 
@@ -2617,7 +2613,7 @@ $fs-debug-mode: false !default;
   $line-height-index: 1;
   $line-height: $start-line-height;
 
-  // @debug '🔷 ' + $font-size-steps + ' font steps, ' + ($font-size-steps / $line-height-steps) + ' line-height step(s)';
+  // @debug '🔷 ' + $font-size-steps + ' font steps, ' + math.div($font-size-steps, $line-height-steps) + ' line-height step(s)';
 
   // Generate the media queries
   @for $i from 1 through $font-size-steps {

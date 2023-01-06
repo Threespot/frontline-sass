@@ -78,7 +78,7 @@
     }
     @else {
       // Determine if line-height increaes or decreses
-      $line-height-sign: $line-height-diff / abs($line-height-diff);// returns 1 or -1
+      $line-height-sign: math.div($line-height-diff, abs($line-height-diff));// returns 1 or -1
     }
   }
 
@@ -128,7 +128,7 @@
   }
 
   // Calculate how many times the font-size will need to be adjusted, rounded up to nearest whole number
-  $font-size-steps: ceil(($end-font-size - $start-font-size) / $font-increment);
+  $font-size-steps: ceil(math.div($end-font-size - $start-font-size, $font-increment));
 
   // Warn if >10 breakpoints will be generated
   @if $fs-debug-mode and ($font-size-steps > 10) {
@@ -136,16 +136,16 @@
   }
 
   // Calculate the media query interval
-  $font-size-mq-step: ($end-width - $start-width) / $font-size-steps;
+  $font-size-mq-step: math.div($end-width - $start-width, $font-size-steps);
 
   // Determine how many font steps equals one line-height step (e.g. increase line-height every nth font steps)
   @if $has-line-height {
-    $line-height-steps: abs($font-size-steps / ($line-height-diff / $line-height-increment));
+    $line-height-steps: abs(math.div($font-size-steps, math.div($line-height-diff, $line-height-increment)));
   }
 
   // If there are more line-height steps than font steps, adjust line-height increment so they are equal
   @if $line-height-steps < 1 {
-    $line-height-increment: $line-height-increment / $line-height-steps;
+    $line-height-increment: math.div($line-height-increment, $line-height-steps);
     $line-height-steps: 1;
   }
 
@@ -153,7 +153,7 @@
   $line-height-index: 1;
   $line-height: $start-line-height;
 
-  // @debug '🔷 ' + $font-size-steps + ' font steps, ' + ($font-size-steps / $line-height-steps) + ' line-height step(s)';
+  // @debug '🔷 ' + $font-size-steps + ' font steps, ' + math.div($font-size-steps, $line-height-steps) + ' line-height step(s)';
 
   // Generate the media queries
   @for $i from 1 through $font-size-steps {

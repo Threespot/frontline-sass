@@ -15,6 +15,6 @@
   &:before {
     content: '';
     display: block;
-    padding-top: percentage(1 / $ratio);
+    padding-top: percentage(math.div(1, $ratio));
   }
 }
