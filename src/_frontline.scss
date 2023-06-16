@@ -1,3 +1,4 @@
+@use "sass:map";
 @use 'sass:math';
 
 //------------------------------------------------------------------------//
@@ -24,6 +25,7 @@
 @import 'functions/_map-functions.scss';
 @import 'functions/_rem.scss';
 @import 'functions/_scale.scss';
+@import 'functions/_scale-clamp.scss';
 @import 'functions/_slice.scss';
 @import 'functions/_str-replace.scss';
 @import 'functions/_str-to-num.scss';

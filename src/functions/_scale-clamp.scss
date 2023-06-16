@@ -1,0 +1,53 @@
+/// Generate clamp() to smoothly scale a value between two breakpoints
+/// @group Main
+/// @param {Map} $map - Map of breakpoints and values
+/// @param {String} $units [vw] - Optionally specify container query units
+/// @return {String} - Custom `clamp()` formula
+/// @require {function} fs-rem
+/// @link https://chrisburnell.com/clamp-calculator/
+///
+/// @example scss
+///   p {
+///     font-size: scale-clamp((375px: 16px, 960px: 20px));
+///   }
+///
+@function fs-scale-clamp($map, $units: vw) {
+  // Formulas from link above:
+  //
+  //   Change = (sizeMax - sizeMin) / (viewportMax - viewportMin);
+  //   A = sizeMax - viewportMax * Change;
+  //   B = 100vw * Change;
+  //   Result = clamp(sizeMin, A + B, sizeMax);
+  //
+  $breakpoints: map.keys($map);
+  $values: map.values($map);
+  $min-width: nth($breakpoints, 1);
+  $max-width: nth($breakpoints, 2);
+  $start: nth($values, 1);
+  $end: nth($values, 2);
+  $change: math.div($end - $start, $max-width - $min-width);
+  $a: $end - ($max-width * $change);
+
+  // Add support for container query units
+  // https://caniuse.com/css-container-query-units
+  $width: 100vw;
+  @if $units == 'cqw' {
+    $width: 100cqw;
+  } @else if $units == 'cqh' {
+    $width: 100cqh;
+  } @else if $units == 'cqi' {
+    $width: 100cqi;
+  } @else if $units == 'cqb' {
+    $width: 100cqb;
+  }
+
+  $b: $width * $change;
+
+  // Round to 3 decimal places
+  // Note: Additional decimal places won’t have any effect on the computed
+  //       value and makes it harder to read in the dev tools.
+  $a: math.div(math.round($a * 1000), 1000);
+  $b: math.div(math.round($b * 1000), 1000);
+
+  @return clamp(#{fs-rem($start)}, #{fs-rem($a)} + #{$b}, #{fs-rem($end)});
+}

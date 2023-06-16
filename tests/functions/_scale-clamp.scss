@@ -1,0 +1,8 @@
+// Breakpoint tests
+$test-1: fs-scale-clamp((375px: 16px, 960px: 20px));
+$test-2: fs-scale-clamp((375px: 16px, 960px: 20px), $units: 'cqw');
+
+@include run(test('fs-scale-clamp', (
+  $test-1: clamp(1rem, #{0.83975rem} + 0.684vw, 1.25rem),
+  $test-2: clamp(1rem, #{0.83975rem} + 0.684cqw, 1.25rem)
+)));
