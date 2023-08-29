@@ -3,7 +3,7 @@
 //      _______  ____  _  __________   _____  ______
 //     / __/ _ \/ __ \/ |/ /_  __/ /  /  _/ |/ / __/
 //    / _// , _/ /_/ /    / / / / /___/ //    / _/
-//   /_/ /_/|_|\____/_/|_/ /_/ /____/___/_/|_/___/   v4.1.0
+//   /_/ /_/|_|\____/_/|_/ /_/ /____/___/_/|_/___/   v4.1.1
 //
 //   This project is licensed under the terms of the MIT license
 
@@ -64,30 +64,30 @@ $fs-easings: (
   'ease-in'        : '0.420, 0.000, 1.000, 1.000',
   'ease-out'       : '0.000, 0.000, 0.580, 1.000',
   'ease-in-out'    : '0.420, 0.000, 0.580, 1.000',
-  'easeInQuad'     : '0.550, 0.085, 0.680, 0.530',
+  'easeInBack'     : '0.600, -0.280, 0.735, 0.045',
+  'easeInCirc'     : '0.600, 0.040, 0.980, 0.335',
   'easeInCubic'    : '0.550, 0.055, 0.675, 0.190',
+  'easeInExpo'     : '0.950, 0.050, 0.795, 0.035',
+  'easeInQuad'     : '0.550, 0.085, 0.680, 0.530',
   'easeInQuart'    : '0.895, 0.030, 0.685, 0.220',
   'easeInQuint'    : '0.755, 0.050, 0.855, 0.060',
   'easeInSine'     : '0.470, 0.000, 0.745, 0.715',
-  'easeInExpo'     : '0.950, 0.050, 0.795, 0.035',
-  'easeInCirc'     : '0.600, 0.040, 0.980, 0.335',
-  'easeInBack'     : '0.600, -0.280, 0.735, 0.045',
-  'easeOutQuad'    : '0.250, 0.460, 0.450, 0.940',
-  'easeOutCubic'   : '0.215, 0.610, 0.355, 1.000',
-  'easeOutQuart'   : '0.165, 0.840, 0.440, 1.000',
-  'easeOutQuint'   : '0.230, 1.000, 0.320, 1.000',
-  'easeOutSine'    : '0.390, 0.575, 0.565, 1.000',
-  'easeOutExpo'    : '0.190, 1.000, 0.220, 1.000',
-  'easeOutCirc'    : '0.075, 0.820, 0.165, 1.000',
-  'easeOutBack'    : '0.175, 0.885, 0.320, 1.275',
-  'easeInOutQuad'  : '0.455, 0.030, 0.515, 0.955',
+  'easeInOutBack'  : '0.680, -0.550, 0.265, 1.55',
+  'easeInOutCirc'  : '0.785, 0.135, 0.150, 0.860',
   'easeInOutCubic' : '0.645, 0.045, 0.355, 1.000',
+  'easeInOutExpo'  : '1.000, 0.000, 0.000, 1.000',
+  'easeInOutQuad'  : '0.455, 0.030, 0.515, 0.955',
   'easeInOutQuart' : '0.770, 0.000, 0.175, 1.000',
   'easeInOutQuint' : '0.860, 0.000, 0.070, 1.000',
   'easeInOutSine'  : '0.445, 0.050, 0.550, 0.950',
-  'easeInOutExpo'  : '1.000, 0.000, 0.000, 1.000',
-  'easeInOutCirc'  : '0.785, 0.135, 0.150, 0.860',
-  'easeInOutBack'  : '0.680, -0.550, 0.265, 1.55'
+  'easeOutBack'    : '0.340, 1.560, 0.640, 1.000',
+  'easeOutCirc'    : '0.075, 0.820, 0.165, 1.000',
+  'easeOutCubic'   : '0.215, 0.610, 0.355, 1.000',
+  'easeOutExpo'    : '0.190, 1.000, 0.220, 1.000',
+  'easeOutQuad'    : '0.250, 0.460, 0.450, 0.940',
+  'easeOutQuart'   : '0.165, 0.840, 0.440, 1.000',
+  'easeOutQuint'   : '0.230, 1.000, 0.320, 1.000',
+  'easeOutSine'    : '0.390, 0.575, 0.565, 1.000',
 );
 
 /// Characters to escape from SVGs
@@ -652,7 +652,7 @@ $fs-zindex: (
   $units: ('px': 1px, 'cm': 1cm, 'mm': 1mm, '%': 1%, 'ch': 1ch, 'pc': 1pc, 'in': 1in, 'em': 1em, 'rem': 1rem, 'pt': 1pt, 'ex': 1ex, 'vw': 1vw, 'vh': 1vh, 'vmin': 1vmin, 'vmax': 1vmax);
 
   @if not index(map-keys($units), $unit) {
-    $_: log('Invalid unit `#{$unit}`.');
+    @warn('Invalid unit for “fs-to-length:(#{$value}, #{$unit})”');
   }
 
   @return $value * map-get($units, $unit);
@@ -670,7 +670,7 @@ $fs-zindex: (
     @return $value;
   }
   @else if type-of($value) != 'string' {
-    $_: log('Value for `to-number` should be a number or a string.');
+    @warn('Value must be a number or string: “fs-to-number(#{$value})”');
   }
 
   $result: 0;
@@ -803,6 +803,7 @@ $fs-zindex: (
 /// @ignore https://github.com/thoughtbot/bitters/issues/167
 /// @ignore https://github.com/thoughtbot/bourbon/issues/717
 ////
+
 /// Pi
 /// @type Number
 $fs-pi: 3.141592653589793;
@@ -918,7 +919,6 @@ $π: $fs-pi;
   }
 }
 
-
 /// Square root function
 /// @param {Number} $x - Number
 /// @param {Number} $exponent - Exponent
@@ -928,7 +928,6 @@ $π: $fs-pi;
 @function fs-sqrt($x, $exponent: 2, $steps: 40) {
   @return fs-pow($x, math.div(1, $exponent), $steps);
 }
-
 
 /// Factorial function
 /// @param {Number} $number
@@ -947,7 +946,6 @@ $π: $fs-pi;
 
   @return $value;
 }
-
 
 /// @access private
 @function fs-sin-taylor($x, $steps) {
@@ -1077,6 +1075,7 @@ $π: $fs-pi;
 /// @link https://gist.github.com/voxpelli/6304812
 /// @link https://github.com/xi/sass-planifolia/blob/master/sass/contrast.scss
 ////
+
 /// Color luminance function
 /// @access private
 /// @param {Color} $color - Color
