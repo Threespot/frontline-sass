@@ -8,6 +8,7 @@
 /// @ignore https://github.com/thoughtbot/bitters/issues/167
 /// @ignore https://github.com/thoughtbot/bourbon/issues/717
 ////
+
 /// Pi
 /// @type Number
 $fs-pi: 3.141592653589793;
@@ -123,7 +124,6 @@ $π: $fs-pi;
   }
 }
 
-
 /// Square root function
 /// @param {Number} $x - Number
 /// @param {Number} $exponent - Exponent
@@ -133,7 +133,6 @@ $π: $fs-pi;
 @function fs-sqrt($x, $exponent: 2, $steps: 40) {
   @return fs-pow($x, math.div(1, $exponent), $steps);
 }
-
 
 /// Factorial function
 /// @param {Number} $number
@@ -152,7 +151,6 @@ $π: $fs-pi;
 
   @return $value;
 }
-
 
 /// @access private
 @function fs-sin-taylor($x, $steps) {
