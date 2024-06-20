@@ -1,6 +1,6 @@
 ////
 /// @group Sass Utils
-/// @author Hugo Giraudel
+/// @author Kitty Giraudel
 /// @link http://www.sitepoint.com/extra-map-functions-sass/
 ////
 
@@ -17,7 +17,7 @@
 }
 
 /// Update a key deeply nested
-/// @author Hugo Giraudel
+/// @author Kitty Giraudel
 /// @param {Map} $map - Map to update
 /// @param {Arglist} $keys - Keys to access to value to update
 /// @param {*} $value - New value (last member of `$keys`)
@@ -57,7 +57,7 @@
 }
 
 /// Test if map got all `$keys` at first level
-/// @author Hugo Giraudel
+/// @author Kitty Giraudel
 /// @param {Map} $map - Map
 /// @param {Arglist} $keys - Keys to test
 /// @return {Boolean}
@@ -72,7 +72,7 @@
 }
 
 /// Test if map got all `$keys` nested with each others
-/// @author Hugo Giraudel
+/// @author Kitty Giraudel
 /// @param {Map} $map - Map
 /// @param {Arglist} $keys - Keys to test
 /// @return {Boolean}

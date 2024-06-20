@@ -4,7 +4,7 @@
 /// @return {Number} - z-index value
 /// @require {function} fs-map-deep-get - Fetch nested keys
 /// @require {variable} $fs-zindex - Global z-index map
-/// @link https://twitter.com/HugoGiraudel/status/480022470431608832
+/// @link https://twitter.com/KittyGiraudel/status/480022470431608832
 /// @link http://www.sitepoint.com/better-solution-managing-z-index-sass/
 @function fs-zindex($keys...) {
   @if not global-variable-exists(fs-zindex) {
