@@ -49,11 +49,11 @@
     "gulp-replace": "^1.1.4",
     "gulp-sass": "^5.1.0",
     "js-yaml": "^4.1.0",
-    "postcss-scss": "^4.0.6",
-    "sass": "^1.57.1",
+    "postcss-scss": "^4.0.9",
+    "sass": "^1.77.6",
     "sassdoc": "^2.7.4",
-    "stylelint": "^14.16.1",
-    "stylelint-config-standard": "^29.0.0",
-    "stylelint-scss": "^4.3.0"
+    "stylelint": "^16.6.1",
+    "stylelint-config-standard": "^36.0.1",
+    "stylelint-scss": "^6.3.2"
   }
 }
