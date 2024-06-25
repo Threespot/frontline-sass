@@ -3,7 +3,7 @@
 //      _______  ____  _  __________   _____  ______
 //     / __/ _ \/ __ \/ |/ /_  __/ /  /  _/ |/ / __/
 //    / _// , _/ /_/ /    / / / / /___/ //    / _/
-//   /_/ /_/|_|\____/_/|_/ /_/ /____/___/_/|_/___/   v4.1.1
+//   /_/ /_/|_|\____/_/|_/ /_/ /____/___/_/|_/___/   v4.1.2
 //
 //   This project is licensed under the terms of the MIT license
 
@@ -2558,7 +2558,6 @@ $fs-debug-mode: false !default;
   $context: $fs-base-font-size,
   $units: '%'
 ) {
-  @warn 'fs-scale-text() is deprecated, use fs-scale(#{$properties}, (#{$min-width}: #{$start}, #{$max-width}: #{$end}))';
 
   // Add vars at top to avoid scope issues
   $start-font-size: $start;
@@ -2569,6 +2568,8 @@ $fs-debug-mode: false !default;
   $line-height-diff: $line-height-increment;
   $line-height-sign: 1;
   $line-height-steps: 0;
+
+  @warn 'fs-scale-text() is deprecated, use fs-scale(font-size, (#{$start-width}: #{$start-font-size}, #{$end-width}: #{$end-font-size}))';
 
   // Check for line-height
   @if length($start) == 2 and length($end) == 2 {
