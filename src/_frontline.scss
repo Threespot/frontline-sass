@@ -1,80 +1,10 @@
-@use "sass:map";
-@use 'sass:math';
-
-//------------------------------------------------------------------------//
-// Global vars
-//------------------------------------------------------------------------//
-
-// Variables
-//---------------------------------
-@import 'variables/_base-font-size.scss';
-@import 'variables/_breakpoints.scss';
-@import 'variables/_colors.scss';
-@import 'variables/_easings.scss';
-@import 'variables/_escape-chars.scss';
-@import 'variables/_svg-icons.scss';
-@import 'variables/_svgs.scss';
-@import 'variables/_z-index.scss';
-
-// Functions
-//---------------------------------
-@import 'functions/_contains.scss';
-@import 'functions/_convert-units.scss';
-@import 'functions/_easings.scss';
-@import 'functions/_em.scss';
-@import 'functions/_map-functions.scss';
-@import 'functions/_rem.scss';
-@import 'functions/_scale.scss';
-@import 'functions/_scale-clamp.scss';
-@import 'functions/_slice.scss';
-@import 'functions/_str-replace.scss';
-@import 'functions/_str-to-num.scss';
-@import 'functions/_strip-unit.scss';
-
-// Functions with dependencies
-@import 'functions/_breakpoint.scss';// Requires “map-functions”
-@import 'functions/_color.scss';// Requires “map-functions”
-@import 'functions/_is-length.scss';// Requires “contains”
-@import 'functions/_math.scss';// Requires “strip-unit”
-@import 'functions/_ratio.scss';// Requires “strip-unit”
-@import 'functions/_strip.scss';// Requires “strip-unit”
-@import 'functions/_url-encode.scss';// Requires “str-replace”
-@import 'functions/_z-index.scss';// Requires “map-functions”
-
-// Functions with nested dependencies
-@import 'functions/_color-contrast.scss';// Requires pow() from “math”
-@import 'functions/_inline-svg.scss';// Requires “fs-url-encode”
-@import 'functions/_svg-url.scss';// Requires “str-replace” and “fs-url-encode”
-
-// Mixins
-//---------------------------------
-@import 'mixins/_absolute-fill.scss';
-@import 'mixins/_angle.scss';
-@import 'mixins/_aspect-ratio.scss';
-@import 'mixins/_burger-icon.scss';
-@import 'mixins/_clearfix.scss';
-@import 'mixins/_contrast-test.scss';
-@import 'mixins/_debug.scss';
-@import 'mixins/_font-smoothing.scss';
-@import 'mixins/_hide-text.scss';
-@import 'mixins/_link-colors.scss';
-@import 'mixins/_media-query.scss';
-@import 'mixins/_print-utils.scss';
-@import 'mixins/_pseudos.scss';
-@import 'mixins/_pseudos-parent.scss';
-@import 'mixins/_quantity.scss';
-@import 'mixins/_reset-elements.scss';
-@import 'mixins/_selector-utils.scss';
-@import 'mixins/_text-inputs.scss';
-@import 'mixins/_text-rendering.scss';
-@import 'mixins/_triangle.scss';
-@import 'mixins/_vertical-center.scss';
-@import 'mixins/_visuallyhidden.scss';
-@import 'mixins/_word-break.scss';
-
-// Minxins with dependencies
-@import 'mixins/_scale.scss';// Requires “media-query”
-@import 'mixins/_scale-legacy.scss';// Requires “fs-scale”
-@import 'mixins/_scale-mq.scss';// Requires “media-query”
-@import 'mixins/_scale-poly.scss';// Requires “fs-scale”
-@import 'mixins/_scale-text.scss';// Requires “media-query” and “convert-units”
+//      _______  ____  _  __________   _____  ______
+//     / __/ _ \/ __ \/ |/ /_  __/ /  /  _/ |/ / __/
+//    / _// , _/ /_/ /    / / / / /___/ //    / _/
+//   /_/ /_/|_|\____/_/|_/ /_/ /____/___/_/|_/___/
+//
+//   This project is licensed under the terms of the MIT license
+@charset 'UTF-8';
+@forward 'variables/index';
+@forward 'functions/index';
+@forward 'mixins/index';
