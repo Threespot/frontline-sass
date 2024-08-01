@@ -1,3 +1,4 @@
+////
 /// Break long words, hyphenate if possible (requires `lang` attribute)
 /// @group Main
 /// @link http://kenneth.io/blog/2012/03/04/word-wrapping-hypernation-using-css/
@@ -8,7 +9,8 @@
 /// @ignore - Hyphenation not currently suported in Chrome, Opera, Android, or IE9-
 /// @ignore - Hyphenation depends on dictionary, so requires lang attribute be set
 /// @ignore - Setting "word-break: break-all" will disable hyphens in Firefox and IE10+
-@mixin fs-break-word {
+////
+@mixin break-word {
   hyphens: auto;// requires lang attribute be set on target element or ancestor
   overflow-wrap: break-word;
   word-wrap: break-word;

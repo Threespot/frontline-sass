@@ -1,31 +1,49 @@
+////
 /// Hide visually but still be available to screenreaders
 /// @group Main
 /// @link http://snook.ca/archives/html_and_css/hiding-content-for-accessibility
-/// @link https://github.com/h5bp/html5-boilerplate/blob/master/dist/css/main.css
-/// @author Jonathan Snook
+/// @link https://github.com/twbs/bootstrap/blob/v5.3.3/scss/mixins/_visually-hidden.scss
+/// @link https://www.a11yproject.com/posts/how-to-hide-content/
+/// @link https://www.scottohara.me/blog/2023/03/21/visually-hidden-hack.html
+/// @link https://www.scottohara.me/blog/2017/04/14/inclusively-hidden.html
 ///
 /// @ignore 1. For long content, line feeds are not interpreted as spaces and small width causes content to wrap 1 word per line:
 /// @ignore https://medium.com/@jessebeach/beware-smushed-off-screen-accessible-text-5952a4c2cbfe
-@mixin fs-visually-hidden {
-  border: 0;
-  clip: rect(0 0 0 0);
-  height: 1px;
-  margin: -1px;
-  overflow: hidden;
-  padding: 0;
-  position: absolute;
-  white-space: nowrap; // [1]
-  width: 1px;
+////
+@mixin visually-hidden {
+  border: 0 !important;
+  clip: rect(0 0 0 0) !important;
+  clip-path: inset(50%) !important;
+  height: 1px !important;
+  margin: -1px !important;
+  overflow: hidden !important;
+  padding: 0 !important;
+  white-space: nowrap !important; // [1]
+  width: 1px !important;
+
+  // Fix for positioned table caption that could become anonymous cells
+  // https://github.com/twbs/bootstrap/blob/6e1f75f420f68e1d52733b8e407fc7c3766c9dba/scss/mixins/_visually-hidden.scss#L18-L21
+  &:not(caption) {
+    position: absolute !important;
+  }
+}
+
+/// Only hide when not focused or child is focused
+/// @group Main
+@mixin visually-hidden-focusable {
+  &:not(:focus, :focus-within) {
+    @include visually-hidden();
+  }
 }
 
 /// Undo visually hidden styles
 /// @group Main
-@mixin fs-undo-visually-hidden {
-  clip: auto;
-  height: auto;
-  margin: 0;
-  overflow: visible;
-  position: static;
-  white-space: normal;
-  width: auto;
+@mixin undo-visually-hidden {
+  clip: unset !important;
+  height: unset !important;
+  margin: unset !important;
+  overflow: unset !important;
+  position: unset !important;
+  white-space: unset !important;
+  width: unset !important;
 }

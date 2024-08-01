@@ -8,16 +8,16 @@
 ///
 /// @example scss
 ///   .foo {
-///     @include fs-root-add(a) {
+///     @include root-add(a) {
 ///       content: 'a.foo';
 ///     }
 ///
-///     @include fs-root-add('.bar') {
+///     @include root-add('.bar') {
 ///       content: '.foo.bar';
 ///     }
 ///   }
 ///
-@mixin fs-root-add($selector) {
+@mixin root-add($selector) {
   @if function-exists(selector-append) {
     @at-root #{selector-append($selector, &)} {
       @content;
@@ -33,16 +33,16 @@
 ///
 /// @example scss
 ///   .foo {
-///     @include fs-root-before(a) {
+///     @include root-before(a) {
 ///       content: 'a .foo';
 ///     }
 ///
-///     @include fs-root-before('.bar') {
+///     @include root-before('.bar') {
 ///       content: '.bar .foo';
 ///     }
 ///   }
 ///
-@mixin fs-root-before($selector) {
+@mixin root-before($selector) {
   @if function-exists(selector-nest) {
     @at-root #{selector-nest($selector, &)} {
       @content;

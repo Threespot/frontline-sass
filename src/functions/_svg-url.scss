@@ -1,12 +1,13 @@
+////
 /// Inline SVG in url() for background-image
 /// @group Main
-/// @param {String} $name - SVG name
+/// @param {String} $svg - SVG markup
 /// @param {Map} $props - SVG attributes
 /// @return {String} - Inline SVG as url("data:image/svg+xml,…")
-/// @require {variable} $fs-escape-chars
-/// @require {variable} $fs-svgs
-/// @require {function} fs-str-replace
-/// @require {function} fs-url-encode
+/// @require {variable} $escape-chars
+/// @require {variable} $svgs
+/// @require {function} str-replace
+/// @require {function} url-encode
 /// @link https://www.sassmeister.com/gist/c2f12e64b242469d728f335ed612ae35
 /// @link https://css-tricks.com/probably-dont-base64-svg/
 /// @link https://codepen.io/tigt/post/optimizing-svgs-in-data-uris
@@ -15,34 +16,26 @@
 /// @link https://www.sassmeister.com/gist/594de57bc18015df9dc568e96aff9075
 /// @example scss
 ///   .foo {
-///     background-image: fs-svg-url('chevDown', (fill: none, stroke: red, stroke-width: 1px));
+///     background-image: svg-url('chevDown', (fill: none, stroke: red, stroke-width: 1px));
 ///   }
-@function fs-svg-url($name, $props: false, $svg-map: $fs-svgs) {
-  @if not $svg-map {
-    @error '🔴  $svg-map doesn’t exist';
-    @return false;
-  }
+////
+@use "sass:map";
+@use "sass:string";
+@use "url-encode" as *;
 
-  @if not type-of($svg-map) == 'map' {
-    @error '🔴  $svg-map isn’t a valid Sass map';
-    @return false;
-  }
-
-  @if not map-has-key($svg-map, $name) {
-    @error '🔴  icon “#{$name}” not found in $svg-map';
-    @return false;
-  }
-
-  $svg: map-get($svg-map, $name);
-
+@function svg-url($svg, $props: false,) {
   // Add custom properties
   @if $props {
     $props-string: '';
+
+    // Generate string of props
     @each $key, $val in $props {
       $props-string: $props-string + " #{$key}='#{$val}'";
     }
-    $svg: fs-str-replace($svg, '<svg', '<svg' + $props-string);
+
+    // Add props string to SVG
+    $svg: str-replace($svg-icon, '<svg', '<svg' + $props-string);
   }
 
-  @return url("data:image/svg+xml,#{unquote(fs-url-encode($svg))}");
+  @return url("data:image/svg+xml,#{string.unquote(url-encode($svg))}");
 }
