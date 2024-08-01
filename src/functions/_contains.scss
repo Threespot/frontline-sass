@@ -1,9 +1,0 @@
-/// Check whether `$list` contains `$value`.
-/// @group Sass Utils
-/// @param {List} $list - List of values.
-/// @param {*} $value - Value to check in the list.
-/// @return {Boolean}
-/// @link http://www.sitepoint.com/bulletproof-function-validate-length-values-sass/
-@function fs-contains($list, $value) {
-  @return not not index($list, $value);
-}

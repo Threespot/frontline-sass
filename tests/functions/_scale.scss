@@ -1,9 +1,0 @@
-// Breakpoint tests
-$test-1: fs-scale(20px, 30px, 320px, 900px, $units: 'rem');
-$test-2: fs-scale(-10px, 0, 320px, 900px, $units: 'em');
-
-// Note: String prefix required to prevent false nagatives
-@include run(test('fs-scale', (
-  '1_' + $test-1: '1_' + calc(1.724137931vw + #{0.9051724138rem}),
-  '2_' + $test-2: '2_' + calc(1.724137931vw + #{-0.9698275862em})
-)));
