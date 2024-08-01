@@ -1,6 +1,6 @@
 /// Test `$function` with `$test-suite` test suite
 ///
-/// @author Hugo Giraudel
+/// @author Kitty Giraudel
 ///
 /// @param {String} $function - Name of function to test
 /// @param {Map} $test-suite - Test suite to run `$function` against
@@ -47,6 +47,9 @@
 ///     ),
 ///     // ...
 ///   )
+@use "sass:map";
+@use "sass:string";
+
 @function test-fn($function, $test-suite) {
   $passing-tests: 0;
   $tests: ();
@@ -68,10 +71,10 @@
 
   @return (
     'function': $function,
-    'length': length($tests),
+    'length': string.length($tests),
     'tests': $tests,
     'pass': $passing-tests,
-    'fail': length($tests) - $passing-tests
+    'fail': string.length($tests) - $passing-tests
   );
 }
 
@@ -79,7 +82,7 @@
 
 /// Mixin decorating the result of `test(..)` function to throw it as an error
 ///
-/// @author Hugo Giraudel
+/// @author Kitty Giraudel
 ///
 /// @param {Map} $data - Return of `test(..)` function
 ///
@@ -96,20 +99,20 @@
 ///   ----------
 ///   Finished: 0 test(s) failing out of 4
 @mixin run-fn($data) {
-  $function: map-get($data, 'function');
-  $tests: map-get($data, 'tests');
-  $length: length($tests);
+  $function: map.get($data, 'function');
+  $tests: map.get($data, 'tests');
+  $length: string.length($tests);
   $output: '';
   $indent: '      ';
   $line-break: ' ';
 
   @each $test in $tests {
-    $index: index($tests, $test);
-    $expected: map-get($test, 'expected');
-    $actual: map-get($test, 'actual');
-    $input: map-get($test, 'input');
+    $index: string.index($tests, $test);
+    $expected: map.get($test, 'expected');
+    $actual: map.get($test, 'actual');
+    $input: map.get($test, 'input');
 
-    @if not map-get($test, 'pass') {
+    @if not map.get($test, 'pass') {
       $output: $output
         + $line-break
         + $line-break
@@ -126,8 +129,8 @@
     }
   }
 
-  @if str-length($output) > 0 {
-    $fails: map-get($data, 'fail');
+  @if string.length($output) > 0 {
+    $fails: map.get($data, 'fail');
 
     $output: $output
       + $line-break

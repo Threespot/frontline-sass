@@ -1,6 +1,8 @@
+////
 /// Absolutely position an element and fill available space
 /// @group Main
-@mixin fs-absolute-fill {
+////
+@mixin absolute-fill {
   height: 100%;
   left: 0;
   position: absolute;

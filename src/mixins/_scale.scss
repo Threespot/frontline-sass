@@ -1,14 +1,17 @@
+////
 /// Scale a value for any number of properites relative to the viewport width
 /// @group Main
+/// @access private
+/// @ignore TODO: In next major version, renamescale-poly() asscale()
 /// @param {String | List} $properties - Properties to scale
 /// @param {Map} $map - Map of breakpoints and values
 /// @param {Boolean} $initial [true] - Output initial value (not inside media query)
 /// @param {String} $units ['rem'] - Output units
-/// @require {function} fs-rem
-/// @require {function} fs-scale
-/// @require {mixin} fs-min-width
-/// @require {mixin} fs-max-width
-/// @ignore Demo https://www.sassmeister.com/gist/0743396617c2068ed202be11a6c1eb5e
+/// @require {function} rem
+/// @require {function} scale
+/// @require {mixin} min-width
+/// @require {mixin} max-width
+/// @ignore Demo https://www.sassmeister.com/gist/37c4f4876609516eebab247178ea4b3b
 /// @link http://www.sassmeister.com/gist/7f22e44ace49b5124eec
 /// @link http://madebymike.com.au/writing/precise-control-responsive-typography/
 /// @link https://zellwk.com/blog/viewport-based-typography/
@@ -16,30 +19,90 @@
 /// @link http://codepen.io/maranomynet/pen/ozNpXV?editors=1100
 /// @link https://www.smashingmagazine.com/2016/05/fluid-typography/
 /// @link https://github.com/Jakobud/poly-fluid-sizing
-/// @example scss
-///   @include fs-scale(font-size, (320px: 18px, 1024px: 38px));
-/// @example scss
-///   @include fs-scale(margin-bottom margin-top, (
-///     320px: 18px,
-///     768px: 26px,
-///     1024px: 38px
-///   ));
-/// @example scss
-///   @include fs-scale(font-size, (
-///     320px: 18px,
-///     800px: (32px 24px),// scale up from 18px–32px, then reset to 24px at 800px wide and scale up to 38px
-///     1024px: 38px
-///   ));
-/// @example scss
-///   @include fs-scale(font-size, (768px: 26px, 1024px: 38px), $initial: false);
-/// @example scss
-///   @include fs-scale(font-size, (768px: 26px, 1024px: 38px), $units: 'em');
-@mixin fs-scale($args...) {
-  /// TODO: In next major version, rename fs-scale-poly() as fs-scale() and delete this code.
-  @if length($args) > 1 and type-of(nth($args, 2)) == 'map' {
-    @include fs-scale-poly($args...);
+////
+@use "sass:map";
+
+@mixin scale($properties, $map, $initial: true, $units: 'rem') {
+  $length: length($map);
+
+  @if ($length < 2) {
+    @error "scale() requires at least two breakpoints";
   }
-  @else {
-    @include fs-scale-legacy($args...);
+
+  $breakpoints: map.keys($map);
+  $values: map.values($map);
+
+  // Initial value
+  $start-val: nth($values, 1);
+
+  @if $initial {
+    @each $property in $properties {
+      @if $units == 'em' {
+        #{$property}:em($start-val);
+      }
+      @else {
+        #{$property}: $start-val;
+      }
+    }
+  }
+
+  // Scale up with calc() at each breakpoint
+  @for $i from 1 through ($length - 1) {
+    $start-breakpoint: nth($breakpoints, $i);
+    $end-breakpoint: nth($breakpoints, $i + 1);
+    $start-value: nth($values, $i);
+    $end-value: nth($values, $i + 1);
+
+    @if length($start-value) > 2 {
+      @warn "scale(): #{$start-breakpoint}: (#{$start-value}) contains too many values, only the first two will be used";
+    }
+
+    @if length($end-value) > 2 {
+      @warn "scale(): #{$end-breakpoint}: (#{$end-value}) contains too many values, only the first two will be used";
+    }
+
+    // If multiple start values exist, use the second one.
+    // Note: The first value was the ending value in the previous media query.
+    @if length($start-value) > 1 {
+      // If multiple end values exist, use the first one.
+      $new-end-value: if(length($end-value) > 1, nth($end-value, 1), $end-value);
+
+      @include min-width($start-breakpoint) {
+        @each $property in $properties {
+          #{$property}:scale(nth($start-value, 2), $new-end-value, $start-breakpoint, $end-breakpoint, $units);
+        }
+      }
+    }
+    // If muliple ending values exist, use the first one.
+    @else if length($end-value) > 1 {
+      @include min-width($start-breakpoint) {
+        @each $property in $properties {
+          #{$property}:scale($start-value, nth($end-value, 1), $start-breakpoint, $end-breakpoint, $units);
+        }
+      }
+    }
+    // Single values
+    @else {
+      @include min-width($start-breakpoint) {
+        @each $property in $properties {
+          #{$property}:scale($start-value, $end-value, $start-breakpoint, $end-breakpoint, $units);
+        }
+      }
+    }
+  }
+
+  // Final value
+  $end-val: nth($values, $length);
+  $end-breakpoint: nth($breakpoints, $length);
+
+  @include min-width($end-breakpoint) {
+    @each $property in $properties {
+      @if $units == 'em' {
+        #{$property}:em($end-val);
+      }
+      @else {
+        #{$property}: $end-val;
+      }
+    }
   }
 }

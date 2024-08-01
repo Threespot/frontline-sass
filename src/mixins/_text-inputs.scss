@@ -1,14 +1,10 @@
+////
 /// Helper to select all text input types
 /// @group Selectors
-@mixin fs-text-inputs {
+////
+@mixin text-inputs {
   // scss-lint:disable QualifyingElement
-  input[type='email'],
-  input[type='number'],
-  input[type='password'],
-  input[type='search'],
-  input[type='tel'],
-  input[type='text'],
-  input[type='url'] {
+  input:where([type='email'], [type='number'], [type='password'], [type='search'], [type='tel'], [type='text'], [type='url']) {
     @content;
   }
 }

@@ -1,3 +1,6 @@
+@use "sass:map";
+@use "sass:string";
+
 @function test($name, $test-suite) {
   $passing-tests: 0;
   $tests: ();
@@ -25,8 +28,8 @@
 }
 
 @mixin run($data) {
-  $name: map-get($data, 'name');
-  $tests: map-get($data, 'tests');
+  $name: map.get($data, 'name');
+  $tests: map.get($data, 'tests');
   $length: length($tests);
   $output: '';
   $indent: '      ';
@@ -34,10 +37,10 @@
 
   @each $test in $tests {
     $index: index($tests, $test);
-    $expected: map-get($test, 'expected');
-    $actual: map-get($test, 'actual');
+    $expected: map.get($test, 'expected');
+    $actual: map.get($test, 'actual');
 
-    @if not map-get($test, 'pass') {
+    @if not map.get($test, 'pass') {
       $output: $output
         + $line-break
         + $line-break
@@ -54,8 +57,8 @@
     }
   }
 
-  @if str-length($output) > 0 {
-    $fails: map-get($data, 'fail');
+  @if string.length($output) > 0 {
+    $fails: map.get($data, 'fail');
 
     $output: $output
       + $line-break

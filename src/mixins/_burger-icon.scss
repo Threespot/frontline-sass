@@ -1,3 +1,4 @@
+////
 /// Burger menu icon mixin
 /// @group Main
 /// @param {Number} $width [30px] - Icon width
@@ -11,15 +12,15 @@
 ///
 /// @example scss
 ///   .icon {
-///     @include fs-burger(
+///     @include burger(
 ///       $color: #fff,
 ///       $gutter: 3px,
 ///       $height: 3px,
 ///       $transition-duration: 200ms,
 ///       $width: 20px
 ///     );
-///
-@mixin fs-burger(
+////
+@mixin burger(
   $width: 30px,
   $height: 5px,
   $gutter: 3px,
@@ -72,7 +73,7 @@
 ///
 /// @example scss
 ///   .icon {
-///     @include fs-burger(
+///     @include burger(
 ///       $color: #fff,
 ///       $gutter: 3px,
 ///       $height: 3px,
@@ -81,11 +82,11 @@
 ///     );
 ///
 ///     &.is-active {
-///       @include fs-burger-to-cross;
+///       @include burger-to-cross;
 ///     }
 ///   }
 ///
-@mixin fs-burger-to-cross($color: auto) {
+@mixin burger-to-cross($color: auto) {
   & {
     background-color: transparent;
   }

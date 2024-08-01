@@ -1,9 +1,11 @@
+////
 /// Custom easings map
 /// @group Main
 /// @type Map
 /// @link https://github.com/jhardy/compass-ceaser-easing
 /// @link http://easings.net
-$fs-easings: (
+////
+$easings: (
   'linear'         : '0.250, 0.250, 0.750, 0.750',
   'ease'           : '0.250, 0.100, 0.250, 1.000',
   'ease-in'        : '0.420, 0.000, 1.000, 1.000',
@@ -33,4 +35,4 @@ $fs-easings: (
   'easeOutQuart'   : '0.165, 0.840, 0.440, 1.000',
   'easeOutQuint'   : '0.230, 1.000, 0.320, 1.000',
   'easeOutSine'    : '0.390, 0.575, 0.565, 1.000',
-);
+) !default;
