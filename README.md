@@ -16,9 +16,9 @@ Frontline Sass is free software, and may be redistributed under the terms of the
 
 Our work stands on the shoulders of giants, and we're very thankful to the many people that made Frontline Sass possible either by publishing code we used, or by being an inspiration for this project.
 
-- [Hugo Giraudel](http://hugogiraudel.com)
+- [Kitty Giraudel](https://kittygiraudel.com)
 - [SassDoc](http://sassdoc.com)
-- [SassyTester](https://github.com/HugoGiraudel/SassyTester)
+- [SassyTester](https://github.com/KittyGiraudel/SassyTester)
 - [Sass Guidelines](http://sass-guidelin.es)
 
 ## About Threespot
