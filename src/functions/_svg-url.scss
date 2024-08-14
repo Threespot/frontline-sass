@@ -34,7 +34,7 @@
     }
 
     // Add props string to SVG
-    $svg: str-replace($svg-icon, '<svg', '<svg' + $props-string);
+    $svg: str-replace($svg, '<svg', '<svg' + $props-string);
   }
 
   @return url("data:image/svg+xml,#{string.unquote(url-encode($svg))}");
