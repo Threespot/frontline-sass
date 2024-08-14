@@ -67,7 +67,7 @@
       // If multiple end values exist, use the first one.
       $new-end-value: if(length($end-value) > 1, nth($end-value, 1), $end-value);
 
-      @include min-width($start-breakpoint) {
+      @media (min-width: $start-breakpoint) {
         @each $property in $properties {
           #{$property}:scale(nth($start-value, 2), $new-end-value, $start-breakpoint, $end-breakpoint, $units);
         }
@@ -75,7 +75,7 @@
     }
     // If muliple ending values exist, use the first one.
     @else if length($end-value) > 1 {
-      @include min-width($start-breakpoint) {
+      @media (min-width: $start-breakpoint) {
         @each $property in $properties {
           #{$property}:scale($start-value, nth($end-value, 1), $start-breakpoint, $end-breakpoint, $units);
         }
@@ -83,7 +83,7 @@
     }
     // Single values
     @else {
-      @include min-width($start-breakpoint) {
+      @media (min-width: $start-breakpoint) {
         @each $property in $properties {
           #{$property}:scale($start-value, $end-value, $start-breakpoint, $end-breakpoint, $units);
         }
@@ -95,7 +95,7 @@
   $end-val: nth($values, $length);
   $end-breakpoint: nth($breakpoints, $length);
 
-  @include min-width($end-breakpoint) {
+  @media (min-width: $end-breakpoint) {
     @each $property in $properties {
       @if $units == 'em' {
         #{$property}:em($end-val);
