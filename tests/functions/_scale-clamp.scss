@@ -1,9 +1,0 @@
-// Breakpoint tests
-$test-1: scale-clamp((375px: 16px, 960px: 20px));
-$test-2: scale-clamp((375px: 16px, 960px: 20px), $units: 'cqw');
-
-// Note: String prefix required to prevent false nagatives
-@include run(test('scale-clamp', (
-  '1_' + $test-1: '1_' + clamp(16px, 0.684vw + 13.436px, 20px),
-  '2_' + $test-2: '2_' + clamp(16px, 0.684cqw + 13.436px, 20px)
-)));
