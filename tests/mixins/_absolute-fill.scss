@@ -1,0 +1,15 @@
+@include it('Absolutely position an element and fill available space') {
+  @include assert {
+    @include output {
+      @include absolute-fill();
+    }
+
+    @include expect {
+      height: 100%;
+      left: 0;
+      position: absolute;
+      top: 0;
+      width: 100%;
+    }
+  }
+}

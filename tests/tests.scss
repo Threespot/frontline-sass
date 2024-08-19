@@ -1,9 +1,11 @@
+// Sass unit testing using Oddbird
+// https://www.oddbird.net/true/docs/
+// https://github.com/oddbird/true
+@import '../node_modules/sass-true/sass/true';
+
 // Import Frontline
-@import '../src/_frontline.scss';
+@import '../src/_frontline';
 
-// Function testing helpers
-@import '_SassyTester.scss';
-@import '_simple-test.scss';
-
-// Functions
-@import 'functions/_scale-clamp.scss';
+// Tests
+@import "functions/index";
+@import "mixins";

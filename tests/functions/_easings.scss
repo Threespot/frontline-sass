@@ -1,0 +1,6 @@
+@include test-module('Easing helper [function]') {
+  @include test('Returns custom cubic-bezier() easing function') {
+    // Assert the expected results
+    @include assert-equal(easing('easeInOutCubic'), cubic-bezier(0.645, 0.045, 0.355, 1));
+  }
+}

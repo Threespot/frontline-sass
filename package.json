@@ -51,9 +51,10 @@
     "js-yaml": "^4.1.0",
     "postcss-scss": "^4.0.9",
     "sass": "^1.77.8",
+    "sass-true": "^8.0.0",
     "sassdoc": "^2.7.4",
-    "stylelint": "^16.8.1",
+    "stylelint": "^16.8.2",
     "stylelint-config-standard": "^36.0.1",
-    "stylelint-scss": "^6.4.1"
+    "stylelint-scss": "^6.5.0"
   }
 }
