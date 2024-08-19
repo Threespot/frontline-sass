@@ -1,6 +1,8 @@
 ////
-/// Burger menu icon mixin
 /// @group Main
+////
+
+/// Burger menu icon mixin
 /// @param {Number} $width [30px] - Icon width
 /// @param {Number} $height [5px] - Bar height
 /// @param {Number} $gutter [3px] - Gap between bars
@@ -19,7 +21,6 @@
 ///       $transition-duration: 200ms,
 ///       $width: 20px
 ///     );
-////
 @mixin burger(
   $width: 30px,
   $height: 5px,
@@ -68,8 +69,7 @@
   }
 }
 
-// Animate burger icon to a cross
-/// @group Main
+/// Animate burger icon to a cross
 ///
 /// @example scss
 ///   .icon {

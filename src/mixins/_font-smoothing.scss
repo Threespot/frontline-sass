@@ -1,10 +1,11 @@
 ////
-/// Apply font smoothing in Safari, Chrome, and Firefox. Use sparringly!
 /// @group Main
+////
+
+/// Apply font smoothing in Safari, Chrome, and Firefox. Use sparringly!
 /// @param {Boolean} $enabled - Enable or disable smoothing
 /// @link http://maximilianhoffmann.com/posts/better-font-rendering-on-osx
 /// @link http://usabilitypost.com/2012/11/05/stop-fixing-font-smoothing/
-////
 @mixin font-smoothing($enabled: true) {
   @if $enabled {
     -moz-osx-font-smoothing: grayscale;

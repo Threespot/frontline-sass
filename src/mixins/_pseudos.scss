@@ -1,20 +1,24 @@
 ////
 /// Helper mixins to add various pseudo selectors
-/// @group Selectors
 /// @ignore http://sassmeister.com/gist/35c9c323d22eefdbf293 (by @csswizardry)
+/// @group Selectors
 ////
+
+/// Alias for `:any-link`
 @mixin static {
   &:any-link {
     @content;
   }
 }
 
+/// Alias for `:is(:hover, :focus, :active)`
 @mixin attention {
   &:is(:hover, :focus, :active) {
     @content;
   }
 }
 
+/// Alias for `:is(:any-link, :hover, :focus, :active)`
 @mixin all-states {
   &:is(:any-link, :hover, :focus, :active) {
     @content;

@@ -1,11 +1,11 @@
 ////
-/// Custom easing function
 /// @group Main
 ////
 @use "sass:map";
 @use "sass:string";
 @use "../variables/easings" as *;
 
+/// Custom easing function
 @function easing($name) {
   @return cubic-bezier(string.unquote(map.get($easings, $name)));
 }

@@ -1,12 +1,12 @@
 ////
-/// Convert px to em
 /// @group Main
-/// @param {Number | Map} $values - Value or values to convert
-/// @param {Number} $context [16px] - Base font size
-/// @return {*} - Converted value or list of values
 ////
 @use "sass:math";
 
+/// Convert px to em
+/// @param {Number | Map} $values - Value or values to convert
+/// @param {Number} $context [16px] - Base font size
+/// @return {*} - Converted value or list of values
 @function em($values, $context: 16px) {
   // Ensure context size is in pixels
   @if math.unit($context) != 'px' {
