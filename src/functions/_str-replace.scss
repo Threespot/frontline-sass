@@ -1,6 +1,9 @@
 ////
+/// @group Utilities
+////
+@use "sass:string";
+
 /// Replace `$search` with `$replace` in `$string`
-/// @group Sass Utils
 /// @author Kitty Giraudel
 /// @param {String} $string - Initial string
 /// @param {String} $search - Substring to replace
@@ -12,9 +15,6 @@
 /// @example scss
 ///   str-replace("abcde", "bc", "a") => "aade"
 ///
-////
-@use "sass:string";
-
 @function str-replace($string, $search, $replace: '') {
   $index: string.index($string, $search);
 

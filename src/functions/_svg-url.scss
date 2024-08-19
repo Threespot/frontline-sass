@@ -1,11 +1,16 @@
 ////
-/// Inline SVG in url() for background-image
 /// @group Main
+////
+@use "sass:map";
+@use "sass:string";
+@use "str-replace" as *;
+@use "url-encode" as *;
+
+/// Inline SVG in url() for background-image
 /// @param {String} $svg - SVG markup
 /// @param {Map} $props - SVG attributes
 /// @return {String} - Inline SVG as url("data:image/svg+xml,…")
 /// @require {variable} $escape-chars
-/// @require {variable} $svgs
 /// @require {function} str-replace
 /// @require {function} url-encode
 /// @link https://www.sassmeister.com/gist/c2f12e64b242469d728f335ed612ae35
@@ -18,11 +23,6 @@
 ///   .foo {
 ///     background-image: svg-url('chevDown', (fill: none, stroke: red, stroke-width: 1px));
 ///   }
-////
-@use "sass:map";
-@use "sass:string";
-@use "url-encode" as *;
-
 @function svg-url($svg, $props: false,) {
   // Add custom properties
   @if $props {

@@ -1,16 +1,14 @@
 ////
-/// Scale a value for any number of properites relative to the viewport width
 /// @group Main
-/// @access private
-/// @ignore TODO: In next major version, renamescale-poly() asscale()
+////
+@use "sass:map";
+@use "../functions/scale-clamp" as *;
+
+/// Scale a value for any number of properites relative to the viewport width
 /// @param {String | List} $properties - Properties to scale
 /// @param {Map} $map - Map of breakpoints and values
 /// @param {Boolean} $initial [true] - Output initial value (not inside media query)
-/// @param {String} $units ['rem'] - Output units
-/// @require {function} rem
-/// @require {function} scale
-/// @require {mixin} min-width
-/// @require {mixin} max-width
+/// @require {function} scale-clamp
 /// @ignore Demo https://www.sassmeister.com/gist/37c4f4876609516eebab247178ea4b3b
 /// @link http://www.sassmeister.com/gist/7f22e44ace49b5124eec
 /// @link http://madebymike.com.au/writing/precise-control-responsive-typography/
@@ -19,10 +17,7 @@
 /// @link http://codepen.io/maranomynet/pen/ozNpXV?editors=1100
 /// @link https://www.smashingmagazine.com/2016/05/fluid-typography/
 /// @link https://github.com/Jakobud/poly-fluid-sizing
-////
-@use "sass:map";
-
-@mixin scale($properties, $map, $initial: true, $units: 'rem') {
+@mixin scale($properties, $map, $initial: true) {
   $length: length($map);
 
   @if ($length < 2) {
@@ -37,12 +32,7 @@
 
   @if $initial {
     @each $property in $properties {
-      @if $units == 'em' {
-        #{$property}:em($start-val);
-      }
-      @else {
-        #{$property}: $start-val;
-      }
+      #{$property}: $start-val;
     }
   }
 
@@ -69,7 +59,7 @@
 
       @media (min-width: $start-breakpoint) {
         @each $property in $properties {
-          #{$property}:scale(nth($start-value, 2), $new-end-value, $start-breakpoint, $end-breakpoint, $units);
+          #{$property}: scale-clamp(($start-breakpoint: nth($start-value, 2), $end-breakpoint: $new-end-value));
         }
       }
     }
@@ -77,7 +67,7 @@
     @else if length($end-value) > 1 {
       @media (min-width: $start-breakpoint) {
         @each $property in $properties {
-          #{$property}:scale($start-value, nth($end-value, 1), $start-breakpoint, $end-breakpoint, $units);
+          #{$property}: scale-clamp(($start-breakpoint: $start-value, $end-breakpoint: nth($end-value, 1)));
         }
       }
     }
@@ -85,7 +75,7 @@
     @else {
       @media (min-width: $start-breakpoint) {
         @each $property in $properties {
-          #{$property}:scale($start-value, $end-value, $start-breakpoint, $end-breakpoint, $units);
+          #{$property}: scale-clamp(($start-breakpoint: $start-value, $end-breakpoint: $end-value));
         }
       }
     }
@@ -97,12 +87,7 @@
 
   @media (min-width: $end-breakpoint) {
     @each $property in $properties {
-      @if $units == 'em' {
-        #{$property}:em($end-val);
-      }
-      @else {
-        #{$property}: $end-val;
-      }
+      #{$property}: $end-val;
     }
   }
 }

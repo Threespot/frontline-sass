@@ -1,6 +1,10 @@
 ////
-/// Generate clamp() to smoothly scale a value between two breakpoints
 /// @group Main
+////
+@use "sass:map";
+@use 'sass:math';
+
+/// Generate `clamp()` to smoothly scale a value between two breakpoints
 /// @param {Map} $map - Map of breakpoints and values
 /// @param {String} $units [vw] - Optionally specify container query units
 /// @return {String} - Custom `clamp()` formula
@@ -12,10 +16,6 @@
 ///     font-size: scale-clamp((375px: 16px, 960px: 20px));
 ///   }
 ///
-////
-@use "sass:map";
-@use 'sass:math';
-
 @function scale-clamp($map, $units: vw) {
   // Formulas:
   //
