@@ -22,21 +22,24 @@ gulp.task('sassdoc', function () {
   return gulp
     .src('src/**/*.scss')
     .pipe(sassdoc({
-      dest: './sassdoc/documentation',
-      exclude: ['_index.scss'],
-      verbose: true,
       basePath: 'https://github.com/Threespot/frontline-sass/tree/master/src',
+      dest: './docs',
+      exclude: ['_index.scss'],
       display: {
         access: ['public'],
-        alias: false,
-        watermark: true,
+        alias: true,// show aliases
+        watermark: true,// Sassdoc logo
       },
       package: './package.json',
-      theme: 'default',
-      groups: {
-        'undefined': 'General'
-      },
+      // theme: 'default',
+      // verbose: true,
       // googleAnalytics: 'UA-XXXXXXXX-X'
+      // groups: {
+      //   'undefined': 'General',
+      //   main: 'Main',
+      //   utilities: 'Utilities',
+      //   selectors: 'Selectors',
+      // },
     }))
   .resume();
 });
