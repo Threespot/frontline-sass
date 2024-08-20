@@ -34,8 +34,8 @@
     "patch": "read -p 'Confirm create new patch (0.0.x) to npm: (y/n) ' -n 1 -r \n if [[ $REPLY =~ ^[Yy]$ ]] \n then \n yarn npm-patch \n fi",
     "minor": "read -p 'Confirm create new minor version (0.x.0) to npm (y/n) ' -n 1 -r \n if [[ $REPLY =~ ^[Yy]$ ]] \n then \n yarn npm-minor \n fi",
     "major": "read -p 'Confirm create new major version (x.0.0) to npm (y/n) ' -n 1 -r \n if [[ $REPLY =~ ^[Yy]$ ]] \n then \n yarn npm-major \n fi",
-    "preversion": "yarn lint",
-    "version": "yarn build && yarn gulp sassdoc && git add .",
+    "preversion": "yarn lint && yarn test",
+    "version": "yarn gulp sassdoc && git add .",
     "postversion": "git push && git push --tags"
   },
   "license": "MIT",
