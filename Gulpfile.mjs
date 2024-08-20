@@ -23,7 +23,7 @@ gulp.task('sassdoc', function () {
     .src('src/**/*.scss')
     .pipe(sassdoc({
       basePath: 'https://github.com/Threespot/frontline-sass/tree/master/src',
-      dest: './docs',
+      dest: './sassdoc/documentation',
       exclude: ['_index.scss'],
       display: {
         access: ['public'],
