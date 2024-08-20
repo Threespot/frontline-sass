@@ -26,7 +26,7 @@
     "docs": "gulp sassdoc",
     "test": "gulp test",
     "deploy": "gulp sassdoc && yarn gh-deploy",
-    "gh-deploy": "NODE_DEBUG='gh-pages' gh-pages --dist sassdoc --message 'Automatic SassDoc update'",
+    "gh-deploy": "NODE_DEBUG='gh-pages' gh-pages --dist docs --message 'Automatic SassDoc update'",
     "lint": "stylelint 'src/**/*.scss'",
     "npm-patch": "npm version patch --force -m \"version %s\"",
     "npm-minor": "npm version minor --force -m \"version %s\"",
