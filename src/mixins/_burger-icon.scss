@@ -3,36 +3,29 @@
 ////
 
 /// Burger menu icon mixin
-/// @param {Number} $width [30px] - Icon width
-/// @param {Number} $height [5px] - Bar height
-/// @param {Number} $gutter [3px] - Gap between bars
-/// @param {Color} $color [currentColor] - Icon color
-/// @param {Number} $border-radius [0] - Border radius
-/// @param {Number} $transition-duration [300ms] - Transition duration
 /// @author Joren Van Hee
 /// @link https://github.com/jorenvanhee/sass-burger
 ///
 /// @example scss
 ///   .icon {
-///     @include burger(
-///       $color: #fff,
-///       $gutter: 3px,
-///       $height: 3px,
-///       $transition-duration: 200ms,
-///       $width: 20px
-///     );
-@mixin burger(
-  $width: 30px,
-  $height: 5px,
-  $gutter: 3px,
-  $color: currentColor,
-  $border-radius: 0,
-  $transition-duration: 300ms
-) {
-  $burger-height: $height !global;
-  $burger-gutter: $gutter !global;
-  margin-bottom: $height + $gutter;
-  margin-top: $height + $gutter;
+///     --burger-icon-gutter: 6px;
+///     --burger-icon-stroke-width: 2px;
+///     --burger-icon-width: 30px;
+///     // Default vars
+///     // --burger-icon-color: currentColor;
+///     // --burger-icon-radius: 0;
+///     // --burger-icon-speed: 200ms;
+///     // --burger-icon-cross-angle: 45deg;
+///     @include burger;
+///
+///     &.is-active {
+///       @include burger-to-cross;
+///     }
+///   }
+///
+@mixin burger() {
+  margin-bottom: calc(var(--burger-icon-stroke-width) + var(--burger-icon-gutter));
+  margin-top: calc(var(--burger-icon-stroke-width) + var(--burger-icon-gutter));
   position: relative;
   user-select: none;
 
@@ -43,14 +36,12 @@
   &,
   &::before,
   &::after {
-    background-color: $color;
-    @if $border-radius != 0 {
-      border-radius: $border-radius;
-    }
-    height: $height;
-    transition-duration: $transition-duration;
+    background-color: var(--burger-icon-color, currentColor);
+    border-radius: var(--burger-icon-radius, 0);
+    height: var(--burger-icon-stroke-width);
+    transition-duration: var(--burger-icon-speed, 200ms);
     transition-property: background-color, transform;
-    width: $width;
+    width: var(--burger-icon-width);
   }
 
   &::before,
@@ -61,11 +52,11 @@
   }
 
   &::before {
-    top: -($height + $gutter);
+    top: calc(-1 * var(--burger-icon-stroke-width) - var(--burger-icon-gutter));
   }
 
   &::after {
-    top: $height + $gutter;
+    top: calc(var(--burger-icon-stroke-width) + var(--burger-icon-gutter));
   }
 }
 
@@ -73,36 +64,30 @@
 ///
 /// @example scss
 ///   .icon {
-///     @include burger(
-///       $color: #fff,
-///       $gutter: 3px,
-///       $height: 3px,
-///       $transition-duration: 200ms,
-///       $width: 20px
-///     );
+///     --burger-icon-cross-angle: 30deg;
+//      --burger-icon-cross-color: megenta;
+///     @include burger;
 ///
 ///     &.is-active {
 ///       @include burger-to-cross;
 ///     }
 ///   }
 ///
-@mixin burger-to-cross($color: auto) {
+@mixin burger-to-cross() {
   & {
     background-color: transparent;
   }
 
-  @if ($color != auto) {
-    &:before,
-    &:after {
-      background-color: $color;
-    }
+  &:before,
+  &:after {
+    background-color: var(--burger-icon-cross-color, currentColor);
   }
 
   &:before {
-    transform: translateY($burger-gutter + $burger-height) rotate(45deg);
+    transform: translateY(calc(var(--burger-icon-stroke-width) + var(--burger-icon-gutter))) rotate(var(--burger-icon-cross-angle, 45deg));
   }
 
   &:after {
-    transform: translateY(-($burger-gutter + $burger-height)) rotate(-45deg);
+    transform: translateY(calc(-1 * var(--burger-icon-stroke-width) - var(--burger-icon-gutter))) rotate(calc(-1 * var(--burger-icon-cross-angle, 45deg)));
   }
 }
