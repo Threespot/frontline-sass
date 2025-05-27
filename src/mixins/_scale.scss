@@ -1,6 +1,7 @@
 ////
 /// @group Main
 ////
+@use "sass:list";
 @use "sass:map";
 @use "../functions/scale-clamp" as *;
 
@@ -18,7 +19,7 @@
 /// @link https://www.smashingmagazine.com/2016/05/fluid-typography/
 /// @link https://github.com/Jakobud/poly-fluid-sizing
 @mixin scale($properties, $map, $initial: true) {
-  $length: length($map);
+  $length: list.length($map);
 
   @if ($length < 2) {
     @error "scale() requires at least two breakpoints";
@@ -28,7 +29,7 @@
   $values: map.values($map);
 
   // Initial value
-  $start-val: nth($values, 1);
+  $start-val: list.nth($values, 1);
 
   @if $initial {
     @each $property in $properties {
@@ -38,36 +39,36 @@
 
   // Scale up with calc() at each breakpoint
   @for $i from 1 through ($length - 1) {
-    $start-breakpoint: nth($breakpoints, $i);
-    $end-breakpoint: nth($breakpoints, $i + 1);
-    $start-value: nth($values, $i);
-    $end-value: nth($values, $i + 1);
+    $start-breakpoint: list.nth($breakpoints, $i);
+    $end-breakpoint: list.nth($breakpoints, $i + 1);
+    $start-value: list.nth($values, $i);
+    $end-value: list.nth($values, $i + 1);
 
-    @if length($start-value) > 2 {
+    @if list.length($start-value) > 2 {
       @warn "scale(): #{$start-breakpoint}: (#{$start-value}) contains too many values, only the first two will be used";
     }
 
-    @if length($end-value) > 2 {
+    @if list.length($end-value) > 2 {
       @warn "scale(): #{$end-breakpoint}: (#{$end-value}) contains too many values, only the first two will be used";
     }
 
     // If multiple start values exist, use the second one.
     // Note: The first value was the ending value in the previous media query.
-    @if length($start-value) > 1 {
+    @if list.length($start-value) > 1 {
       // If multiple end values exist, use the first one.
-      $new-end-value: if(length($end-value) > 1, nth($end-value, 1), $end-value);
+      $new-end-value: if(list.length($end-value) > 1, list.nth($end-value, 1), $end-value);
 
       @media (min-width: $start-breakpoint) {
         @each $property in $properties {
-          #{$property}: scale-clamp(($start-breakpoint: nth($start-value, 2), $end-breakpoint: $new-end-value));
+          #{$property}: scale-clamp(($start-breakpoint: list.nth($start-value, 2), $end-breakpoint: $new-end-value));
         }
       }
     }
     // If muliple ending values exist, use the first one.
-    @else if length($end-value) > 1 {
+    @else if list.length($end-value) > 1 {
       @media (min-width: $start-breakpoint) {
         @each $property in $properties {
-          #{$property}: scale-clamp(($start-breakpoint: $start-value, $end-breakpoint: nth($end-value, 1)));
+          #{$property}: scale-clamp(($start-breakpoint: $start-value, $end-breakpoint: list.nth($end-value, 1)));
         }
       }
     }
@@ -82,8 +83,8 @@
   }
 
   // Final value
-  $end-val: nth($values, $length);
-  $end-breakpoint: nth($breakpoints, $length);
+  $end-val: list.nth($values, $length);
+  $end-breakpoint: list.nth($breakpoints, $length);
 
   @media (min-width: $end-breakpoint) {
     @each $property in $properties {

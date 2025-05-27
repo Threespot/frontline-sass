@@ -1,6 +1,7 @@
 ////
 /// @group Main
 ////
+@use "sass:list";
 @use "sass:map";
 @use 'sass:math';
 
@@ -26,10 +27,10 @@
   //
   $breakpoints: map.keys($map);
   $values: map.values($map);
-  $min-width: nth($breakpoints, 1);
-  $max-width: nth($breakpoints, 2);
-  $start: nth($values, 1);
-  $end: nth($values, 2);
+  $min-width: list.nth($breakpoints, 1);
+  $max-width: list.nth($breakpoints, 2);
+  $start: list.nth($values, 1);
+  $end: list.nth($values, 2);
   $change: math.div($end - $start, $max-width - $min-width);
   $b: $end - ($max-width * $change);
 
