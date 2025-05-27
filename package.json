@@ -47,14 +47,14 @@
     "gulp-header": "^2.0.9",
     "gulp-load-plugins": "^2.0.8",
     "gulp-replace": "^1.1.4",
-    "gulp-sass": "^5.1.0",
+    "gulp-sass": "^6.0.1",
     "js-yaml": "^4.1.0",
     "postcss-scss": "^4.0.9",
     "sass": "^1.77.8",
     "sass-true": "^8.0.0",
     "sassdoc": "^2.7.4",
     "stylelint": "^16.8.2",
-    "stylelint-config-standard": "^36.0.1",
+    "stylelint-config-standard": "^38.0.0",
     "stylelint-scss": "^6.5.0"
   }
 }

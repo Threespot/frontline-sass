@@ -1,3 +1,11 @@
+// Sass unit testing using Oddbird
+// https://www.oddbird.net/true/docs/
+// https://github.com/oddbird/true
+@use '../node_modules/sass-true' as *;
+
+// Import Frontline
+@use '../src/_frontline' as *;
+
 @include it('Absolutely position an element and fill available space') {
   @include assert {
     @include output {

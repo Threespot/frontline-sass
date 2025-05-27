@@ -1,11 +1,3 @@
-// Sass unit testing using Oddbird
-// https://www.oddbird.net/true/docs/
-// https://github.com/oddbird/true
-@import '../node_modules/sass-true/sass/true';
-
-// Import Frontline
-@import '../src/_frontline';
-
 // Tests
-@import "functions/index";
-@import "mixins";
+@use "functions/index" as *;
+@use "mixins/index" as *;
