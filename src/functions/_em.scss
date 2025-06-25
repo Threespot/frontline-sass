@@ -1,7 +1,9 @@
 ////
 /// @group Main
 ////
+@use "sass:list";
 @use "sass:math";
+@use "sass:meta";
 
 /// Convert px to em
 /// @param {Number | Map} $values - Value or values to convert
@@ -18,7 +20,7 @@
 
   @each $val in $values {
     // Check if pixel value
-    @if type-of($val) == 'number' and math.unit($val) == 'px' {
+    @if meta.type-of($val) == 'number' and math.unit($val) == 'px' {
       // Convert to ems
       $val: math.div($val, $context) * 1em;
     }
@@ -29,7 +31,7 @@
     }
 
     // Append value to output list
-    $output: append($output, $val);
+    $output: list.append($output, $val);
   }
 
   // Return converted value(s)

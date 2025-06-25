@@ -1,6 +1,7 @@
 ////
 /// @group Utilities
 ////
+@use "sass:meta";
 
 /// Strip units
 /// @param {Number} $arg - Value to strip
@@ -8,7 +9,7 @@
 /// @link http://stackoverflow.com/a/12335841/673457
 @function strip-unit($arg) {
   // Return unitless value if valid number
-  @if type-of($arg) == 'number' {
+  @if meta.type-of($arg) == 'number' {
     @return math.div($arg, ($arg * 0 + 1));
   }
   // Error if not a valid number
