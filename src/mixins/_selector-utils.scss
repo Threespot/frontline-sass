@@ -2,6 +2,7 @@
 /// @group Selectors
 /// @link http://sass-lang.com/documentation/Sass/Script/Functions.html#selector_functions
 ////
+@use "sass:selector";
 
 /// Add selector to root (requires Sass 3.4+)
 /// @param {String} $selector - Selector to add to root
@@ -18,13 +19,8 @@
 ///   }
 ///
 @mixin root-add($selector) {
-  @if function-exists(selector-append) {
-    @at-root #{selector-append($selector, &)} {
-      @content;
-    }
-  }
-  @else {
-    @error '🔴  selector-append() is not supported. Please upgrade to Sass 3.4+';
+  @at-root #{selector.append($selector, &)} {
+    @content;
   }
 }
 
@@ -43,12 +39,7 @@
 ///   }
 ///
 @mixin root-before($selector) {
-  @if function-exists(selector-nest) {
-    @at-root #{selector-nest($selector, &)} {
-      @content;
-    }
-  }
-  @else {
-    @error '🔴  selector-nest() is not supported. Please upgrade to Sass 3.4+';
+  @at-root #{selector.nest($selector, &)} {
+    @content;
   }
 }
