@@ -56,7 +56,11 @@
     // Note: The first value was the ending value in the previous media query.
     @if list.length($start-value) > 1 {
       // If multiple end values exist, use the first one.
-      $new-end-value: if(list.length($end-value) > 1, list.nth($end-value, 1), $end-value);
+      $new-end-value: $end-value;
+
+      @if list.length($end-value) > 1 {
+        $new-end-value: list.nth($end-value, 1);
+      }
 
       @media (min-width: $start-breakpoint) {
         @each $property in $properties {
