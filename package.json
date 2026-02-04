@@ -5,7 +5,7 @@
   "description": "Threespot's base Sass framework",
   "repository": {
     "type": "git",
-    "url": "https://github.com/Threespot/frontline-sass.git"
+    "url": "git+https://github.com/Threespot/frontline-sass.git"
   },
   "main": "src/_frontline.scss",
   "author": "Ted Whitehead <ted.whitehead@threespot.com>",
