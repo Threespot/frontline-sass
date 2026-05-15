@@ -1,0 +1,17 @@
+{
+  "hooks": {
+    "PostToolUse": [
+      {
+        "matcher": "Edit",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "f=$(jq -r '.tool_input.file_path'); if [ ! -f \"$f\" ]; then exit 0; fi; d=$(dirname \"$f\"); if git -C \"$d\" ls-files --error-unmatch \"$f\" >/dev/null 2>&1; then to_check=$(git -C \"$d\" diff --no-color --unified=0 HEAD -- \"$f\" 2>/dev/null | grep '^+' | grep -v '^+++'); else to_check=$(cat \"$f\" 2>/dev/null); fi; if [ -n \"$to_check\" ] && printf '%s' \"$to_check\" | LC_ALL=C grep -q $'\\xe2\\x80\\x98\\|\\xe2\\x80\\x99\\|\\xe2\\x80\\x9c\\|\\xe2\\x80\\x9d'; then printf '{\"continue\":false,\"stopReason\":\"Curly/smart quotes introduced in %s. Replace them with straight quotes.\"}' \"$f\"; exit 1; fi",
+            "timeout": 10,
+            "statusMessage": "Checking for curly quotes..."
+          }
+        ]
+      }
+    ]
+  }
+}
