@@ -1,0 +1,9 @@
+basePath: 'https://github.com/Threespot/frontline-sass/tree/master/src'
+exclude:
+  - '_index.scss'
+display:
+  access:
+    - public
+  alias: true
+  watermark: true
+package: ./package.json
