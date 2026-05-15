@@ -1,0 +1,37 @@
+@use 'true' as *;
+@use '../../src/_frontline' as *;
+
+@include describe('scale-clamp [function]') {
+  @include it('generates a clamp() between two breakpoints') {
+    @include assert {
+      @include output {
+        font-size: scale-clamp((100px: 20px, 200px: 30px));
+      }
+      @include expect {
+        font-size: clamp(20px, 10vw + 10px, 30px);
+      }
+    }
+  }
+
+  @include it('supports container query width units') {
+    @include assert {
+      @include output {
+        font-size: scale-clamp((100px: 20px, 200px: 30px), cqw);
+      }
+      @include expect {
+        font-size: clamp(20px, 10cqw + 10px, 30px);
+      }
+    }
+  }
+
+  @include it('inverts clamp bounds when the end value is smaller') {
+    @include assert {
+      @include output {
+        font-size: scale-clamp((100px: 30px, 200px: 20px));
+      }
+      @include expect {
+        font-size: clamp(20px, -10vw + 40px, 30px);
+      }
+    }
+  }
+}

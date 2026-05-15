@@ -4,6 +4,7 @@
 @use "sass:list";
 @use "sass:math";
 @use "sass:meta";
+@use "../variables/debug" as *;
 
 /// Convert px to em
 /// @param {Number | Map} $values - Value or values to convert

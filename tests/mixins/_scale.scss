@@ -1,0 +1,59 @@
+@use 'true' as *;
+@use '../../src/_frontline' as *;
+
+@include describe('scale [mixin]') {
+  @include it('emits initial value, scaling clamp, and final value across two breakpoints') {
+    @include assert {
+      @include output {
+        @include scale(font-size, (100px: 20px, 200px: 30px));
+      }
+      @include expect {
+        font-size: 20px;
+
+        @media (min-width: 100px) {
+          font-size: clamp(20px, 10vw + 10px, 30px);
+        }
+
+        @media (min-width: 200px) {
+          font-size: 30px;
+        }
+      }
+    }
+  }
+
+  @include it('omits the initial value when $initial is false') {
+    @include assert {
+      @include output {
+        @include scale(font-size, (100px: 20px, 200px: 30px), $initial: false);
+      }
+      @include expect {
+        @media (min-width: 100px) {
+          font-size: clamp(20px, 10vw + 10px, 30px);
+        }
+
+        @media (min-width: 200px) {
+          font-size: 30px;
+        }
+      }
+    }
+  }
+
+  @include it('applies the same scaling to a list of properties') {
+    @include assert {
+      @include output {
+        @include scale((padding-top, padding-bottom), (100px: 20px, 200px: 30px), $initial: false);
+      }
+      @include expect {
+        @media (min-width: 100px) {
+          padding-top: clamp(20px, 10vw + 10px, 30px);
+          padding-bottom: clamp(20px, 10vw + 10px, 30px);
+        }
+
+        @media (min-width: 200px) {
+          padding-top: 30px;
+          padding-bottom: 30px;
+        }
+      }
+    }
+  }
+}

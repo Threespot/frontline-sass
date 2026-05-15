@@ -1,0 +1,53 @@
+@use 'true' as *;
+@use '../../src/_frontline' as *;
+
+@include describe('static [mixin]') {
+  @include it('wraps content in :any-link') {
+    @include assert {
+      @include output {
+        @include static {
+          color: red;
+        }
+      }
+      @include expect {
+        &:any-link {
+          color: red;
+        }
+      }
+    }
+  }
+}
+
+@include describe('attention [mixin]') {
+  @include it('wraps content in :is(:hover, :focus, :active)') {
+    @include assert {
+      @include output {
+        @include attention {
+          color: red;
+        }
+      }
+      @include expect {
+        &:is(:hover, :focus, :active) {
+          color: red;
+        }
+      }
+    }
+  }
+}
+
+@include describe('all-states [mixin]') {
+  @include it('wraps content in :is(:any-link, :hover, :focus, :active)') {
+    @include assert {
+      @include output {
+        @include all-states {
+          color: red;
+        }
+      }
+      @include expect {
+        &:is(:any-link, :hover, :focus, :active) {
+          color: red;
+        }
+      }
+    }
+  }
+}

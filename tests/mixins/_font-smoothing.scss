@@ -1,0 +1,28 @@
+@use 'true' as *;
+@use '../../src/_frontline' as *;
+
+@include describe('font-smoothing [mixin]') {
+  @include it('enables font smoothing by default') {
+    @include assert {
+      @include output {
+        @include font-smoothing();
+      }
+      @include expect {
+        -moz-osx-font-smoothing: grayscale;
+        -webkit-font-smoothing: antialiased;
+      }
+    }
+  }
+
+  @include it('reverts to subpixel smoothing when passed false') {
+    @include assert {
+      @include output {
+        @include font-smoothing(false);
+      }
+      @include expect {
+        -moz-osx-font-smoothing: auto;
+        -webkit-font-smoothing: subpixel-antialiased;
+      }
+    }
+  }
+}

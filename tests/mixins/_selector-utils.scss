@@ -1,0 +1,41 @@
+@use 'true' as *;
+@use '../../src/_frontline' as *;
+
+// root-add and root-before use @at-root to emit a rule whose selector is
+// derived from the parent. Both output() and expect() are wrapped in
+// .test-output by sass-true, so we use @at-root in expect() to reproduce
+// the exact selector the mixin generates.
+
+@include describe('root-add [mixin]') {
+  @include it('appends the given selector to the parent selector') {
+    @include assert {
+      @include output {
+        @include root-add('.bar') {
+          content: 'appended';
+        }
+      }
+      @include expect {
+        @at-root .bar.test-output {
+          content: 'appended';
+        }
+      }
+    }
+  }
+}
+
+@include describe('root-before [mixin]') {
+  @include it('nests the given selector before the parent selector') {
+    @include assert {
+      @include output {
+        @include root-before('.bar') {
+          content: 'prepended';
+        }
+      }
+      @include expect {
+        @at-root .bar .test-output {
+          content: 'prepended';
+        }
+      }
+    }
+  }
+}

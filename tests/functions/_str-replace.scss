@@ -1,0 +1,20 @@
+@use 'true' as *;
+@use '../../src/_frontline' as *;
+
+@include describe('str-replace [function]') {
+  @include it('replaces a substring') {
+    @include assert-equal(str-replace('abcde', 'bc', 'a'), 'aade');
+  }
+
+  @include it('defaults to an empty replacement') {
+    @include assert-equal(str-replace('hello world', 'world'), 'hello ');
+  }
+
+  @include it('returns the original string when no match is found') {
+    @include assert-equal(str-replace('foo', 'bar', 'baz'), 'foo');
+  }
+
+  @include it('replaces all occurrences recursively') {
+    @include assert-equal(str-replace('aaa', 'a', 'b'), 'bbb');
+  }
+}
