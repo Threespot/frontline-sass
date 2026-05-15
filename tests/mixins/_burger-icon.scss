@@ -1,0 +1,72 @@
+@use 'true' as *;
+@use '../../src/_frontline' as *;
+
+@include describe('burger [mixin]') {
+  @include it('outputs the base burger structure with CSS variables') {
+    @include assert {
+      @include output {
+        @include burger();
+      }
+      @include expect {
+        margin-bottom: calc(var(--burger-icon-stroke-width) + var(--burger-icon-gutter));
+        margin-top: calc(var(--burger-icon-stroke-width) + var(--burger-icon-gutter));
+        position: relative;
+        user-select: none;
+
+        &,
+        &::before,
+        &::after {
+          background-color: var(--burger-icon-color, currentColor);
+          border-radius: var(--burger-icon-radius, 0);
+          height: var(--burger-icon-stroke-width);
+          transition-duration: var(--burger-icon-speed, 200ms);
+          transition-property: background-color, transform;
+          width: var(--burger-icon-width);
+        }
+
+        &::before,
+        &::after {
+          content: '';
+          left: 0;
+          position: absolute;
+        }
+
+        &::before {
+          top: calc(-1 * var(--burger-icon-stroke-width) - var(--burger-icon-gutter));
+        }
+
+        &::after {
+          top: calc(var(--burger-icon-stroke-width) + var(--burger-icon-gutter));
+        }
+      }
+    }
+  }
+}
+
+@include describe('burger-to-cross [mixin]') {
+  @include it('animates the burger into a cross') {
+    @include assert {
+      @include output {
+        @include burger-to-cross();
+      }
+      @include expect {
+        & {
+          background-color: transparent;
+        }
+
+        &:before,
+        &:after {
+          background-color: var(--burger-icon-cross-color, currentColor);
+        }
+
+        &:before {
+          transform: translateY(calc(var(--burger-icon-stroke-width) + var(--burger-icon-gutter))) rotate(var(--burger-icon-cross-angle, 45deg));
+        }
+
+        &:after {
+          transform: translateY(calc(-1 * var(--burger-icon-stroke-width) - var(--burger-icon-gutter))) rotate(calc(-1 * var(--burger-icon-cross-angle, 45deg)));
+        }
+      }
+    }
+  }
+}

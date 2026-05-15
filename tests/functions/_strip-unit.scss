@@ -1,0 +1,16 @@
+@use 'true' as *;
+@use '../../src/_frontline' as *;
+
+@include describe('strip-unit [function]') {
+  @include it('removes px unit') {
+    @include assert-equal(strip-unit(16px), 16);
+  }
+
+  @include it('removes rem unit and keeps decimals') {
+    @include assert-equal(strip-unit(1.5rem), 1.5);
+  }
+
+  @include it('returns a unitless number unchanged') {
+    @include assert-equal(strip-unit(42), 42);
+  }
+}

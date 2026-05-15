@@ -1,0 +1,74 @@
+@use 'true' as *;
+@use '../../src/_frontline' as *;
+
+@include describe('visually-hidden [mixin]') {
+  @include it('outputs the accessible visually-hidden ruleset') {
+    @include assert {
+      @include output {
+        @include visually-hidden();
+      }
+      @include expect {
+        border: 0 !important;
+        clip: rect(0 0 0 0) !important;
+        clip-path: inset(50%) !important;
+        height: 1px !important;
+        margin: -1px !important;
+        overflow: hidden !important;
+        padding: 0 !important;
+        white-space: nowrap !important;
+        width: 1px !important;
+
+        &:not(caption) {
+          position: absolute !important;
+        }
+      }
+    }
+  }
+}
+
+@include describe('visually-hidden-focusable [mixin]') {
+  @include it('applies visually-hidden styles only when not focused') {
+    @include assert {
+      @include output {
+        @include visually-hidden-focusable();
+      }
+      @include expect {
+        &:not(:focus, :focus-within) {
+          border: 0 !important;
+          clip: rect(0 0 0 0) !important;
+          clip-path: inset(50%) !important;
+          height: 1px !important;
+          margin: -1px !important;
+          overflow: hidden !important;
+          padding: 0 !important;
+          white-space: nowrap !important;
+          width: 1px !important;
+
+          &:not(caption) {
+            position: absolute !important;
+          }
+        }
+      }
+    }
+  }
+}
+
+@include describe('undo-visually-hidden [mixin]') {
+  @include it('resets all visually-hidden declarations to unset') {
+    @include assert {
+      @include output {
+        @include undo-visually-hidden();
+      }
+      @include expect {
+        clip: unset !important;
+        clip-path: unset !important;
+        height: unset !important;
+        margin: unset !important;
+        overflow: unset !important;
+        position: unset !important;
+        white-space: unset !important;
+        width: unset !important;
+      }
+    }
+  }
+}

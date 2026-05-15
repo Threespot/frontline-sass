@@ -1,0 +1,26 @@
+@use 'true' as *;
+@use '../../src/_frontline' as *;
+
+@include describe('svg-url [function]') {
+  @include it('returns a url() data URI with the SVG url-encoded') {
+    @include assert {
+      @include output {
+        background-image: svg-url('<svg></svg>');
+      }
+      @include expect {
+        background-image: url("data:image/svg+xml,%3Csvg%3E%3C/svg%3E");
+      }
+    }
+  }
+
+  @include it('injects custom props on the opening svg tag') {
+    @include assert {
+      @include output {
+        background-image: svg-url('<svg></svg>', (fill: red));
+      }
+      @include expect {
+        background-image: url("data:image/svg+xml,%3Csvg fill='red'%3E%3C/svg%3E");
+      }
+    }
+  }
+}

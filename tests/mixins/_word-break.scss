@@ -1,0 +1,17 @@
+@use 'true' as *;
+@use '../../src/_frontline' as *;
+
+@include describe('break-word [mixin]') {
+  @include it('enables hyphenation and word wrapping') {
+    @include assert {
+      @include output {
+        @include break-word();
+      }
+      @include expect {
+        hyphens: auto;
+        overflow-wrap: break-word;
+        word-wrap: break-word;
+      }
+    }
+  }
+}

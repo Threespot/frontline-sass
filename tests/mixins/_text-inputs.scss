@@ -1,0 +1,19 @@
+@use 'true' as *;
+@use '../../src/_frontline' as *;
+
+@include describe('text-inputs [mixin]') {
+  @include it('wraps content in input:where([type=...]) selector covering all text input types') {
+    @include assert {
+      @include output {
+        @include text-inputs {
+          border: 1px solid red;
+        }
+      }
+      @include expect {
+        input:where([type='email'], [type='number'], [type='password'], [type='search'], [type='tel'], [type='text'], [type='url']) {
+          border: 1px solid red;
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,20 @@
+@use 'true' as *;
+@use '../../src/_frontline' as *;
+
+// Note: em() always returns a list (it uses list.append internally), even when
+// passed a single value. Tests use multi-value inputs so output and expected
+// values match as lists.
+
+@include describe('em [function]') {
+  @include it('converts px to em using default 16px context') {
+    @include assert-equal(em(16px 32px), 1em 2em);
+  }
+
+  @include it('converts px to em using a custom context') {
+    @include assert-equal(em(20px 30px, 10px), 2em 3em);
+  }
+
+  @include it('converts a longer list of px values') {
+    @include assert-equal(em(8px 16px 32px 48px), 0.5em 1em 2em 3em);
+  }
+}

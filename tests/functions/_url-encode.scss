@@ -1,0 +1,20 @@
+@use 'true' as *;
+@use '../../src/_frontline' as *;
+
+@include describe('url-encode [function]') {
+  @include it('encodes angle brackets') {
+    @include assert-equal(url-encode('<svg>'), '%3Csvg%3E');
+  }
+
+  @include it('encodes percent signs') {
+    @include assert-equal(url-encode('100%'), '100%25');
+  }
+
+  @include it('encodes hash characters') {
+    @include assert-equal(url-encode('#fff'), '%23fff');
+  }
+
+  @include it('leaves unencoded characters untouched') {
+    @include assert-equal(url-encode('abc-123'), 'abc-123');
+  }
+}
