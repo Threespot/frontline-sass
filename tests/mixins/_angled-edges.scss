@@ -1,0 +1,64 @@
+@use 'true' as *;
+@use '../../src/_frontline' as *;
+
+@include describe('angled-edges [mixin]') {
+  @include it('emits a top edge sloping right with default angle and z-index') {
+    @include assert {
+      @include output {
+        @include angled-edges();
+      }
+      @include expect {
+        position: relative;
+        z-index: 1;
+
+        &:before {
+          background: inherit;
+          content: "";
+          display: block;
+          height: 50%;
+          left: 0;
+          position: absolute;
+          right: 0;
+          z-index: -1;
+          -webkit-backface-visibility: hidden;
+        }
+
+        &:before {
+          top: 0;
+          transform: skewY(-2deg);
+          transform-origin: 0 0;
+        }
+      }
+    }
+  }
+
+  @include it('emits a bottom edge sloping left') {
+    @include assert {
+      @include output {
+        @include angled-edges($position: "bottom", $direction: "left", $angle: 3deg);
+      }
+      @include expect {
+        position: relative;
+        z-index: 1;
+
+        &:after {
+          background: inherit;
+          content: "";
+          display: block;
+          height: 50%;
+          left: 0;
+          position: absolute;
+          right: 0;
+          z-index: -1;
+          -webkit-backface-visibility: hidden;
+        }
+
+        &:after {
+          bottom: 0;
+          transform: skewY(3deg);
+          transform-origin: 0 0;
+        }
+      }
+    }
+  }
+}

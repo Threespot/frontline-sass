@@ -1,0 +1,17 @@
+////
+/// @group Main
+////
+
+/// Return the amount of padding required to offset a rounded corner so
+/// content sits flush against the visible curve rather than the bounding
+/// box. Refer to this diagram for the geometric derivation:
+/// https://drive.google.com/file/d/1rvrC-3H2ecSWgajRA-U7DM4NK344Fx-7/view
+///
+/// @param {Number} $radius - Corner radius (any unit accepted by Sass math)
+/// @return {Number} - Padding value in the same unit as `$radius`
+@function rounded-corner-padding($radius) {
+  $sqrt2: 1.4142;// square root of 2, rounded down from 1.4142135624
+  $corner-diagonal: ($sqrt2 * $radius) - $radius;
+  $corner-padding: $sqrt2 * ($corner-diagonal * 0.5);
+  @return $corner-padding;
+}

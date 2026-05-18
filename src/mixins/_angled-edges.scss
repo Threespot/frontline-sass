@@ -1,0 +1,76 @@
+////
+/// @group Main
+/// @link https://www.viget.com/articles/angled-edges-with-css-masks-and-transforms/
+////
+
+/// Add an angled edge to the top, bottom, or both edges of an element
+/// using pseudo elements. The element must have a background color/image
+/// that the pseudo elements can inherit.
+///
+/// @param {String} $position ["top"] - Edge to angle: `top`, `bottom`, or `both`
+/// @param {String} $direction ["right"] - Direction the angle slopes toward: `left` or `right`
+/// @param {Number} $angle [2deg] - Skew angle applied to the pseudo elements
+/// @param {Number} $z-index [1] - Stacking context for the element so the pseudo elements sit behind it
+@mixin angled-edges($position: "top", $direction: "right", $angle: 2deg, $z-index: 1) {
+  position: relative;
+  z-index: $z-index;
+
+  @if not ($position == "top" or $position == "bottom" or $position == "both") {
+    @error "'#{$position}' is not a valid value for $position";
+  }
+
+  @if not ($direction == "left" or $direction == "right") {
+    @error "'#{$direction}' is not a valid value for $direction";
+  }
+
+  $selector: "&:before,&:after";
+
+  @if $position == "top" {
+    $selector: "&:before";
+  }
+  @else if $position == "bottom" {
+    $selector: "&:after";
+  }
+
+  #{$selector} {
+    background: inherit;
+    content: "";
+    display: block;
+    height: 50%;
+    left: 0;
+    position: absolute;
+    right: 0;
+    z-index: -1;
+    -webkit-backface-visibility: hidden; // for Chrome Windows
+  }
+
+  @if $position == "top" or $position == "both" {
+    &:before {
+      top: 0;
+
+      @if $direction == "right" {
+        transform: skewY($angle * -1);
+        transform-origin: 0 0;
+      }
+      @else {
+        transform: skewY($angle);
+        transform-origin: 100% 0;
+      }
+    }
+  }
+
+  @if $position == "bottom" or $position == "both" {
+    &:after {
+      bottom: 0;
+
+      @if $direction == "left" {
+        transform: skewY($angle);
+        transform-origin: 0 0;
+      }
+      @else {
+        transform: skewY($angle * -1);
+        transform-origin: 100%;
+      }
+    }
+  }
+}

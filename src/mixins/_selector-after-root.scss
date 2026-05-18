@@ -1,0 +1,34 @@
+////
+/// @group Selectors
+/// @link https://www.sassmeister.com/gist/5b8eb4b386180f0a465d3e6212b3025d
+////
+@use "sass:meta";
+@use "sass:string";
+
+/// Insert a selector immediately after the root ancestor of the current
+/// selector but before its remaining descendants. Errors if the current
+/// selector has no descendants — use plain Sass nesting in that case.
+///
+/// @param {String} $selector - Selector to insert after the root
+///
+/// @example scss
+///   .foo .bar {
+///     @include selector-after-root(".theme-dark") {
+///       color: red;
+///     }
+///   }
+///   // .foo .theme-dark .bar { color: red; }
+@mixin selector-after-root($selector) {
+  $old-selector: & + "";// convert to string
+  $space-index: string.index($old-selector, " ");// find first space
+
+  @if (meta.type-of($space-index) != number) {
+    @error "selector-after-root() requires the current selector to have a descendant: `#{$old-selector}`";
+  }
+
+  $new-selector: string.insert($old-selector, " " + $selector, $space-index);
+
+  @at-root #{$new-selector} {
+    @content;
+  }
+}

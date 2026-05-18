@@ -1,0 +1,43 @@
+@use 'true' as *;
+@use '../../src/_frontline' as *;
+
+@include describe('angle-clip [mixin]') {
+  @include it('clips the top edge sloping from the left') {
+    @include assert {
+      @include output {
+        @include angle-clip(5, "top", "left");
+      }
+      @include expect {
+        position: relative;
+        overflow: hidden;
+        clip-path: polygon(0 calc(0% + 11vw), 100% 0, 100% 100%, 0 100%);
+      }
+    }
+  }
+
+  @include it('clips the bottom edge sloping from the right') {
+    @include assert {
+      @include output {
+        @include angle-clip(5, "bottom", "right");
+      }
+      @include expect {
+        position: relative;
+        overflow: hidden;
+        clip-path: polygon(0 0, 100% 0, 100% calc(100% - 11vw), 0 100%);
+      }
+    }
+  }
+
+  @include it('clips both edges with independent x positions') {
+    @include assert {
+      @include output {
+        @include angle-clip(5, "both", "left", "right");
+      }
+      @include expect {
+        position: relative;
+        overflow: hidden;
+        clip-path: polygon(0 calc(0% + 11vw), 100% 0, 100% calc(100% - 11vw), 0 100%);
+      }
+    }
+  }
+}

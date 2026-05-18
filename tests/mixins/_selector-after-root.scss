@@ -1,0 +1,21 @@
+@use 'true' as *;
+@use '../../src/_frontline' as *;
+
+@include describe('selector-after-root [mixin]') {
+  @include it('inserts the selector after the root ancestor of a multi-level parent') {
+    @include assert {
+      @include output {
+        & .child {
+          @include selector-after-root('.theme-dark') {
+            color: blue;
+          }
+        }
+      }
+      @include expect {
+        @at-root .test-output .theme-dark .child {
+          color: blue;
+        }
+      }
+    }
+  }
+}
