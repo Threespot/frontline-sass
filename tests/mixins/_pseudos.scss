@@ -51,3 +51,23 @@
     }
   }
 }
+
+@include describe('button-attention [mixin]') {
+  @include it('wraps content in hover, active, and keyboard/no-js scoped focus selectors') {
+    @include assert {
+      @include output {
+        @include button-attention {
+          color: red;
+        }
+      }
+      @include expect {
+        &:hover,
+        &:active,
+        [data-whatinput="keyboard"] &:focus,
+        .no-js &:focus {
+          color: red;
+        }
+      }
+    }
+  }
+}

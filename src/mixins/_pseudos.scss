@@ -24,3 +24,16 @@
     @content;
   }
 }
+
+/// Like `attention` but only applies the focus state when the user is
+/// navigating with the keyboard (via the `what-input` library setting
+/// `data-whatinput="keyboard"` on a root ancestor). Useful for toggle
+/// buttons that otherwise retain focus styles after a mouse click.
+@mixin button-attention {
+  &:hover,
+  &:active,
+  [data-whatinput="keyboard"] &:focus,
+  .no-js &:focus {
+    @content;
+  }
+}
