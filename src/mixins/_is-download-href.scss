@@ -1,0 +1,49 @@
+////
+/// @group Selectors
+////
+@use "sass:list";
+
+/// Default file extensions treated as downloadable. Covers common
+/// document formats so every site picks them up without configuration.
+/// @type List
+$download-href-base-extensions: ("pdf", "doc", "docx", "xls", "xlsx", "ppt", "pptx") !default;
+
+/// Site-specific download extensions, appended to
+/// `$download-href-base-extensions`. Use for additions like "zip" or
+/// "mp4" that aren't part of the default set.
+/// @type List
+$download-href-extensions: () !default;
+
+/// Match anchor elements whose `href` points to a downloadable file —
+/// either by extension or because the path lives under WordPress's
+/// `/wp-content/uploads/` directory. Uses `:where()` to keep specificity
+/// low so other rules can override.
+///
+/// @param {List} $extensions [$download-href-extensions] - Per-call
+///   extension list, appended to `$download-href-base-extensions`.
+///   Defaults to the module-level `$download-href-extensions` so consumers
+///   can configure once via `@use ... with (...)` and call the mixin with
+///   no arguments.
+///
+/// @example scss
+///   @use "frontline-sass/src/frontline" as * with (
+///     $download-href-extensions: ("zip", "mp4")
+///   );
+///
+///   a {
+///     @include is-download-href {
+///       &:after { content: " (download)"; }
+///     }
+///   }
+@mixin is-download-href($extensions: $download-href-extensions) {
+  $all: list.join($download-href-base-extensions, $extensions);
+  $selector: '[href^="/"][href*="/wp-content/uploads/"]';
+
+  @each $ext in $all {
+    $selector: '#{$selector}, [href$=".#{$ext}"]';
+  }
+
+  &:where(#{$selector}) {
+    @content;
+  }
+}

@@ -1,0 +1,34 @@
+@use 'true' as *;
+@use '../../src/_frontline' as *;
+
+@include describe('is-download-href [mixin]') {
+  @include it('wraps content in a :where selector covering the default extensions and the wp-content/uploads path') {
+    @include assert {
+      @include output {
+        @include is-download-href {
+          color: red;
+        }
+      }
+      @include expect {
+        &:where([href^="/"][href*="/wp-content/uploads/"], [href$=".pdf"], [href$=".doc"], [href$=".docx"], [href$=".xls"], [href$=".xlsx"], [href$=".ppt"], [href$=".pptx"]) {
+          color: red;
+        }
+      }
+    }
+  }
+
+  @include it('appends additional extensions from the $extensions argument') {
+    @include assert {
+      @include output {
+        @include is-download-href(("zip", "mp4")) {
+          color: red;
+        }
+      }
+      @include expect {
+        &:where([href^="/"][href*="/wp-content/uploads/"], [href$=".pdf"], [href$=".doc"], [href$=".docx"], [href$=".xls"], [href$=".xlsx"], [href$=".ppt"], [href$=".pptx"], [href$=".zip"], [href$=".mp4"]) {
+          color: red;
+        }
+      }
+    }
+  }
+}
