@@ -1,0 +1,34 @@
+@use 'true' as *;
+@use '../../src/_frontline' as *;
+
+@include describe('is-external-href [mixin]') {
+  @include it('wraps content in a :where selector excluding the default internal domains') {
+    @include assert {
+      @include output {
+        @include is-external-href {
+          color: red;
+        }
+      }
+      @include expect {
+        &:where([href^="http"]:not([href*="lndo.site"], [href*="//localhost"], [href*="pantheonsite.io"])) {
+          color: red;
+        }
+      }
+    }
+  }
+
+  @include it('appends additional domains from the $domains argument') {
+    @include assert {
+      @include output {
+        @include is-external-href(("example.com")) {
+          color: red;
+        }
+      }
+      @include expect {
+        &:where([href^="http"]:not([href*="lndo.site"], [href*="//localhost"], [href*="pantheonsite.io"], [href*="example.com"])) {
+          color: red;
+        }
+      }
+    }
+  }
+}

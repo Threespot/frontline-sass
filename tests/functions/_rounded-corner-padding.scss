@@ -1,0 +1,26 @@
+@use 'true' as *;
+@use '../../src/_frontline' as *;
+
+@include describe('rounded-corner-padding [function]') {
+  @include it('returns 0 for a zero radius') {
+    @include assert-equal(rounded-corner-padding(0), 0);
+  }
+
+  @include it('scales linearly with the radius') {
+    @include assert-equal(
+      rounded-corner-padding(20px),
+      2 * rounded-corner-padding(10px)
+    );
+  }
+
+  @include it('preserves the unit of the radius argument') {
+    @include assert {
+      @include output {
+        padding: rounded-corner-padding(100px);
+      }
+      @include expect {
+        padding: 29.288082px;
+      }
+    }
+  }
+}

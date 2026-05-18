@@ -1,0 +1,52 @@
+////
+/// @group Selectors
+////
+@use "sass:list";
+
+/// Default domains treated as internal (excluded from external-link matching).
+/// Covers common Threespot infrastructure hostnames so every site picks them
+/// up without configuration.
+/// @type List
+$external-href-base-domains: ("lndo.site", "//localhost", "pantheonsite.io") !default;
+
+/// Site-specific domains treated as internal, appended to
+/// `$external-href-base-domains`. Typically the production and staging
+/// hostnames a project should not flag as external.
+/// @type List
+$external-href-domains: () !default;
+
+/// Match anchor elements whose `href` points to an external domain.
+/// Uses `:where()` to keep specificity low so other rules (e.g. download
+/// links) can override when an external link is also a download.
+///
+/// @param {List} $domains [$external-href-domains] - Per-call domain list,
+///   appended to `$external-href-base-domains`. Defaults to the
+///   module-level `$external-href-domains` so consumers can configure once
+///   via `@use ... with (...)` and call the mixin with no arguments.
+///
+/// @example scss
+///   @use "frontline-sass/src/frontline" as * with (
+///     $external-href-domains: ("example.com", "staging.example.com")
+///   );
+///
+///   a {
+///     @include is-external-href {
+///       &:after { content: " (external)"; }
+///     }
+///   }
+@mixin is-external-href($domains: $external-href-domains) {
+  $all: list.join($external-href-base-domains, $domains);
+  $selector: "";
+
+  @each $domain in $all {
+    @if $selector == "" {
+      $selector: '[href*="#{$domain}"]';
+    } @else {
+      $selector: '#{$selector}, [href*="#{$domain}"]';
+    }
+  }
+
+  &:where([href^="http"]:not(#{$selector})) {
+    @content;
+  }
+}

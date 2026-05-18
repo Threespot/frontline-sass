@@ -1,0 +1,96 @@
+////
+/// @group Main
+/// @link https://nigelotoole.github.io/angled-edges/
+////
+@use "sass:math";
+
+/// Convert an angle in degrees to a vw value where 100vw maps to 45deg.
+/// Used internally by `angle-clip` to size the clip-path offsets relative
+/// to the viewport width.
+/// @access private
+/// @param {Number} $angle - Angle in degrees (1-45)
+/// @return {Number} - Unitless value to be combined with `vw`
+@function deg-to-vw($angle) {
+  @return math.round($angle * 2.22);
+}
+
+/// Generate an angled clip-path for the top, bottom, or both edges of an
+/// element. Useful for stacked sections with sloped seams.
+///
+/// @param {Number} $angle - Angle in degrees (1-45)
+/// @param {String} $angle-position-y - Y position of the angle: `top`, `bottom`, or `both`
+/// @param {String} $angle-position-x - X position of the angle: `left` or `right`
+/// @param {String} $angle-position-bottom-x [''] - X position of the bottom angle when `$angle-position-y` is `both`
+/// @param {Boolean} $fallback [true] - Reserved for legacy fallback rendering
+/// @param {Color} $fallback-color [#fff] - Color used by legacy fallback rendering
+@mixin angle-clip($angle, $angle-position-y, $angle-position-x, $angle-position-bottom-x: "", $fallback: true, $fallback-color: #fff) {
+  position: relative;
+  overflow: hidden;
+
+  // Converts degrees to VW, 100vw = 45deg using this technique
+  @if $angle > 45 {
+    $angle: 0;
+    @error "Invalid angle, it must be between 1-45";
+  }
+  @if $angle < 46 {
+    $angle: deg-to-vw($angle);
+  }
+
+  @if $angle-position-bottom-x == "" {
+    $angle-position-bottom-x: $angle-position-x;
+  }
+
+  $angle-calc-top: calc(0% + #{$angle}vw);
+  $angle-calc-bottom: calc(100% - #{$angle}vw);
+
+  $clip-path-top: 0 0, 100% 0;
+  $clip-path-bottom: 100% 100%, 0 100%;
+
+  $border-width-top: "";
+  $border-width-bottom: "";
+  $border-color-top: "";
+  $border-color-bottom: "";
+
+
+  @if $angle-position-y == "top" or $angle-position-y == "both" {
+
+    @if $angle-position-x == "left" {
+      $clip-path-top: 0 $angle-calc-top, 100% 0;
+
+      $border-width-top: #{$angle + 1}vw 100vw 0 0;
+    }
+
+    @if $angle-position-x == "right" {
+      $clip-path-top: 0 0, 100% $angle-calc-top;
+
+      $border-width-top: #{$angle + 1}vw 0 0 100vw;
+    }
+
+    $border-color-top: $fallback-color transparent transparent transparent;
+  }
+
+
+  @if $angle-position-y == "bottom" or $angle-position-y == "both" {
+
+    @if $angle-position-y == "both" and $angle-position-x != $angle-position-bottom-x {
+      $angle-position-x: $angle-position-bottom-x;
+    }
+
+    @if $angle-position-x == "left" {
+      $clip-path-bottom: 100% 100%, 0 $angle-calc-bottom;
+
+      $border-width-bottom: 0 100vw #{$angle + 1}vw 0;
+    }
+
+    @if $angle-position-x == "right" {
+      $clip-path-bottom: 100% $angle-calc-bottom, 0 100%;
+
+      $border-width-bottom: 0 0 #{$angle + 1}vw 100vw;
+    }
+
+    $border-color-bottom: transparent transparent $fallback-color transparent;
+  }
+
+  $clip-path: polygon($clip-path-top, $clip-path-bottom);
+  clip-path: $clip-path;
+}
