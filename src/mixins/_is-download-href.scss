@@ -14,6 +14,12 @@ $download-href-base-extensions: ("pdf", "doc", "docx", "xls", "xlsx", "ppt", "pp
 /// @type List
 $download-href-extensions: () !default;
 
+/// Site-specific custom download selectors, appended to the generated
+/// selector list as-is. Use for cases extension matching can't cover,
+/// e.g. `("[download]", "[href*='?download=1']")`.
+/// @type List
+$download-href-selectors: () !default;
+
 /// Match anchor elements whose `href` points to a downloadable file —
 /// either by extension or because the path lives under WordPress's
 /// `/wp-content/uploads/` directory. Uses `:where()` to keep specificity
@@ -25,9 +31,15 @@ $download-href-extensions: () !default;
 ///   can configure once via `@use ... with (...)` and call the mixin with
 ///   no arguments.
 ///
+/// @param {List} $extra-selectors [$download-href-selectors] - Per-call
+///   list of raw selector strings appended to the generated selector list.
+///   Defaults to the module-level `$download-href-selectors` so consumers
+///   can configure once via `@use ... with (...)`.
+///
 /// @example scss
 ///   @use "frontline-sass/src/frontline" as * with (
-///     $download-href-extensions: ("zip", "mp4")
+///     $download-href-extensions: ("zip", "mp4"),
+///     $download-href-selectors: ("[download]",)
 ///   );
 ///
 ///   a {
@@ -35,12 +47,17 @@ $download-href-extensions: () !default;
 ///       &:after { content: " (download)"; }
 ///     }
 ///   }
-@mixin is-download-href($extensions: $download-href-extensions) {
+@mixin is-download-href($extensions: $download-href-extensions, $extra-selectors: $download-href-selectors) {
   $all: list.join($download-href-base-extensions, $extensions);
-  $selector: '[href^="/"][href*="/wp-content/uploads/"]';
+  // Assume any file in `/wp-content/uploads/` other than HTML is a download
+  $selector: '[href*="/wp-content/uploads/"]:not([href$=".html" i])';
 
   @each $ext in $all {
     $selector: '#{$selector}, [href$=".#{$ext}"]';
+  }
+
+  @each $extra in $extra-selectors {
+    $selector: '#{$selector}, #{$extra}';
   }
 
   &:where(#{$selector}) {

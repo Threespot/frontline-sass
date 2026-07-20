@@ -10,7 +10,7 @@
         }
       }
       @include expect {
-        &:where([href^="/"][href*="/wp-content/uploads/"], [href$=".pdf"], [href$=".doc"], [href$=".docx"], [href$=".xls"], [href$=".xlsx"], [href$=".ppt"], [href$=".pptx"]) {
+        &:where([href*="/wp-content/uploads/"]:not([href$=".html" i]), [href$=".pdf"], [href$=".doc"], [href$=".docx"], [href$=".xls"], [href$=".xlsx"], [href$=".ppt"], [href$=".pptx"]) {
           color: red;
         }
       }
@@ -25,7 +25,22 @@
         }
       }
       @include expect {
-        &:where([href^="/"][href*="/wp-content/uploads/"], [href$=".pdf"], [href$=".doc"], [href$=".docx"], [href$=".xls"], [href$=".xlsx"], [href$=".ppt"], [href$=".pptx"], [href$=".zip"], [href$=".mp4"]) {
+        &:where([href*="/wp-content/uploads/"]:not([href$=".html" i]), [href$=".pdf"], [href$=".doc"], [href$=".docx"], [href$=".xls"], [href$=".xlsx"], [href$=".ppt"], [href$=".pptx"], [href$=".zip"], [href$=".mp4"]) {
+          color: red;
+        }
+      }
+    }
+  }
+
+  @include it('appends custom selectors from the $extra-selectors argument') {
+    @include assert {
+      @include output {
+        @include is-download-href($extra-selectors: ('[download]', '[href*="?download=1"]')) {
+          color: red;
+        }
+      }
+      @include expect {
+        &:where([href*="/wp-content/uploads/"]:not([href$=".html" i]), [href$=".pdf"], [href$=".doc"], [href$=".docx"], [href$=".xls"], [href$=".xlsx"], [href$=".ppt"], [href$=".pptx"], [download], [href*="?download=1"]) {
           color: red;
         }
       }
