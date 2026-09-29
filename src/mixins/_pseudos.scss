@@ -29,8 +29,15 @@
 /// navigating with the keyboard (via the `what-input` library setting
 /// `data-whatinput="keyboard"` on a root ancestor). Useful for toggle
 /// buttons that otherwise retain focus styles after a mouse click.
+/// Hover is gated on `(hover: hover)` so touch devices don't keep the
+/// hover state after a tap.
 @mixin button-attention {
-  &:hover,
+  @media (hover: hover) {
+    &:hover {
+      @content;
+    }
+  }
+
   &:active,
   [data-whatinput="keyboard"] &:focus,
   .no-js &:focus {
