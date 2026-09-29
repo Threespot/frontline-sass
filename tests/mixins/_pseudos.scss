@@ -53,7 +53,7 @@
 }
 
 @include describe('button-attention [mixin]') {
-  @include it('wraps content in hover, active, and keyboard/no-js scoped focus selectors') {
+  @include it('wraps content in hover-capable hover, active, and keyboard/no-js scoped focus selectors') {
     @include assert {
       @include output {
         @include button-attention {
@@ -61,7 +61,12 @@
         }
       }
       @include expect {
-        &:hover,
+        @media (hover: hover) {
+          &:hover {
+            color: red;
+          }
+        }
+
         &:active,
         [data-whatinput="keyboard"] &:focus,
         .no-js &:focus {
