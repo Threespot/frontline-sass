@@ -1,0 +1,126 @@
+@use 'true' as *;
+@use '../../src/_frontline' as *;
+
+@include describe('keyframes [mixin]') {
+  @include it('converts time offsets to percentages of $duration') {
+    @include assert {
+      @include output {
+        @include keyframes('spin', (0s: rotate(0), 1s: rotate(90deg), 4s: rotate(360deg)), $duration: 4s);
+      }
+      @include expect {
+        @keyframes spin {
+          0% {
+            transform: rotate(0);
+          }
+          25% {
+            transform: rotate(90deg);
+          }
+          100% {
+            transform: rotate(360deg);
+          }
+        }
+      }
+    }
+  }
+
+  @include it('converts offsets in a different time unit than $duration') {
+    @include assert {
+      @include output {
+        @include keyframes('grow', (250ms: scale(2)), $duration: 1s);
+      }
+      @include expect {
+        @keyframes grow {
+          25% {
+            transform: scale(2);
+          }
+        }
+      }
+    }
+  }
+
+  @include it('shares a declaration block between a list of offsets') {
+    @include assert {
+      @include output {
+        @include keyframes('nose', (
+          (4s, 5s, 7s): rotateY(-4deg),
+          6s: rotateY(-4deg) rotateX(-3deg),
+        ), $duration: 10s);
+      }
+      @include expect {
+        @keyframes nose {
+          40%, 50%, 70% {
+            transform: rotateY(-4deg);
+          }
+          60% {
+            transform: rotateY(-4deg) rotateX(-3deg);
+          }
+        }
+      }
+    }
+  }
+
+  @include it('passes through percentages and from/to without $duration') {
+    @include assert {
+      @include output {
+        @include keyframes('slide', (from: translateX(0), 50%: translateX(10px), to: translateX(0)));
+      }
+      @include expect {
+        @keyframes slide {
+          from {
+            transform: translateX(0);
+          }
+          50% {
+            transform: translateX(10px);
+          }
+          to {
+            transform: translateX(0);
+          }
+        }
+      }
+    }
+  }
+
+  @include it('outputs every property when a value is a map') {
+    @include assert {
+      @include output {
+        @include keyframes('fade-in', (
+          from: (opacity: 0, transform: translateY(1rem)),
+          to: (opacity: 1, transform: none),
+        ));
+      }
+      @include expect {
+        @keyframes fade-in {
+          from {
+            opacity: 0;
+            transform: translateY(1rem);
+          }
+          to {
+            opacity: 1;
+            transform: none;
+          }
+        }
+      }
+    }
+  }
+
+  @include it('applies single values to a custom $property') {
+    @include assert {
+      @include output {
+        @include keyframes('pulse', (0%: 1, 50%: 0.5, 100%: 1), $property: opacity);
+      }
+      @include expect {
+        @keyframes pulse {
+          0% {
+            opacity: 1;
+          }
+          50% {
+            opacity: 0.5;
+          }
+          100% {
+            opacity: 1;
+          }
+        }
+      }
+    }
+  }
+}

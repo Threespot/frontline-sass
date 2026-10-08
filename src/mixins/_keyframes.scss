@@ -1,0 +1,103 @@
+////
+/// @group Main
+/// @link https://tympanus.net/codrops/2016/03/21/animated-animals-css-svg/
+////
+@use "sass:list";
+@use "sass:math";
+@use "sass:meta";
+
+/// Generate a `@keyframes` rule from a map of offsets and values.
+///
+/// Offsets can be percentages, `from`/`to`, or time values (e.g. `4.5s`)
+/// when `$duration` is set, in which case they're converted to percentages
+/// of the total duration. Use a list of offsets as the key to share a
+/// declaration block between several offsets.
+///
+/// Values can be a map of properties, or a single value that's applied to
+/// `$property` (`transform` by default).
+///
+/// @param {String} $name - Animation name
+/// @param {Map} $frames - Map of offsets and values
+/// @param {Number} $duration [null] - Total animation duration, required when offsets are time values
+/// @param {String} $property [transform] - Property used when a value isn't a map
+///
+/// @example scss
+///   @include keyframes("nose", (
+///     // resting position
+///     (4s, 5s, 7s): rotateY(-4deg),
+///     // nose down
+///     4.5s: rotateY(-4deg) rotateX(-3deg),
+///     // fox looks straight ahead
+///     13s: rotateY(0),
+///   ), $duration: 13s);
+///
+/// @example scss
+///   @include keyframes("fade-in", (
+///     from: (opacity: 0, transform: translateY(1rem)),
+///     to: (opacity: 1, transform: none),
+///   ));
+@mixin keyframes($name, $frames, $duration: null, $property: transform) {
+  @if meta.type-of($frames) != "map" {
+    @error "keyframes(): $frames must be a map of offsets and values, got `#{meta.inspect($frames)}`";
+  }
+
+  @if $duration != null and (meta.type-of($duration) != "number" or math.is-unitless($duration) or $duration <= 0) {
+    @error "keyframes(): $duration must be a positive time value, got `#{meta.inspect($duration)}`";
+  }
+
+  @keyframes #{$name} {
+    @each $offsets, $value in $frames {
+      $selectors: ();
+
+      @each $offset in $offsets {
+        $selectors: list.append($selectors, -keyframe-offset($offset, $duration), $separator: comma);
+      }
+
+      #{$selectors} {
+        @if meta.type-of($value) == "map" {
+          @each $prop, $val in $value {
+            #{$prop}: $val;
+          }
+        }
+        @else {
+          #{$property}: $value;
+        }
+      }
+    }
+  }
+}
+
+/// Convert a single keyframe offset to a keyframe selector
+/// @access private
+/// @param {Number | String} $offset - Percentage, `from`/`to`, or time value
+/// @param {Number} $duration - Total animation duration (or null)
+/// @return {Number | String} - Keyframe selector
+@function -keyframe-offset($offset, $duration) {
+  @if $offset == "from" or $offset == "to" {
+    @return $offset;
+  }
+
+  @if meta.type-of($offset) != "number" {
+    @error "keyframes(): `#{meta.inspect($offset)}` is not a valid offset";
+  }
+
+  $percent: $offset;
+
+  @if math.unit($offset) != "%" {
+    @if $duration == null {
+      @error "keyframes(): offset `#{$offset}` requires $duration to convert it to a percentage";
+    }
+
+    @if not math.compatible($offset, $duration) {
+      @error "keyframes(): offset `#{$offset}` is not compatible with $duration `#{$duration}`";
+    }
+
+    $percent: math.percentage(math.div($offset, $duration));
+  }
+
+  @if $percent < 0% or $percent > 100% {
+    @error "keyframes(): offset `#{$offset}` is outside the animation (#{$percent})";
+  }
+
+  @return $percent;
+}
